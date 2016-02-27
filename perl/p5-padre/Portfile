@@ -1,0 +1,84 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         Padre 1.00
+
+platforms           darwin
+maintainers         nomaintainer
+license             {Artistic-1 GPL}
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         Perl Application Development and Refactoring Environment
+
+long_description    ${description}
+
+checksums           rmd160 88858fcd8b99fdbad0cb6de90c26872582674028 \
+                    sha256 cb31404b048c12992eea142613bd560ce7a31199e3e09239fa1539f2fa02b96d
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-locale-msgfmt \
+                    port:p${perl5.major}-test-exception \
+                    port:p${perl5.major}-test-mockobject \
+                    port:p${perl5.major}-test-nowarnings \
+                    port:p${perl5.major}-test-script \
+                    port:p${perl5.major}-test-warn
+    depends_lib-append \
+                    port:p${perl5.major}-algorithm-diff \
+                    port:p${perl5.major}-app-cpanminus \
+                    port:p${perl5.major}-capture-tiny \
+                    port:p${perl5.major}-class-adapter \
+                    port:p${perl5.major}-class-inspector \
+                    port:p${perl5.major}-class-xsaccessor \
+                    port:p${perl5.major}-dbd-sqlite \
+                    port:p${perl5.major}-dbi \
+                    port:p${perl5.major}-debug-client \
+                    port:p${perl5.major}-devel-dumpvar \
+                    port:p${perl5.major}-devel-refactor \
+                    port:p${perl5.major}-file-copy-recursive \
+                    port:p${perl5.major}-file-find-rule \
+                    port:p${perl5.major}-file-homedir \
+                    port:p${perl5.major}-file-pushd \
+                    port:p${perl5.major}-file-remove \
+                    port:p${perl5.major}-file-sharedir \
+                    port:p${perl5.major}-file-which \
+                    port:p${perl5.major}-html-parser \
+                    port:p${perl5.major}-io-string \
+                    port:p${perl5.major}-io-stringy \
+                    port:p${perl5.major}-ipc-run \
+                    port:p${perl5.major}-json-xs \
+                    port:p${perl5.major}-libwww-perl \
+                    port:p${perl5.major}-list-moreutils \
+                    port:p${perl5.major}-module-manifest \
+                    port:p${perl5.major}-module-starter \
+                    port:p${perl5.major}-orlite \
+                    port:p${perl5.major}-orlite-migrate \
+                    port:p${perl5.major}-params-util \
+                    port:p${perl5.major}-parse-errorstring-perl \
+                    port:p${perl5.major}-parse-exuberantctags \
+                    port:p${perl5.major}-pod-abstract \
+                    port:p${perl5.major}-pod-pom \
+                    port:p${perl5.major}-pod2-base \
+                    port:p${perl5.major}-ppi \
+                    port:p${perl5.major}-ppix-editortools \
+                    port:p${perl5.major}-ppix-regexp \
+                    port:p${perl5.major}-probe-perl \
+                    port:p${perl5.major}-sort-versions \
+                    port:p${perl5.major}-template-tiny \
+                    port:p${perl5.major}-text-diff \
+                    port:p${perl5.major}-text-findindent \
+                    port:p${perl5.major}-text-patch \
+                    port:p${perl5.major}-uri \
+                    port:p${perl5.major}-wx \
+                    port:p${perl5.major}-wx-perl-processstream \
+                    port:p${perl5.major}-wx-scintilla \
+                    port:p${perl5.major}-yaml-tiny
+}
+
+

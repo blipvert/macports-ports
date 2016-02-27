@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         ORLite-Migrate 1.10
+#perl5.setup         ORLite-Migrate 1.10 ../by-authors/id/A/AD/ADAMK
+
+platforms           darwin
+maintainers         nomaintainer
+#license             {Artistic-1 GPL}
+license             unknown
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         ORLite::Migrate (no description available)
+
+long_description    ${description}
+
+checksums           rmd160 54bb90e0c0e0bc945afe92968de4f1df49d1b5a2 \
+                    sha256 e0a8c5d3916a86c608509fee079489345664d40e5e5e8e9647b9233ff4e3863a
+
+if {${perl5.major} != ""} {
+    depends_lib-append \
+                    port:p${perl5.major}-dbd-sqlite \
+                    port:p${perl5.major}-dbi \
+                    port:p${perl5.major}-file-pushd \
+                    port:p${perl5.major}-file-which \
+                    port:p${perl5.major}-ipc-run3 \
+                    port:p${perl5.major}-orlite \
+                    port:p${perl5.major}-params-util \
+                    port:p${perl5.major}-probe-perl
+}
+
+

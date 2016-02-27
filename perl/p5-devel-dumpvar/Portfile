@@ -1,0 +1,26 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         Devel-Dumpvar 1.06
+#perl5.setup         Devel-Dumpvar 1.06 ../by-authors/id/A/AD/ADAMK
+
+platforms           darwin
+maintainers         nomaintainer
+#license             {Artistic-1 GPL}
+license             unknown
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         Devel::Dumpvar (no description available)
+
+long_description    ${description}
+
+checksums           rmd160 4e1f4bf2855ce1266bbe4ca1e6eedeb19da953cd \
+                    sha256 1e509f090a82abf998901c5a6d6f8d63ebdaf4457592b0d0b78703f994ab920c
+
+

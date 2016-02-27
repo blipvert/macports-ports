@@ -1,0 +1,34 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         Parse-ErrorString-Perl 0.22
+#perl5.setup         Parse-ErrorString-Perl 0.22 ../by-authors/id/S/SZ/SZABGAB
+
+platforms           darwin
+maintainers         nomaintainer
+#license             {Artistic-1 GPL}
+license             unknown
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         Parse::ErrorString::Perl (no description available)
+
+long_description    ${description}
+
+checksums           rmd160 2fe3e85144bddec12d29d5cdf6dbc5a9ec83db4d \
+                    sha256 a60d266e41f3ddf7609a39dc1ea39dcc4bd0ee0218b0d169b69692d781c99ffd
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-test-differences
+    depends_lib-append \
+                    port:p${perl5.major}-class-xsaccessor \
+                    port:p${perl5.major}-pod-pom
+}
+
+

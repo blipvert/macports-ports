@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         Debug-Client 0.29
+#perl5.setup         Debug-Client 0.29 ../by-authors/id/B/BO/BOWTIE
+
+platforms           darwin
+maintainers         nomaintainer
+#license             {Artistic-1 GPL}
+license             unknown
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         Debug::Client (no description available)
+
+long_description    ${description}
+
+checksums           rmd160 8177aa68194009d3e80bd0ad0cc24a83ba2a1283 \
+                    sha256 51f4ea6c6991221024a08b6106d4af1455452fae3b809b0bf0a208fbddb30efa
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-file-homedir \
+                    port:p${perl5.major}-test-checkdeps \
+                    port:p${perl5.major}-test-class \
+                    port:p${perl5.major}-test-deep \
+                    port:p${perl5.major}-test-requires
+    depends_lib-append \
+                    port:p${perl5.major}-padwalker \
+                    port:p${perl5.major}-term-readline-gnu
+}
+
+

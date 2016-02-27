@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         Wx-Perl-ProcessStream 0.32
+#perl5.setup         Wx-Perl-ProcessStream 0.32 ../by-authors/id/M/MD/MDOOTSON
+
+platforms           darwin
+maintainers         nomaintainer
+#license             {Artistic-1 GPL}
+license             unknown
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         Wx::Perl::ProcessStream (no description available)
+
+long_description    ${description}
+
+checksums           rmd160 f130b56b8a8f08b577b0a7a56cbc0574ca402d92 \
+                    sha256 641fdb39d6f9c7376f32a1376dcb6cfd6cdc90d77754ae09d7c82f2daf872fc3
+
+if {${perl5.major} != ""} {
+    depends_lib-append \
+                    port:p${perl5.major}-wx
+}
+
+
