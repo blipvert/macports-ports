@@ -10,7 +10,7 @@ revision                1
 categories              graphics print
 platforms               darwin
 maintainers             nomaintainer
-license                 {LGPL Copyleft}
+license                 GL2PS-2 LGPL-2
 
 description             an OpenGL to PostScript printing library
 
