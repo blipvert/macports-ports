@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.16 5.18 5.20 5.22
+perl5.setup         PHP-Strings 0.28
+#perl5.setup         PHP-Strings 0.28 ../by-authors/id/K/KU/KUDARASP
+
+platforms           darwin
+maintainers         nomaintainer
+#license             {Artistic-1 GPL}
+license             unknown
+
+# Uncomment this line if you know there will be no arch-specific code:
+#supported_archs     noarch
+
+description         PHP::Strings (no description available)
+
+long_description    ${description}
+
+checksums           rmd160 d07c746b3d479c1028bd39e07561a77f319232c2 \
+                    sha256 b00e2b06f1e1c29f33e760a365caa327e857279ae86ce5b3926b47c822894068
+
+if {${perl5.major} != ""} {
+    depends_lib-append \
+                    port:p${perl5.major}-params-validate
+}
+
+
