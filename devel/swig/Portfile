@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
 name            swig
-version         3.0.10
-checksums       rmd160 c92e1ba431078e35f0bfc156ae68c763aedc007d \
-                sha256 2939aae39dec06095462f1b95ce1c958ac80d07b926e48871046d17c0094f44c
+version         3.0.12
+checksums       rmd160 41877e9de3ff598731ef36161f77fa66dec3c301 \
+                sha256 7cf9f447ae7ed1c51722efc45e7f14418d15d7a1e143ac9f09a668999f4fc94d
 
 categories      devel
-maintainers     michaelld openmaintainer
+maintainers     {michaelld @michaelld} openmaintainer
 
 # The swig tool itself is GPL, but code incorporated into dependents has a
-# permissive license. 
+# permissive license.
 license         {GPL-3+ Permissive}
 
 description     Tool to wrap C/C++ libraries in high-level languages.
@@ -54,20 +53,18 @@ array set bindings {
     guile       {port:guile             guile}
     java        {bin:java:kaffe         java}
     lua         {port:lua               lua}
-    mzscheme    {port:mzscheme          mzscheme}
     ocaml       {port:ocaml             ocaml}
     octave      {path:bin/octave:octave octave}
     perl        {path:bin/perl:perl5    perl5=${prefix}/bin/perl}
     php         {port:php55             "php=${prefix}/bin/php55"}
-    php5        {path:bin/php:php5      php}
     pike        {port:pike              pike}
     python      {port:python_select     python}
     r           {port:R                 r}
-    ruby        {port:ruby              "ruby=${prefix}/bin/ruby1.8"}
+    ruby        {port:ruby23            "ruby=${prefix}/bin/ruby2.3"}
     tcl         {port:tcl               tcl}
 }
 array set prettynames {chicken Chicken clisp CLISP csharp "C#"
-    d D gcj GCJ go Go guile Guile java Java lua Lua mzscheme MzScheme
+    d D gcj GCJ go Go guile Guile java Java lua Lua 
     ocaml "Objective Caml" octave Octave perl5 Perl php "PHP 5" pike Pike
     python Python r R ruby Ruby tcl Tcl}
 
@@ -86,15 +83,6 @@ foreach lang [lsort [array names bindings]] {
     if {${swig.lang} != $arg_name} {
         configure.args-append --without-${arg_name}
     }
-}
-
-subport swig-php5 {
-    replaced_by swig-php
-    pre-configure {
-        ui_error "This port has been replaced by 'swig-php'."
-        return -code error
-    }
-    distfiles
 }
 
 subport swig-php {
@@ -188,61 +176,73 @@ subport swig-ruby {
 
     revision 1
 
-    variant ruby186 conflicts ruby187 ruby19 ruby20 ruby21 ruby22 ruby23 description {build using Ruby 1.8.6} {
-        depends_lib-delete port:ruby
+    variant ruby186 conflicts ruby187 ruby19 ruby20 ruby21 ruby22 ruby23 ruby24 description {build using Ruby 1.8.6} {
+        depends_lib-delete port:ruby23
         depends_lib-append port:ruby186
-        configure.args-delete --with-ruby=${prefix}/bin/ruby1.8
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
         configure.args-append --with-ruby=${prefix}/bin/ruby
     }
 
-    variant ruby187 conflicts ruby186 ruby19 ruby20 ruby21 ruby22 ruby23 description {build using Ruby 1.8.7} {}
+    variant ruby187 conflicts ruby186 ruby19 ruby20 ruby21 ruby22 ruby23 ruby24 description {build using Ruby 1.8.7} {
+        depends_lib-delete port:ruby23
+        depends_lib-append port:ruby
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
+        configure.args-append --with-ruby=${prefix}/bin/ruby1.8
+    }
 
-    variant ruby19 conflicts ruby186 ruby187 ruby20 ruby21 ruby22 ruby23 description {build using Ruby 1.9} {
-        depends_lib-delete port:ruby
+    variant ruby19 conflicts ruby186 ruby187 ruby20 ruby21 ruby22 ruby23 ruby24 description {build using Ruby 1.9} {
+        depends_lib-delete port:ruby23
         depends_lib-append port:ruby19
-        configure.args-delete --with-ruby=${prefix}/bin/ruby1.8
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
         configure.args-append --with-ruby=${prefix}/bin/ruby1.9
     }
 
-    variant ruby20 conflicts ruby186 ruby187 ruby19 ruby21 ruby22 ruby23 description {build using Ruby 2.0} {
-        depends_lib-delete port:ruby
+    variant ruby20 conflicts ruby186 ruby187 ruby19 ruby21 ruby22 ruby23 ruby24 description {build using Ruby 2.0} {
+        depends_lib-delete port:ruby23
         depends_lib-append port:ruby20
-        configure.args-delete --with-ruby=${prefix}/bin/ruby1.8
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
         configure.args-append --with-ruby=${prefix}/bin/ruby2.0
     }
 
-    variant ruby21 conflicts ruby186 ruby187 ruby19 ruby20 ruby22 ruby23 description {build using Ruby 2.1} {
-        depends_lib-delete port:ruby
+    variant ruby21 conflicts ruby186 ruby187 ruby19 ruby20 ruby22 ruby23 ruby24 description {build using Ruby 2.1} {
+        depends_lib-delete port:ruby23
         depends_lib-append port:ruby21
-        configure.args-delete --with-ruby=${prefix}/bin/ruby1.8
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
         configure.args-append --with-ruby=${prefix}/bin/ruby2.1
     }
 
-    variant ruby22 conflicts ruby186 ruby187 ruby19 ruby20 ruby21 ruby23 description {build using Ruby 2.2} {
-        depends_lib-delete port:ruby
+    variant ruby22 conflicts ruby186 ruby187 ruby19 ruby20 ruby21 ruby23 ruby24 description {build using Ruby 2.2} {
+        depends_lib-delete port:ruby23
         depends_lib-append port:ruby22
-        configure.args-delete --with-ruby=${prefix}/bin/ruby1.8
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
         configure.args-append --with-ruby=${prefix}/bin/ruby2.2
     }
 
-    variant ruby23 conflicts ruby186 ruby187 ruby19 ruby20 ruby21 ruby22 description {build using Ruby 2.3} {
-        depends_lib-delete port:ruby
-        depends_lib-append port:ruby23
-        configure.args-delete --with-ruby=${prefix}/bin/ruby1.8
-        configure.args-append --with-ruby=${prefix}/bin/ruby2.3
+    variant ruby23 conflicts ruby186 ruby187 ruby19 ruby20 ruby21 ruby22 ruby24 description {build using Ruby 2.3} {
+#        depends_lib-delete port:ruby
+#        depends_lib-append port:ruby23
+#        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
+#        configure.args-append --with-ruby=${prefix}/bin/ruby2.3
+    }
+
+    variant ruby24 conflicts ruby186 ruby187 ruby19 ruby20 ruby21 ruby22 ruby23 description {build using Ruby 2.4} {
+        depends_lib-delete port:ruby23
+        depends_lib-append port:ruby24
+        configure.args-delete --with-ruby=${prefix}/bin/ruby2.3
+        configure.args-append --with-ruby=${prefix}/bin/ruby2.4
     }
 
     if {![variant_isset ruby186] && ![variant_isset ruby187] &&
         ![variant_isset ruby19] && ![variant_isset ruby20] &&
         ![variant_isset ruby21] && ![variant_isset ruby22] &&
-        ![variant_isset ruby23]} {
-        default_variants +ruby187
+        ![variant_isset ruby23] && ![variant_isset ruby24]} {
+        default_variants +ruby23
     }
     if {![variant_isset ruby186] && ![variant_isset ruby187] &&
         ![variant_isset ruby19] && ![variant_isset ruby20] &&
         ![variant_isset ruby21] && ![variant_isset ruby22] &&
-        ![variant_isset ruby23]} {
-        ui_error "\n\nA +rubyXY variant must be selected; the variant '-ruby187' cannot be used alone.\n"
+        ![variant_isset ruby23] && ![variant_isset ruby24]} {
+        ui_error "\n\nA +rubyXY variant must be selected; the variant '-ruby23' cannot be used alone.\n"
         return -code error "Invalid variant selection"
     }
 }
@@ -263,7 +263,7 @@ if {${swig.lang} eq ""} {
     variant doc description {Install extra documentation} {
         post-destroot {
             xinstall -d ${destroot}${docdir}/html
-            eval xinstall -m 0644 [glob ${worksrcpath}/Doc/Manual/*.{css,html,pdf,png}] \
+            xinstall -m 0644 {*}[glob ${worksrcpath}/Doc/Manual/*.{css,html,pdf,png}] \
                 ${destroot}${docdir}/html
         }
     }

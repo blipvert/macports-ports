@@ -1,0 +1,49 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           cxx11 1.0
+PortGroup           cmake  1.0
+
+github.setup        Pulse-Eight libcec 4.0.2 libcec-
+
+categories          multimedia
+license             {GPL-2+ OpenSSLException}
+maintainers         ctreleaven openmaintainer
+description         USB CEC Adapter communication Library
+long_description    libCEC, in combination with the right hardware, permits control of \
+                    other devices with the TV remote control via existing HDMI cabling
+platforms           darwin
+homepage            http://libcec.pulse-eight.com/
+
+checksums           md5     a1a314b9451a381107d9921ab0ba429b \
+                    sha1    def30d8c40537f5accdb2ad3e68823099af94645 \
+                    rmd160  5aabb1c647244b070064f9dc3f16b7b64e997ca5 \
+                    sha256  6a67dac0345e125011cc708070fbe6c018d68de94a9726ead34c0c2ab94e943e
+
+depends_build-append \
+                    path:bin/pkg-config:pkgconfig \
+                    port:swig-python
+
+depends_lib         port:ncurses \
+                    port:p8-platform \
+                    port:python34 \
+                    port:xorg-libX11 \
+                    port:xorg-libXrandr
+
+cmake.out_of_source yes
+
+configure.args-append -DHAVE_RANDR=On
+
+set docdir          ${prefix}/share/doc/${name}
+
+post-destroot {
+    xinstall -m 0755 -d ${destroot}${docdir}
+    
+    xinstall -m 0644 -W ${worksrcpath} \
+        AUTHORS \
+        debian/changelog.in \
+        COPYING \
+        README.md \
+        ${destroot}${docdir}
+}

@@ -1,14 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
-PortGroup           cxx11 1.0
+PortGroup           cxx11 1.1
 PortGroup           github 1.0
+PortGroup           snowleopard_fixes 1.0
 
-github.setup        tatsuhiro-t nghttp2 1.15.0 v
+github.setup        tatsuhiro-t nghttp2 1.28.0 v
 categories          www
 platforms           darwin
-maintainers         mps openmaintainer
+maintainers         {mps @Schamschula} openmaintainer
 license             MIT
 
 description         nghttp2 is an implementation of HTTP/2 in C.
@@ -19,23 +19,25 @@ long_description    ${description} Included are a HTTP/2 client, server and prox
 github.tarball_from releases
 use_xz              yes
 
-checksums           rmd160 66c0c62d8d4c83a2ba7226774af140360ac038d2 \
-                    sha256 317afbef79eec624577d006ea7111cf978d2c88e999a6f336c83b99f924b5e4a
+checksums           rmd160 86965b9ed724f25cf9ba04fc1f7c0e0ad0caecbc \
+                    sha256 0d6c3f00614deca3935e42a27f6ad0ea87c31d8c1baa3a9c52755955c599fd8d
 
-if {![variant_isset python34] && ![variant_isset python35] } { default_variants +python27 }
+if {![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36] } { default_variants +python27 }
 
-if {![variant_isset python27] && ![variant_isset python34] && ![variant_isset python35]} {
+if {![variant_isset python27] && ![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36] } {
     error "You must select one of the python variants."
 }
 
 if {[variant_isset python27]} { set PythonVersion   2.7 }
 if {[variant_isset python34]} { set PythonVersion   3.4 }
 if {[variant_isset python35]} { set PythonVersion   3.5 }
+if {[variant_isset python36]} { set PythonVersion   3.6 }
 set PythonBranch    [join [lrange [split ${PythonVersion} .] 0 1] ""]
 
 depends_build       port:pkgconfig
 
-depends_lib         port:jansson \
+depends_lib         port:c-ares \
+                    port:jansson \
                     port:libev \
                     port:libevent \
                     port:libxml2 \
@@ -45,8 +47,11 @@ depends_lib         port:jansson \
                     port:python${PythonBranch} \
                     port:zlib
 
+patchfiles-append   src-shrpx_config.diff
+
 configure.args      --disable-silent-rules \
                     --disable-threads \
+                    --enable-app \
                     ac_cv_prog_AWK=/usr/bin/awk
 
 configure.env       CYTHON=${prefix}/bin/cython-${PythonVersion} \
@@ -63,10 +68,12 @@ pre-destroot {
     xinstall -d ${destroot}${prefix}/lib/python${PythonVersion}/site-packages/
 }
 
-variant python27 conflicts python34 python35 description {Build using Python 2.7} {
+variant python27 conflicts python34 python35 python36 description {Build using Python 2.7} {
     configure.env-append   PYTHON_EXTRA_LDFLAGS="-u _PyMac_Error ${frameworks_dir}/Python.framework/Versions/${PythonVersion}/Python"
 }
 
-variant python34 conflicts python27 python35 description {Build using Python 3.4} {}
+variant python34 conflicts python27 python35 python36 description {Build using Python 3.4} {}
 
-variant python35 conflicts python27 python34 description {Build using Python 3.5} {}
+variant python35 conflicts python27 python34 python36 description {Build using Python 3.5} {}
+
+variant python36 conflicts python27 python34 python35 description {Build using Python 3.6} {}

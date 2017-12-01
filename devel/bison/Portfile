@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
@@ -9,7 +8,9 @@ subport             bison-runtime {}
 epoch               1
 version             3.0.4
 if {${subport} eq "bison"} {
-    revision        1
+    revision        3
+} else {
+    revision 2
 }
 categories          devel
 platforms           darwin
@@ -17,7 +18,7 @@ if {${subport} eq "bison-runtime"} {
     supported_archs noarch
 }
 license             GPL-3+
-maintainers         mww
+maintainers         nomaintainer
 
 if {${subport} eq "bison-runtime"} {
     description         Localization support for Bison-generated parsers
@@ -42,9 +43,10 @@ if {${subport} eq "bison-runtime"} {
                         languages.
 
     depends_build       bin:perl:perl5
-    depends_lib         port:gettext \
+    depends_lib         port:gettext
+    depends_run         port:bison-runtime \
                         port:m4
-    depends_run         port:bison-runtime
+    depends_skip_archcheck-append m4
 }
 homepage            http://www.gnu.org/software/bison
 
@@ -55,11 +57,13 @@ checksums           rmd160  414959f3d619d8e4875e241ee02852b2ff13c2cb \
 
 configure.args      --disable-silent-rules
 
+patchfiles          secure_snprintf.patch
+
 if {${subport} eq "bison-runtime"} {
     build.dir       ${worksrcpath}/runtime-po
     livecheck.type  none
 } else {
-    patchfiles      skip-runtime-po.patch
+    patchfiles-append skip-runtime-po.patch
     test.run        yes
     test.target     check
 }

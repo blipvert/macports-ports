@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
@@ -8,7 +7,7 @@ version             1.5
 categories          math
 platforms           darwin
 license             MIT
-maintainers         mojca openmaintainer
+maintainers         {mojca @mojca} openmaintainer
 description         Library for complex error functions
 long_description    The libcerf library is a self-contained numeric library that provides \
                     an efficient and accurate implementation of complex error functions, \

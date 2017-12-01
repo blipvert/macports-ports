@@ -1,13 +1,11 @@
-# $Id$
-
-PortSystem 1.0
+PortSystem      1.0
 PortGroup       github 1.0
 
-github.setup    irssi irssi 0.8.20
+github.setup    irssi irssi 1.0.5
 github.tarball_from releases
 
 categories      irc
-maintainers     gmail.com:stuartwesterman openmaintainer
+maintainers     {l2dy @l2dy} openmaintainer
 license         {GPL-2+ OpenSSLException}
 description     modular IRC client
 long_description \
@@ -17,14 +15,14 @@ long_description \
     specific anymore, there's already a working SILC module available.      \
     Support for other protocols like ICQ could be created some day too.
 
-homepage        http://irssi.org/
+homepage        https://irssi.org/
 platforms       darwin
 
 use_xz          yes
 conflicts       irssi-devel
 
-checksums       rmd160  84b03909188a8fb1de0589bb55cf2e0717b525b7 \
-                sha256  7882c4e821f5aac469c5e69e69d7e235f4986101285c675e81a9a95bfb20505a
+checksums       rmd160  bd40701f31060c9a9d126ab2941fa8c8163828bc \
+                sha256  c2556427e12eb06cabfed40839ac6f57eb8b1aa6365fab6dfcd331b7a04bb914
 
 depends_build   port:pkgconfig
 depends_lib     port:gettext path:lib/pkgconfig/glib-2.0.pc:glib2 port:libiconv port:ncurses \
@@ -46,3 +44,5 @@ variant perl description {Add Perl support} {
 }
 
 default_variants +perl
+
+livecheck.url   ${github.homepage}/releases/latest

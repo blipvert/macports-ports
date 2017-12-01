@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           conflicts_build 1.0
@@ -10,7 +9,12 @@ PortGroup           muniversal 1.0
 
 name                gstreamer1
 set my_name         gstreamer
-version             1.8.2
+# unstable versions of the gstreamer1 series are typically, well, unstable
+# typical issues are movement of plugins from one category to another (e.q. bad->good),
+# addition of new plugins and removal of others, missing files, etc
+# beginning with the 1.12 stable series please only push stable versions to git
+# and then only after addressing any possible issues discovered during the previous unstable series.
+version             1.12.3
 description         GStreamer is a library for constructing graphs of media-handling components.
 long_description    The applications it supports range from simple Ogg/Vorbis playback, audio/video \
                     streaming to complex audio (mixing) and video (non-linear editing) processing.
@@ -25,8 +29,8 @@ master_sites        http://gstreamer.freedesktop.org/src/${my_name}/
 
 use_xz              yes
 
-checksums           rmd160  97adab1618e15a81a4872d8d17e9c1659643997f \
-                    sha256  9dbebe079c2ab2004ef7f2649fa317cabea1feb4fb5605c24d40744b90918341
+checksums           rmd160  d72c584f0b936e1ea96bc490796b7afd2a13669b \
+                    sha256  d388f492440897f02b01eebb033ca2d41078a3d85c0eddc030cdea5a337a216e
 
 depends_build       port:gzip \
                     port:m4 \
@@ -37,11 +41,14 @@ depends_lib         port:bison \
                     port:flex \
                     port:gettext \
                     path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    port:gtk3 \
                     port:libxml2
 
 gobject_introspection yes
 
 conflicts_build     check
+
+patchfiles          patch-gstreamer1-darwin-numcpufix-sysctl.diff
 
 # global_symbol_pipe gets set to "" on Leopard
 use_autoreconf      yes
@@ -77,4 +84,4 @@ if {[variant_isset universal]} {
 
 livecheck.type      regex
 livecheck.url       ${master_sites}
-livecheck.regex     "${my_name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"
+livecheck.regex     "${my_name}-(\\d+\\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"

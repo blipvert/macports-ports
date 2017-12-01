@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        facebook rocksdb 4.11.2 rocksdb-
+github.setup        facebook rocksdb 5.8 rocksdb-
 
 revision            0
 categories          databases devel
@@ -18,12 +17,13 @@ long_description    ${description}
 
 homepage            http://rocksdb.org/
 
-checksums           rmd160  21ecc269af4e7b49b345cafb9f09db4e45f6d85e \
-                    sha256  8d18a2cdf6025e4068e7932f2355b204294a8c39cd09c205f5d681a9fb4d9807
+checksums           rmd160  f6b2c0a1f7a2fd9485664e0e9e3c11a8beffda10 \
+                    sha256  244d37b9d155f7aa0b79f54020e82746f0f5adeae176907188e6bcfc8c73f46b
 
 depends_lib-append  port:gflags \
                     port:zlib \
                     port:bzip2 \
+                    port:zstd \
                     port:snappy
 
 patchfiles-append   patch-Makefile.diff

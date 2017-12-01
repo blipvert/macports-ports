@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 # We have an umbrella radar tracking webkit-gtk issues on OS X.  Please relate
 # any future issues with this tracker.
@@ -9,36 +8,36 @@ PortSystem          1.0
 PortGroup           active_variants 1.1
 PortGroup           cmake 1.0
 PortGroup           compiler_blacklist_versions 1.0
-PortGroup           cxx11 1.0
+PortGroup           cxx11 1.1
 PortGroup           github 1.0
 
 name                webkit2-gtk-devel
 conflicts           webkit2-gtk
 description         Apple's WebKit2 HTML rendering library for GTK+3 (with optional support for GTK+2 plugins)
 long_description    ${description}
-maintainers         jeremyhu devans
+maintainers         {jeremyhu @jeremyhu} {devans @dbevans}
 categories          www gnome
 platforms           darwin freebsd
 license             LGPL-2+ BSD
 homepage            http://webkitgtk.org/
 
 # r207192
-github.setup        WebKit webkit 91ef51ea3f538ade6f168a1d701dab90bfbee4db
-checksums           rmd160  d8352cc158d68a22a2910d503fa70b447de4224d \
-                    sha256  ae1311360a5b54fb01596057986e9a9be07f34ed176d8777e4f2b9d39c2b4f53
+#github.setup        WebKit webkit 91ef51ea3f538ade6f168a1d701dab90bfbee4db
+#checksums           rmd160  d8352cc158d68a22a2910d503fa70b447de4224d \
+#                    sha256  ae1311360a5b54fb01596057986e9a9be07f34ed176d8777e4f2b9d39c2b4f53
 
 # version needs to come after github.setup
-version             2.14.90
-revision            0
+version             2.15.1
+revision            2
 epoch               1
 
-#master_sites        http://webkitgtk.org/releases/
-#use_xz              yes
-#distname            webkitgtk-${version}
+master_sites        http://webkitgtk.org/releases/
+use_xz              yes
+distname            webkitgtk-${version}
 dist_subdir         webkit-gtk
 
-#checksums           rmd160  e8274de845d1314c497f84ccd88ed602995c1e56 \
-#                    sha256  2e2d76c328de65bed6e0e4f096b2720a366654b27fc1af0830ece90bc4b7ceb5
+checksums           rmd160  64b5c995f10582cec4a53ea1ac9ed94f52b518cb \
+                    sha256  43b57d79d636a76f6ee3fbcf2a7e63aba7b86931b2113fa8dd59ca674f95ed80
 
 # don't overwrite build dependencies provided by cmake portgroup
 depends_build-append \
@@ -78,17 +77,11 @@ depends_lib         port:atk \
                     port:zlib
 
 # PR-152650-2.patch: WIP to re-enable gtk-doc support
-# PR-153138.patch: https://bugs.webkit.org/show_bug.cgi?id=153138
 # PR-157554.patch: https://bugs.webkit.org/show_bug.cgi?id=157554
 # PR-157574.patch: https://bugs.webkit.org/show_bug.cgi?id=157574
-# PR-163340.patch: https://bugs.webkit.org/show_bug.cgi?id=163340
-# PR-163346.patch: https://bugs.webkit.org/show_bug.cgi?id=163346
 patchfiles-append \
-    PR-153138.patch \
     PR-157554.patch \
-    PR-157574.patch \
-    PR-163340.patch \
-    PR-163346.patch
+    PR-157574.patch
 
 # Build out-of-tree
 configure.post_args     ../${worksrcdir}
@@ -110,10 +103,11 @@ configure.args-append -DENABLE_GTKDOC=OFF
 configure.optflags  -Os
 
 # clang 3.4, 503.0.35, and 600.0.57 (error: call to 'make_unique' is ambiguous, error: call to 'exchange' is ambiguous)
+# clang 3.6, 602.0.53 (Internals.cpp:1226:12: error: no matching constructor for initialization of 'WTF::String')
 # compiler.blacklist-append {clang < 602} macports-clang-3.4
 # clang 3.3 (error: no type named 'make_index_sequence' in namespace 'std')
-compiler.fallback-append macports-clang-3.8
-compiler.blacklist-append {clang < 602} macports-clang-3.4 macports-clang-3.3
+compiler.fallback-append macports-clang-4.0
+compiler.blacklist-append {clang < 700} macports-clang-3.6 macports-clang-3.5 macports-clang-3.4 macports-clang-3.3
 
 pre-configure {
     if {![variant_isset quartz] && ![variant_isset x11]} {
@@ -161,6 +155,31 @@ post-configure {
 configure.cflags-append     -ftemplate-depth=256
 configure.cxxflags-append   -ftemplate-depth=256
 
+if {![variant_isset quartz]} {
+    default_variants-append +x11 +gtk2
+}
+
+# fix build on older systems
+if {${os.platform} eq "darwin" && ${os.major} < 13} {
+    
+    # add dep for newer ruby and spec this for build
+    # https://trac.macports.org/ticket/52016
+    depends_build-append    port:ruby24
+    configure.args-append   -DRUBY_EXECUTABLE=${prefix}/bin/ruby2.4
+
+    # fix missing PRId64 definitions on systems
+    # that don't define __STDC_FORMAT_MACROS by default
+    # https://bugs.webkit.org/show_bug.cgi?id=156596
+    # https://trac.macports.org/ticket/52016
+    patchfiles-append patch-snowleopard-cmakelists-stdcformatmacros.diff
+
+    # fix a Cursor name collision with Carbon API
+    # https://trac.macports.org/ticket/52016
+    if {[variant_isset x11]} {
+        patchfiles-append patch-snowleopard-npruntime-redefine-cursor.diff
+    }
+}
+
 variant quartz conflicts x11 gtk2 {
     require_active_variants port:gtk3 quartz
 
@@ -195,10 +214,6 @@ variant gtk2 conflicts quartz description {Enable support for GTK+2 plugins} {
     depends_lib-append      port:gtk2
     configure.args-delete   -DENABLE_PLUGIN_PROCESS_GTK2=OFF
     configure.args-append   -DENABLE_PLUGIN_PROCESS_GTK2=ON
-}
-
-if {![variant_isset quartz]} {
-    default_variants-append +x11 +gtk2
 }
 
 livecheck.type      none

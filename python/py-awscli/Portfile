@@ -1,12 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-awscli
-version             1.9.21
-revision            2
+version             1.11.129
 platforms           darwin
 license             Apache-2
 maintainers         pixilla openmaintainer
@@ -14,14 +12,14 @@ maintainers         pixilla openmaintainer
 description         Universal Command Line Environment for AWS.
 long_description    ${description}
 
-homepage            http://aws.amazon.com/cli/
+homepage            https://aws.amazon.com/cli/
 master_sites        pypi:a/awscli
 distname            awscli-${version}
 
-checksums           rmd160  68bb81fbc880d5745d85fdae20d6dc67efdf0a31 \
-                    sha256  b9381c0e180e440e663375ef8066f901aa72b280d0c549b7fc71ded005c064ce
+checksums           rmd160  89195692142e1eabe6859a2644d6c2fce18f4f39 \
+                    sha256  a3084448d273391c5a1715e8564eb76f4feff4a7314091a0b81fc16755b06a3d
 
-python.versions     27 34
+python.versions     27 34 35 36
 
 if {${name} ne ${subport}} {
 
@@ -30,15 +28,13 @@ if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
     depends_lib-append \
-                        port:py${python.version}-asn1 \
-                        port:py${python.version}-bcdoc \
                         port:py${python.version}-botocore \
                         port:py${python.version}-colorama \
-                        port:py${python.version}-dateutil \
                         port:py${python.version}-docutils \
-                        port:py${python.version}-jmespath \
+                        port:py${python.version}-yaml \
                         port:py${python.version}-rsa \
-                        port:py${python.version}-six
+                        port:py${python.version}-s3transfer \
+                        port:py${python.version}-yaml
 
     depends_run-append  port:awscli_select
 
@@ -56,6 +52,4 @@ if {${name} ne ${subport}} {
     }
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

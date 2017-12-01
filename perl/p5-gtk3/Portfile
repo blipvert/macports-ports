@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Gtk3 0.029 ../by-authors/id/X/XA/XAOC
+perl5.branches      5.24 5.26
+perl5.setup         Gtk3 0.033 ../by-authors/id/X/XA/XAOC
 platforms           darwin
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 license             LGPL-2.1+
 
 description         Perl interface to the 3.x series of the gtk+ toolkit
@@ -17,8 +16,8 @@ long_description    This module provides Perl bindings to the 3.x series of the 
                     freeing you from the casting and memory management in C, yet remaining very \
                     close in spirit to original API.
 
-checksums           rmd160  9b11d63bb06d0cd53259b1a9afa13e443cdf3927 \
-                    sha256  083344982c028d50713638b4e4a1831f0db5c2e3094966613eeb9f07bc366398
+checksums           rmd160  b9ce16cad2a867abc49b1119ba1f6b41df3aecd2 \
+                    sha256  e18c9c4d860cf29c9b0fe9d2e2c6d342646c179f4dd7d787b3d0183932e10e93
 
 if {${perl5.major} != ""} {
     depends_lib-append \

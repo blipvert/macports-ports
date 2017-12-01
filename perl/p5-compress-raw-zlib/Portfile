@@ -1,17 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
-# This comment was inserted on 20160713 to force reindexing of
-# this port after the default homepage definition in the perl5
-# PortGroup was changed to use metacpan.org (r150080).
-# Reindexing is necessary for the new definition to take effect.
-# This comment may be removed in subsequent updates of this port.
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Compress-Raw-Zlib 2.069
+perl5.branches      5.24 5.26
+perl5.setup         Compress-Raw-Zlib 2.076
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         The Compress::Raw::Zlib module provides a Perl \
@@ -20,11 +13,7 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  fe3a52b94987a298fb2b98e306767f387ba7c30a \
-                    sha256  9a647fe7d2e6122370372a11c1e3a2e2b54c90bba595cad170854fdaa8a64619
+checksums           rmd160  f55d8564c46e45a3792254acf609d35d7d6a0aa6 \
+                    sha256  361e4ec3c43ea6fe51fc6687d1bae61a49a28a7709b0e2686df4ea6a228082aa
 
-if {${perl5.major} != ""} {
-    depends_lib-append \
-                    port:gzip
-}
-
+# builds using embedded zlib source, no external dependency required

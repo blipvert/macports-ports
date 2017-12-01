@@ -1,17 +1,15 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                inkscape
 conflicts           inkscape-devel
-version             0.91
-revision            18
+version             0.92.2
+revision            1
 license             GPL-2 LGPL-2.1
-maintainers         devans
+maintainers         {devans @dbevans}
 categories          graphics gnome
 platforms           darwin
-homepage            http://www.inkscape.org/
 
 description         This is the current stable release version of Inkscape.
 
@@ -19,14 +17,15 @@ long_description    Inkscape is an multi-platform, Open-Source Vector Graphics E
                     that uses SVG as its native file format. \
                     ${description}
 
-master_sites        https://inkscape.org/en/gallery/item/3860/
+homepage            http://www.inkscape.org/
+master_sites        https://inkscape.org/en/gallery/item/11254/
 
 use_bzip2           yes
 
-checksums           rmd160  77421bcb96c6ad4fe17e775e86b77d576b90cf32 \
-                    sha256  4d901f8a9e1924404e797ad23b8b0c495a9d155448816d95a55974314e1f141b
+checksums           rmd160  5508b38c47ed0a860a734eef8f8ca8e53f4e923a \
+                    sha256  a628d0e04c254e9840947e6d866974f92c68ae31631a38b94d9b65e5cd84cfd3
 
-set perl_version    5.24
+set perl_version    5.26
 
 depends_build       port:pkgconfig \
                     port:autoconf \
@@ -38,6 +37,7 @@ depends_build       port:pkgconfig \
 depends_lib         port:desktop-file-utils \
                     port:popt \
                     path:lib/libgc.dylib:boehmgc \
+                    port:gdk-pixbuf2 \
                     port:gsl \
                     port:gtkmm \
                     port:dbus-glib \
@@ -51,14 +51,14 @@ depends_lib         port:desktop-file-utils \
                     port:libwpg-0.3 \
                     port:aspell \
                     port:gtkspell2 \
+                    port:potrace \
                     port:py27-lxml \
                     port:py27-numpy
 
-
-patchfiles          patch-use-configured-perl.diff
+patchfiles          patch-use-configured-perl.diff \
+                    libavoid-abs-ambiguous.diff
 
 post-patch {
-    xinstall -m 755 ${filespath}/autogen.sh ${worksrcpath}
     reinplace "s|@@MP_PERL@@|${prefix}/bin/perl${perl_version}|" ${worksrcpath}/Makefile.am
     reinplace "s|\"python-interpreter\", \"python\"|\"python-interpreter\", \"python2.7\"|g" ${worksrcpath}/src/extension/implementation/script.cpp
     reinplace "s|^#include \"Object.h\"|#include \"${prefix}/include/poppler/Object.h\"|" ${worksrcpath}/src/extension/internal/pdfinput/pdf-parser.h
@@ -69,25 +69,12 @@ post-patch {
 
 universal_variant no
 
-variant gtk3 description {Enable experimental GTK+ 3 build} {
-    depends_lib-delete \
-                    port:gtkspell2 \
-                    port:gtk2 \
-                    port:gtkmm
-
-    depends_lib-append \
-                    port:gtkspell3 \
-                    port:gtk3 \
-                    port:gtkmm3 \
-                    port:gdl3
-
-    configure.args-append \
-                    --enable-gtk3-experimental
-}
-
-variant svg2 description {Enable experimental SVG level 2 proposed features} {
-    configure.cppflags-append \
-                    "-DWITH_MESH -DWITH_CSSBLEND -DWITH_CSSCOMPOSITE -DWITH_SVG2"
+platform darwin {
+# on Sierra, building with clang optimization enabled causes crash at startup
+# issue affects both +x11 and +quartz builds
+    if {${os.major} > 15} {
+        configure.optflags  -O0
+    }
 }
 
 configure.cmd       ./autogen.sh && ./configure
@@ -118,10 +105,6 @@ variant strict description {Enable strict build} {
     configure.args-replace  --disable-strict-build --enable-strict-build
 }
 
-# don't build strict by default after upgrade of glib2 to 2.48.2
-# https://trac.macports.org/ticket/52248
-# default_variants    +strict
-
 #
 # the following dummy variants are used
 # to identify this port's binary dependencies
@@ -148,5 +131,5 @@ if {[variant_isset gtk3]} {
 }
 
 livecheck.type      regex
-livecheck.url       https://inkscape.org/en/download/source/
-livecheck.regex     "stable version\.* (\\d+(?:\\.\\d+)*)<"
+livecheck.url       https://inkscape.org/en/release
+livecheck.regex     ">Download Inkscape (\\d+(?:\\.\\d+)*)"

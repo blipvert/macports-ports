@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem      1.0
 PortGroup       github 1.0
 
-github.setup    erlang rebar3 3.3.2
+github.setup    erlang rebar3 3.4.7
 categories      erlang devel
 platforms       darwin
-maintainers     ciserlohn
+maintainers     {ciserlohn @ci42}
 supported_archs noarch
 license         Apache-2
 
@@ -25,8 +24,8 @@ long_description    Rebar3 will: respect and enforce standard Erlang/OTP \
                     treat documentation as a feature, and errors or lack of \
                     documentation as a bug.
 
-checksums           rmd160  ba037ba1d6054e3a8d4914c0854d4d6528deb7da \
-                    sha256  2a958723c3c74395b94a722bde8d792a28dad24c120906aae15ddca68cb79a37
+checksums           rmd160  51d84d8195a9d0067e3f7f7574666200cce2f879 \
+                    sha256  e3b4dedc64435143c7a7104429b19ffa563b5b53e7067b3a10cc512f38f3aaf2
 
 depends_lib         port:erlang
 

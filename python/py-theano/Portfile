@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-theano
-version             0.8.2
+version             1.0.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 
-python.versions     27 33 34 35
+python.versions     27 33 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -19,17 +18,16 @@ description         Optimizing compiler for evaluating mathematical expressions 
 long_description    ${description}
 
 homepage            http://deeplearning.net/software/theano/
-master_sites        pypi:t/theano
+master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            Theano-${version}
 
-checksums           rmd160  3ba9c49fe7149e5a6b773d9a394bbe6752d9e3ba \
-                    sha256  7463c8f7ed1a787bf881f36d38a38607150186697e7ce7e78bfb94b7c6af8930
+checksums           rmd160  b2925aeb27d9a1ffc3e5d235d2095e323bbc0a07 \
+                    sha256  7bc82e4fcaac023cac23c390b30d5df81bc09d33568812df75b0bd2b86d2fa8f
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                        port:py${python.version}-setuptools
-    depends_lib-append  port:py${python.version}-numpy \
+    depends_lib-append  port:py${python.version}-setuptools \
+                        port:py${python.version}-numpy \
                         port:py${python.version}-scipy \
                         port:py${python.version}-six
 
@@ -47,5 +45,4 @@ if {${name} ne ${subport}} {
     livecheck.type      none
 } else {
     livecheck.name      Theano
-    livecheck.type      pypi
 }

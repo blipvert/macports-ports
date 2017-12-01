@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
@@ -33,6 +32,12 @@ patchfiles	patch-src-formats.c.diff
 depends_build	\
 		port:pkgconfig
 
+platform darwin 11 {
+	# System grep fails: "grep: Regular expression too big"
+	depends_build-append	\
+		port:grep
+}
+
 depends_lib	\
 		port:flac		\
 		port:lame		\
@@ -54,10 +59,11 @@ depends_lib	\
 configure.args	\
 		--enable-largefile	\
 		--disable-silent-libtool\
+		--disable-silent-rules	\
 		--disable-openmp	\
 		--enable-symlinks	\
 		--without-libltdl	\
-		--with-distro=macosx	\
+		--with-distro=macosx
 
 # additional formats
 configure.args-append \

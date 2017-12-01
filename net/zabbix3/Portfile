@@ -1,10 +1,8 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
 PortSystem          1.0
 
 name                zabbix3
-version             3.2.1
+version             3.4.4
 revision            0
 categories          net
 maintainers         eborisch openmaintainer
@@ -34,8 +32,8 @@ dist_subdir         zabbix3
 conflicts           zabbix zabbix2
 
 checksums \
-    rmd160  ee99d22b196b682e62a503b70b4d51f46c085561 \
-    sha256  8926b96ef05cba041d05329130f40e8e1311ad201e58c75d22005eda4075c091
+    rmd160  f4d4c9f82bcfa86344cdcb799f486d9964853709 \
+    sha256  2ee84e72a0d441f322ec0ab6f332ff174dec300b3acb8389769aadeb39a353a4
 
 patchfiles          log_and_pid_locations.patch
 
@@ -50,13 +48,17 @@ configure.args      --bindir=${prefix}/bin/zabbix \
                     --sysconfdir=${prefix}/etc/zabbix \
                     --localstatedir=${prefix}/var/zabbix \
                     --with-gnutls=${prefix} \
-                    --enable-ipv6
+                    --enable-ipv6 \
+                    --with-libevent=${prefix} \
+                    --with-libpcre=${prefix}
 
 configure.ldflags-append    -lresolv
 
 startupitem.create      yes
 depends_lib-append      port:libiconv \
-                        port:gnutls
+                        port:gnutls \
+                        port:pcre \
+                        port:libevent
 
 if { ${name} ne ${subport} } {
     conflicts               zabbix2-agent
@@ -92,20 +94,19 @@ if { ${name} ne ${subport} } {
     startupitem.pidfile     auto ${prefix}/var/run/zabbix/zabbix_server.pid
     startupitem.logfile     ${prefix}/var/log/zabbix/zabbix_agentd.launch
 
-    foreach php {php56 php70} {
-        eval [subst {
-            variant ${php} description "Use ${php}" {
-                depends_run-append      port:${php} \
-                                        port:${php}-apache2handler \
-                                        port:${php}-gd \
-                                        port:${php}-gettext \
-                                        port:${php}-mbstring \
-                                        port:${php}-sockets
-            }
-        }]
+    foreach php {php56 php70 php71} {
+        variant ${php} description "Use ${php}" "
+            depends_run-append      port:${php} \
+                                    port:${php}-apache2handler \
+                                    port:${php}-gd \
+                                    port:${php}-gettext \
+                                    port:${php}-mbstring \
+                                    port:${php}-sockets
+        "
     }
 
-    if {![variant_isset php56] && ![variant_isset php70]} {
+    if {![variant_isset php56] && ![variant_isset php70]
+                               && ![variant_isset php71]} {
         default_variants        +php56
     }
 
@@ -120,14 +121,20 @@ if { ${name} ne ${subport} } {
                  mysql=${prefix}/lib/mysql5/bin/mysql_config mysql}
         mysql56 {"MySQL 5.6"            mysql56 \
                  mysql=${prefix}/lib/mysql56/bin/mysql_config mysql}
+        mysql57 {"MySQL 5.7"            mysql57 \
+                 mysql=${prefix}/lib/mysql57/bin/mysql_config mysql}
         mariadb {"MariaDB"              mariadb \
                  mysql=${prefix}/lib/mariadb/bin/mysql_config mysql}
+        mariadb101 {"MariaDB 10.1"         mariadb-10.1 \
+                 mysql=${prefix}/lib/mariadb-10.1/bin/mysql_config mysql}
         percona {"Percona"              percona \
                  mysql=${prefix}/lib/percona/bin/mysql_config mysql}
         pgsql84 {"PostgreSQL 8.4.x"     postgresql84 \
                  postgresql=${prefix}/lib/postgresql84/bin/pg_config postgresql}
         pgsql95 {"PostgreSQL 9.5.x"     postgresql95 \
                  postgresql=${prefix}/lib/postgresql95/bin/pg_config postgresql}
+        pgsql96 {"PostgreSQL 9.6.x"     postgresql96 \
+                 postgresql=${prefix}/lib/postgresql96/bin/pg_config postgresql}
         sqlite3 {"SQLite 3.x"           sqlite3 \
                  sqlite3=${prefix} sqlite}
     }
@@ -139,14 +146,10 @@ if { ${name} ne ${subport} } {
         set conf_list [lreplace $DBLIST_KEYS $this_key $this_key]
         set prms $DBLIST($dbitem)
         
-        set variant_line {variant $dbitem description \
-          "Use [lindex ${prms} 0] for server database" }
+        variant $dbitem description \
+          "Use [lindex ${prms} 0] for server database" \
+          conflicts {*}${conf_list} "
 
-        foreach over ${conf_list} {
-            append variant_line " conflicts ${over}"
-        }
-
-        append variant_line { "
             set ::ZDB               [lindex ${prms} 1]
             set ::DBFILES           [lindex ${prms} 3]
             set ::MYSQL_MODE        [string equal [lindex ${prms} 3] mysql]
@@ -163,29 +166,31 @@ if { ${name} ne ${subport} } {
                     port:php70-[lindex ${prms} 3]
             }
 
+            if {[variant_isset php71]} {
+                depends_run-append \
+                    port:php71-[lindex ${prms} 3]
+            }
+
             if {[string compare ${dbitem} sqlite3] && \
                  [variant_isset full_server]} {
                 depends_run-append \
                     port:[lindex ${prms} 1]-server
             }
-        " }
-
-        eval $variant_line
+        "
     }
 
     if {![variant_isset mysql5] &&
         ![variant_isset mysql56] &&
+        ![variant_isset mysql57] &&
         ![variant_isset mariadb] &&
+        ![variant_isset mariadb101] &&
         ![variant_isset percona] &&
         ![variant_isset pgsql84] &&
         ![variant_isset pgsql95] &&
+        ![variant_isset pgsql96] &&
         ![variant_isset sqlite3]} {
         default_variants            +mysql5
     }
-
-    variant date_slash description {
-        Draw month/day rather than day.month on line graphs.
-    } {}
 }
 
 post-extract {
@@ -195,11 +200,6 @@ post-extract {
                 set repstr "s|# DBSocket=/tmp/mysql.sock|"
                 append repstr "DBSocket=${prefix}/var/run/${ZDB}/mysqld.sock|"
             reinplace ${repstr} ${worksrcpath}/conf/zabbix_server.conf
-        }
-
-        if {[variant_isset date_slash]} {
-            reinplace -E {s|[[:<:]]d\.m[[:>:]]|m/d|g} \
-                frontends/php/include/classes/graphdraw/CLineGraphDraw.php
         }
     }
     set repstr "s|# FpingLocation=/usr/sbin/fping|"
@@ -292,7 +292,7 @@ if { ${name} ne ${subport} } {
      sudo port load zabbix3-agent
 
 3) A Win32 agent is in ${prefix}/share/zabbix/zabbix_agent_win32 for\
-   installation on Windows NT 4.0, Windows 2000, and Windows XP.
+   installation on Windows.
 
 #### End ZABBIX3 agent installation section ####
 ####                                        ####
@@ -314,7 +314,7 @@ if { ${name} ne ${subport} } {
 
     Follow the directions at :
 
-  https://www.zabbix.com/documentation/3.0/manual/appendix/install/db_scripts
+  https://www.zabbix.com/documentation/3.4/manual/appendix/install/db_scripts
 
     The *.sql files it refers to are in ${prefix}/share/zabbix/scripts/
     ** NOTE THAT THESE ARE FOR YOUR SELECTED DATABASE VARIANT!!! **
@@ -338,12 +338,12 @@ if { ${name} ne ${subport} } {
     sudo ln -s ${prefix}/share/zabbix/frontends/php <Apache-docroot>/zabbix
 
 
-5) Set zabbix_server to run at system boot, then start it:
+5) Set zabbix_server to run at system boot (also starts it immediately):
 
     sudo port load zabbix3
 
  !! Note: Your shared memory will likely need to be increased  !!
- !!       (see http://support.apple.com/kb/HT4022)             !!
+ !!     ( see http://support.apple.com/kb/HT4022 )             !!
 
 
 6) A Win32 agent is in ${prefix}/share/zabbix/zabbix_agent_win32 for\
@@ -390,8 +390,13 @@ if { ${name} ne ${subport} } {
 !!  3) 'sudo port load zabbix3' after installing.                         !!
 !!                                                                        !!
 !!  For upgrade procedure, please see                                     !!
-!!    http://www.zabbix.com/documentation/3.0/manual/installation/upgrade !!
+!!    http://www.zabbix.com/documentation/3.4/manual/installation/upgrade !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!  ALWAYS BACK UP YOUR DATABASE BEFORE UPGRADING (between unload/load)!  !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 "
 }

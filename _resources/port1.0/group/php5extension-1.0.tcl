@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 #
 # Copyright (c) 2009-2013 The MacPorts Project
 # All rights reserved.
@@ -183,17 +182,17 @@ proc php5extension.setup {extensions version {source ""}} {
 
     if {"pecl" == ${source}} {
         global php5extension.homepage
-        set php5extension.homepage  http://pecl.php.net/package/[lindex ${php5extension.extensions} 0]/
+        set php5extension.homepage  https://pecl.php.net/package/[lindex ${php5extension.extensions} 0]/
 
         homepage                    ${php5extension.homepage}
-        master_sites                http://pecl.php.net/get/
+        master_sites                https://pecl.php.net/get/
         extract.suffix              .tgz
 
         livecheck.type              regexm
         livecheck.url               ${php5extension.homepage}
         livecheck.regex             {>([0-9.]+)</a></th>\s*<[^>]+>stable<}
     } elseif {"bundled" == ${source}} {
-        homepage                    http://www.php.net/[lindex ${php5extension.extensions} 0]
+        homepage                    https://secure.php.net/[lindex ${php5extension.extensions} 0]
         default master_sites        {php:get/[lindex ${distfiles} 0]/from/this/mirror?dummy=}
 
         dist_subdir                 php5
@@ -217,7 +216,7 @@ proc php5extension.setup {extensions version {source ""}} {
         destroot.target             install-modules install-headers
 
         livecheck.type              none
-        livecheck.url               http://www.php.net/downloads.php
+        livecheck.url               https://secure.php.net/downloads.php
         livecheck.regex             get/php-(5\\.\[0-9.\]+)\\.tar
     }
 }

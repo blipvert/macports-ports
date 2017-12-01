@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-markdown
-version             2.6.7
+version             2.6.9
 revision            0
 categories-append   textproc
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -28,12 +27,11 @@ master_sites        pypi:M/Markdown
 
 distname            Markdown-${version}
 
-checksums           rmd160  f0980e262c03724f951bb0ec082e9ebc7291a4d5 \
-                    sha256  daebf24846efa7ff269cfde8c41a48bb2303920c7b2c7c5e04fa82e6282d05c0
+checksums           rmd160  573b4a1cc7a5a65bc1b1b910a923235715caf37f \
+                    sha256  73af797238b95768b3a9b6fe6270e250e5c09d988b8e5b223fd5efa4e06faf81
 
 if {${name} ne ${subport}} {
     livecheck.type      none
 } else {
     livecheck.name      Markdown
-    livecheck.type      pypi
 }

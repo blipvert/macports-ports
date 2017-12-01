@@ -1,11 +1,9 @@
-# $Id$
-
 PortSystem 1.0
 
 name            tth
-version         4.08
+version         4.10
 categories      textproc print
-maintainers     toby
+maintainers     toby openmaintainer
 description     a TeX to HTML transaltor
 long_description \
     TTH translates TEX, the predominant mark-up language for 	\
@@ -23,8 +21,8 @@ extract.suffix  .tgz
 
 dist_subdir     ${name}/${version}
 
-checksums       rmd160  90d4f4bc629cd30ba7b743ce8868c0fc22ff2037 \
-                sha256  89d03d8255e5f251cde62215e61a726f30e9b5e848130c6d39510fcfab668208
+checksums       rmd160  0cd334d8bea9f2cefed2e9ac57de2f6477eed646 \
+                sha256  dc873414d19dcc1a9d66323a76765bdc27b0055775d3dcf541de3fd38d5ef662
 
 use_configure   no
 

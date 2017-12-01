@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8::et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                datamash
-version             1.1.0
+version             1.2
 maintainers         g5pw openmaintainer
 categories          textproc
 description         Datamash is a command-line statistical tool.
@@ -17,5 +16,5 @@ homepage            https://www.gnu.org/software/${name}/
 
 master_sites        gnu
 
-checksums           rmd160  af5cc8ffcfd10796c9cdb9991da5a21586bb5a8a \
-                    sha256  a9e5acc86af4dd64c7ac7f6554718b40271aa67f7ff6e9819bdd919a25904bb0
+checksums           rmd160  bfecbf5cb09b67ca324d7be3b11f3033be8b2b2a \
+                    sha256  e8d46fb22ccc77e5380f26cde622a733f363d388b04a2c22e7fb6de0e9d85996

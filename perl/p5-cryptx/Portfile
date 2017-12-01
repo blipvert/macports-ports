@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         CryptX 0.041 ../by-authors/id/M/MI/MIK
+perl5.branches      5.24 5.26
+perl5.setup         CryptX 0.054 ../by-authors/id/M/MI/MIK
 revision            0
 
 platforms           darwin
@@ -14,5 +13,5 @@ license             {Artistic-1 GPL}
 description         Crypto toolkit (self-contained no external libraries needed)
 long_description    ${description}
 
-checksums           rmd160  b9f0d4e5abde5c83369b002d0cfbfe248e9468ac \
-                    sha256  481f8c9285d6ce3cf330e1fa52c835a202debdac5d81e1acd20bd1d93b99790e
+checksums           rmd160  b7e0cfd3971180a7e937548d7345198e8b300ef1 \
+                    sha256  f084a706f6ff032ca5c46ec6f90ba5b6a26ae8752584911830f6535bf76d8e57

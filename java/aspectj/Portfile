@@ -1,12 +1,10 @@
-# $Id$
-
 PortSystem 1.0
 
 name			aspectj
 version			1.6.2
 categories		java lang devel
 platforms		darwin
-maintainers		mww
+maintainers		nomaintainer
 description		seamless aspect-oriented extension to the Java language
 long_description	${description}
 

@@ -1,11 +1,9 @@
-# $Id$
-
 PortSystem 1.0
 
 name			bind9
-version			9.11.0
+version			9.11.2
 categories		net
-maintainers		geeklair.net:dluke
+maintainers		{geeklair.net:dluke @danielluke}
 platforms		darwin freebsd sunos
 
 description		Domain Name System server
@@ -25,9 +23,10 @@ homepage		http://www.isc.org
 distname		bind-${version}
 master_sites		isc:${name}/${version}
 
-checksums	md5	b12f386e35f3193e6255ed8c03230539 \
-		sha1	6fbb59cc435b79e9cea4747aacbad1314d38ac95 \
-		rmd160	9303701a2afd5955b5b94e1466063e455e41ce77
+checksums	md5	efca7e5a63a07efba264da9be2fbb57f \
+		sha1	94154a30fcb0de87b57aeb26bbf31d6719c68307 \
+		rmd160	b2a3c3217fdfa5f4e141295a08eddfa3c4a37e48 \
+		sha256	7f46ad8620f7c3b0ac375d7a5211b15677708fda84ce25d7aeb7222fe2e3c77a
 
 depends_lib		path:lib/libssl.dylib:openssl port:libxml2
 
@@ -106,6 +105,19 @@ notes "******************************************************
 * logging into a directory where this new user can write files.
 ******************************************************"
 
+variant python27 description {Build python27 module} {
+	depends_lib-append port:python27 \
+			port:py27-configargparse \
+			port:py27-ply
+	configure.args-append --with-python=${prefix}/bin/python2.7
+}
+
+variant python36 description {Build python36 module} {
+	depends_lib-append port:python36 \
+			port:py36-configargparse \
+			port:py36-ply
+	configure.args-append --with-python=${prefix}/bin/python3.6
+}
 livecheck.type	regex
 livecheck.url	${homepage}/downloads/
-livecheck.regex	"target=\"_blank\">BIND (\\d+\.\\d+\.\\d+) - tar.gz</a>"
+livecheck.regex	"target=\"_blank\">BIND (\\d+\.\\d+\.\\d+(?:-P\\d+)?) - tar.gz</a>"

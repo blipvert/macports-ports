@@ -1,12 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup wp-cli wp-cli 0.22.0 v
+github.setup wp-cli wp-cli 1.1.0 v
 github.tarball_from releases
-revision            1
 categories          www php devel
 platforms           darwin
 supported_archs     noarch
@@ -19,8 +17,8 @@ long_description \
 homepage            http://wp-cli.org
 extract.suffix      .phar
 
-checksums           rmd160  5d7d28d37968b4aaa8599de030d7429c1014713e \
-                    sha256  9ad3d193c19771b13696ed8e6a5e59d2fd3acc12464ec119aae9238b8aca7274
+checksums           rmd160  196c28371a88a12ce239a580765b9c15f0a2b3da \
+                    sha256  ac877071bd85e3fe0e0ade5feef8b85a9a474737eab7d5682f2e2987d8a76221
 
 extract.only
 use_configure       no

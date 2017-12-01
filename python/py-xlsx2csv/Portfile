@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-xlsx2csv
+set real_name       xlsx2csv
+version             0.7.3
+platforms           darwin
+supported_archs     noarch
+license             GPL-2+
+maintainers         {khindenburg @kurthindenburg} openmaintainer
+
+description         xlsx to csv converter
+
+long_description    Converts xslx files to csv format.\
+                    Handles large XLSX files. Fast and easy to use.
+
+homepage            https://pypi.python.org/pypi/${real_name}
+master_sites        pypi:x/${real_name}
+
+worksrcdir          ${real_name}-${version}
+distfiles           ${real_name}-${version}${extract.suffix}
+
+checksums           rmd160  cbcfe54e0f81107cac42d92732df26aa9a15761c \
+                    sha256  1f27f9790f19a60ef5581440d5748055bf351d6f80a326430e3d0b94e63dfaf5
+
+# Some issues still with Python 3+
+python.versions     27
+
+if {${subport} ne ${name}} {
+    depends_build       port:py${python.version}-setuptools
+
+    patchfiles          patch-run-python-version.diff
+    post-patch {
+        reinplace "s|/usr/bin/env python|${python.bin}|g" ${worksrcpath}/test/run
+        reinplace "s|__PYTHON_VERSION__|${python.branch}|g" ${worksrcpath}/test/run
+    }
+
+    test.run            yes
+    test.cmd            ${python.bin} ${worksrcpath}/test/run
+    test.env            PYTHONPATH=[glob -nocomplain ${worksrcpath}/build/lib*]
+    test.target
+
+    livecheck.type      none
+}

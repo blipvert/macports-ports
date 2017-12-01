@@ -1,4 +1,4 @@
-# $Id$
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 #
 # Copyright (c) 2009-2012 The MacPorts Project
 # All rights reserved.
@@ -48,8 +48,8 @@ proc haskellplatform.setup {package version {register_scripts "yes"}} {
     name                hs-platform-[string tolower ${package}]
     version             ${version}
     categories          devel haskell
-    homepage            http://hackage.haskell.org/package/${package}
-    master_sites        http://hackage.haskell.org/packages/archive/${package}/${version}
+    homepage            https://hackage.haskell.org/package/${package}
+    master_sites        https://hackage.haskell.org/packages/archive/${package}/${version}
     distname            ${package}-${version}
     depends_lib         port:ghc
     configure.args      Setup configure \

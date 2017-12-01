@@ -1,13 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                smlnj
-version             110.79
+version             110.82
+revision            1
 categories          lang ml
 license             BSD
-maintainers         bfulgham
+maintainers         toby openmaintainer
 description         Standard ML of New Jersey
 long_description \
     Standard ML of New Jersey (abbreviated SML/NJ) is a \
@@ -25,43 +25,40 @@ checksums
 
 # Files needed for basic distribution.
 set srcs [list \
-    ckit.tgz bb39f5029531db138e408504259c16158884b782 \
-    cml.tgz 1ee263ca8da2147ebc3e6d318d8fa1cd26d59f06 \
-    cm.tgz 5779b26a500cf258ab5fc803f40ed41a9d177481 \
-    compiler.tgz 8e4ce5bd8f6605d4ef1d1b9db52dda68c6b3cc7d \
-    config.tgz 945a0ecd97365188f4c23d33c4d38e9bc073cb1a \
-    doc.tgz bf833b64029612d1c59864106894f78a0a4ba6aa \
-    eXene.tgz 53ea8dd1d930a1537a9a81c2d12032c2c98de501 \
-    heap2asm.tgz 0ba4d8c91dd8e1ed4f0543980757f29ab286241e \
-    ml-burg.tgz 0cfc5665b8b05e1249432330936357236f46cbb3 \
-    ml-lex.tgz f6e99b672be6bc689dbc24532ea8068a73c87fc2 \
-    ml-lpt.tgz 97e7d95718eec2d0fafc7dca9e3bd4c025171958 \
-    MLRISC.tgz 148b4256f6c7c6978355126cb38d6447c727a779 \
-    ml-yacc.tgz b28f3f06bf1494a9acabb2e8e463669b29693e54 \
-    nlffi.tgz 802e28b56fbb7d6dae039237144eb0a3286334b5 \
-    old-basis.tgz d79f72ad9b6e55c4df47fe73646700310d10b954 \
-    pgraph.tgz 0b9c1a9f08d3df618a4f374c493252c8b30d8c12 \
-    runtime.tgz f196e3b3568081e8666bc92ed5025f7738d9a6c5 \
-    smlnj-c.tgz d8fd5771f0c7d4baf6f4c25ebb17f0e4ccef0298 \
-    smlnj-lib.tgz 7cdeacf3fb2c45e7768efdcb716614261fff270f \
-    system.tgz 184ef6a6414e3b6f9bdc5ed5d523721d84dc3981 \
-    trace-debug-profile.tgz ab761a6480f00225e91dd40dd59d1f511e50d591 \
+    doc.tgz                 257c23c821e2d28d903ae144d32e4c2c03e112a5ecc381afe199d892dc7d9adc 5fc311d7780e4f28efc0e5dfacc8b685af397a71 \
+    config.tgz              ceff9288e8106d94ce813181d6f4c4da02e4abf808875b27b78d9f6258d016de e41fdec9d89a1a6807ea50bca56131e09dbe924e \
+    cm.tgz                  682fd43ef9021bb3beb62cc95fc60b47b4bf79458f4e3ca20029f1e1d57db207 5049ed04225950c15ff0c6693def01b075ff990c \
+    compiler.tgz            f7fb742608efa1ef4ed34a8791a1014c831708faa83e11d47f9d4242fbd69862 7da36c5e8d49a0230b29744029943d4432e753bf \
+    runtime.tgz             39cff4308c4dea8ae59883be651478a49174ff0473edb67ff46420aaa2cddb71 664ad2ed7eeeb9f2abfcebabd43b3c8bba621d35 \
+    system.tgz              dee67036542d4cd0cbe18cb323db45de41083fc988f10e26c5c467c69f0d7321 80ed44f5780d5f1d3bde9e051e4772490af79e59 \
+    MLRISC.tgz              fb5b7e781ae2b7aef2c873bb778c08dad99b816e98d737116b79e7210213fbf2 d4476b8506942037cdeb7d9de77d8bef3be4f53a \
+    smlnj-lib.tgz           2c008ebea14d193ecea4969dcff7001b107ec724bc05562b7dde1e3dd5d4d1ae f4c383135b94e486f7b20645ffaeb298bdb5e708 \
+    old-basis.tgz           9ac113318694b58f8f77533d391e065f408f21b529b1c1b77a203ac66ed378e9 cc8f6d5c9eef0d1cf5d02bc6393267500e5a2144 \
+    ckit.tgz                3db4e2aa95002698096b2e90c1979fedebb5c3ab0feacc374c0dfecbcb953632 a957dd78d3df90c2e4e4c8a6574bf08ced89e067 \
+    nlffi.tgz               7789f2c2e2aee03664e69414385f09356a8779c4cf1af74caa8a49f1d913df6b 6413de36cc36c5faa864a182245c2d21958d3073 \
+    cml.tgz                 092399af4825f0c352ed1cfe783bb42a44853fa8798bf8463e4279e41758d2ff 91401dc5c3788db1a1dce0cb0c057dc3092512c7 \
+    eXene.tgz               7a32f77ceefef8c69c38aa9599b777fa073c68dcfb142165f5116f476174381a d977a1f600ffea9ca22ff9d10e2e6b75b9449c62 \
+    ml-lpt.tgz              fd107fcc3c51aa44b59f464bfb92bfff22131b18ddee29f361d01765f51ff286 35d8cab218b45249a64256ce7548021f2817d098 \
+    ml-lex.tgz              de7699715b0bbe1e9b67aa5bea5515dfe6aa0e5b2e74abe1f97168a8ad6a0ab5 d641f87c4d3d6651159d4b7ff25fa218243703f5 \
+    ml-yacc.tgz             1ef667a170fa9c3ec87345f53b7579842c93342b4af8f8c10993551b55f4a366 9ff8d86146875e75d1514c131a2250ee2ff72b3b \
+    ml-burg.tgz             7f9c300c2553bf95be7f8275bf159bfb1ac7c7e24a9921b375be15c8d6606ae9 374bd1e8216cec104a5a0f5fdde651c4c318d508 \
+    pgraph.tgz              ef40f8386f7fa138b7d5eb93ca3bf86abc072b564f9713f14755cd2b5e404ed9 797d93d367d30635d3f39b32242d9ed81ad1345a \
+    trace-debug-profile.tgz 37a11feacb6ecd9e3d5a727fdd1bd2d0d908f25a03642f42b42bc61839bb29bf a2eb0bda46db6d4c5aa9256f98f9765948fb84fa \
+    heap2asm.tgz            1751fe8f0b706181a55f109f2bd1292a406b72d09875df0a9fae727c27742554 daf354d70767f61a8d5f165092c8ba95ea02d70f \
+    smlnj-c.tgz             f879f5354846b84ca3196dbd3ab99615f2a936cfaaa37470f083fa72beeededa 0340be415e443270e0089d8232fc0418505f0c9e \
 ]
-
-foreach {tarball checksum} $srcs {
-    distfiles-append $tarball
-    checksums-append $tarball sha1 $checksum
-}
-
 
 # Platform-specific boot code (omitted: sparc-unix, x86-win32)
 platform powerpc {
-    distfiles-append boot.ppc-unix.tgz
-    checksums-append boot.ppc-unix.tgz sha1 1f519ef4e31329cc1fe52e34fe927e54fe688815
+    lappend srcs boot.ppc-unix.tgz d9a01c01490814a908fdbda50ccffb84693a4d1bc616e4d9968d91a6a86a003a 77a6687711d995935cccc59d773a1e069143cbdd
 }
 platform i386 {
-    distfiles-append boot.x86-unix.tgz
-    checksums-append boot.x86-unix.tgz sha1 c2ab5569be827afea10e8b8bb07a597845d3d201
+    lappend srcs boot.x86-unix.tgz 89e66f5a7fe7c811877d3cec4c1e3e4eb909ecca905248c2bf5f7105e2a4f9a5 7bd6c4ac7ad13a10eca2dd15697b1f14ef7f9f37
+}
+
+foreach {tarball sha256 rmd160} $srcs {
+    distfiles-append $tarball
+    checksums-append $tarball sha256 $sha256 rmd160 $rmd160
 }
 
 ### extract ###
@@ -105,7 +102,7 @@ destroot {
     file copy ${worksrcpath}/bin ${destroot}${smlnj_home}
     file copy ${worksrcpath}/lib ${destroot}${smlnj_home}
 
-    xinstall -m 555 ${filespath}/sml.sh ${destroot}${prefix}/bin/sml
+    xinstall -m 755 ${filespath}/sml.sh ${destroot}${prefix}/bin/sml
     reinplace "s|__SMLNJ_HOME__|${smlnj_home}|g" \
         ${destroot}${prefix}/bin/sml
 

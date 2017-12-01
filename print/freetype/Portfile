@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               muniversal 1.0
 
 name                    freetype
-version                 2.7
+version                 2.8
 categories              print graphics
-maintainers             ryandesign
+maintainers             {ryandesign @ryandesign}
 license                 {FreeType GPL-2}
 homepage                http://freetype.sourceforge.net/
 use_bzip2               yes
@@ -35,11 +34,11 @@ distfiles               ${distname}${extract.suffix}:source \
                         ${docdistname}${extract.suffix}:docs
 
 checksums               ${distname}${extract.suffix} \
-                        rmd160  5a175dceeb4454f87d79fcbd5719f3fed837abeb \
-                        sha256  d6a451f5b754857d2aa3964fd4473f8bc5c64e879b24516d780fb26bec7f7d48 \
+                        rmd160  518184d2be032b9807345367265cc7cd49df0da5 \
+                        sha256  a3c603ed84c3c2495f9c9331fe6bba3bb0ee65e06ec331e0a0fb52158291b40b \
                         ${docdistname}${extract.suffix} \
-                        rmd160  bc08e29fcaf78126b6d497630e365063427ecf00 \
-                        sha256  8440b7e576ccbe840051c162419a39083627a4de0c7d15fd20220736c03aac66
+                        rmd160  ad81e3ca016e583a949cbb9bd4ce40bc0493fa79 \
+                        sha256  427ba04d11f450df4bac4c95fec247be1b835ccdcf85d8b081f3f39d31811154
 
 patchfiles \
     patch-src_base_ftrfork.c.diff \

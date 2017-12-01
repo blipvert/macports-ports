@@ -1,17 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
-# This comment was inserted on 20160713 to force reindexing of
-# this port after the default homepage definition in the perl5
-# PortGroup was changed to use metacpan.org (r150080).
-# Reindexing is necessary for the new definition to take effect.
-# This comment may be removed in subsequent updates of this port.
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         JSON 2.90 ../by-authors/id/M/MA/MAKAMAKA
+perl5.branches      5.24 5.26
+perl5.setup         JSON 2.97000 ../by-authors/id/I/IS/ISHIGAKI
 license             {Artistic-1 GPL}
 platforms           darwin
 maintainers         nomaintainer
@@ -23,12 +16,10 @@ long_description    This module converts between JSON \
                     into each other. For JSON, See to \
                     http://www.crockford.com/JSON/.
 
-checksums           rmd160  629becc378221dadbd01162c26dabec2ea7550cc \
-                    sha256  4ddbb3cb985a79f69a34e7c26cde1c81120d03487e87366f9a119f90f7bdfe88
+checksums           rmd160  bc4de04f257093a086426ab9e7e97fce5bdd69a1 \
+                    sha256  8aada69c2b2fc6b28419f69fdde1f26cb25ea8e55ac9b36e219a3e9dfb673f8c
 
 if {${perl5.major} != ""} {
-variant xs description {Depend on JSON::XS for improved performance} {
-    depends_run-append \
+    depends_lib-append \
                     port:p${perl5.major}-json-xs
-}
 }

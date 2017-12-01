@@ -1,12 +1,10 @@
-# $Id$
-
 PortSystem          1.0
 
 name                ocaml-inifiles
 version             1.2
 revision            5
 categories          devel ml
-maintainers         mww openmaintainer
+maintainers         nomaintainer
 platforms           darwin
 license             BSD
 description         ini file parser for OCaml

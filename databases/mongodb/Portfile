@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
@@ -7,24 +6,28 @@ PortGroup           conflicts_build 1.0
 PortGroup           cxx11 1.0
 PortGroup           xcodeversion 1.0
 
+# When updating mongodb to a new version, update mongo-tools to the
+# same version.
+
 name                mongodb
 epoch               1
-version             3.2.10
+version             3.4.10
 license             {AGPL-3 OpenSSLException}
 categories          databases
-maintainers         ryandesign
+maintainers         {ryandesign @ryandesign}
 
 description         High-performance, schema-free document-oriented database
 long_description    ${description}
 
 platforms           darwin
 
-homepage            http://www.mongodb.org/
-master_sites        http://downloads.mongodb.org/src/
+homepage            https://www.mongodb.com/community
+master_sites        https://fastdl.mongodb.org/src
 distname            ${name}-src-r${version}
 
-checksums           rmd160  24bc6881712d247672b8f02326123fb8ed30bec7 \
-                    sha256  3bef44f50f302159c26194bcac9d51c81d98d57ea728f55400774850a70f5120
+checksums           rmd160  468927c1c4a5020f7ab4410a26e83cd1244fb7bd \
+                    sha256  443800ca4f52fa613b29052f5f76abc0ccc477451b55f3665b61819f28ace2f3 \
+                    size    39959937
 
 depends_build       port:scons
 
@@ -32,6 +35,8 @@ depends_lib         port:libpcap \
                     path:lib/libssl.dylib:openssl
 
 license_noconflict  scons
+
+patchfiles          lambda-return-type.patch
 
 use_configure       no
 
@@ -62,7 +67,7 @@ if {${configure.sdkroot} ne ""} {
 }
 
 build.cmd           ${prefix}/bin/scons
-build.target        all mongobridge mongosniff
+build.target        all mongobridge
 build.args          CC="${configure.cc}" \
                     CCFLAGS="${configure.cflags}" \
                     CPPPATH="${prefix}/include" \
@@ -115,5 +120,5 @@ if {${os.platform} eq "darwin" && ${os.major} < 11} {
     }
 }
 
-livecheck.url       ${homepage}downloads
+livecheck.url       https://www.mongodb.org/downloads
 livecheck.regex     {mongodb-src-r(\d+\.\d*[02468]\.\d+)\.}

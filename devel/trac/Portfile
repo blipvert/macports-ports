@@ -1,13 +1,11 @@
-# $Id$
-
 PortSystem 1.0
 PortGroup python 1.0
 
 name			trac
-version			1.0.13
+version			1.2.2
 categories		devel python
 platforms		darwin
-maintainers		geeklair.net:dluke
+maintainers		{geeklair.net:dluke @danielluke}
 description		Wiki and issue tracking system.
 # modified BSD, see http://trac.edgewall.org/wiki/TracLicense
 license			BSD
@@ -18,22 +16,20 @@ long_description	Trac is an enhanced wiki and issue tracking system for \
 
 supported_archs		noarch
 
-homepage	http://projects.edgewall.com/trac/
-master_sites	http://ftp.edgewall.com/pub/trac/
+homepage	https://trac.edgewall.org/
+master_sites	https://download.edgewall.org/trac/ \
+		https://ftp.edgewall.org/pub/trac/
 distname	Trac-${version}
 
-checksums	md5	739dd6c2bd4aa09904cc667c41bc151c \
-		sha1	3157f38233c80fe76246e8a30584ca0efac89e51 \
-		rmd160	ba87f668548b67a3df6abd08b75c19fe85423786
+checksums	md5	38cb5480c35616d8ecb3f0968e454536 \
+		sha1	815b4574c7eec8915f8b42b76d5f23a220951937 \
+		rmd160	3567871baf50ea2d70ea29f83592545d29496c3f \
+		sha256	5ddeca9d2d47093f5791ef7e38ec9aff9c911258b8ba94c85a32ccd9274fc3b6
 
-variant python26 conflicts python27 description {Use Python 2.6} {}
-variant python27 conflicts python26 description {Use Python 2.7} {}
-if {[variant_isset python26]} {
-    python.default_version 26
-} else {
-    default_variants +python27
-    python.default_version 27
-}
+variant python27 description {Use Python 2.7} {}
+
+default_variants +python27
+python.default_version 27
 
 depends_lib	port:py${python.version}-pygments port:py${python.version}-genshi \
 		port:py${python.version}-babel port:py${python.version}-sqlite

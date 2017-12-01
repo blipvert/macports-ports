@@ -1,16 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
-PortGroup  muniversal 1.0
 PortGroup  active_variants 1.1
 
 name            emacs
-conflicts       xemacs
-version         25.1
+
 categories      editors
 license         GPL-3+
-maintainers     dports openmaintainer
+maintainers     {dports @drkp} openmaintainer
 description     The GNU Emacs text editor
 long_description \
     GNU Emacs is a self-documenting, customizable, extensible real-time \
@@ -24,11 +21,56 @@ platforms       darwin freebsd
 homepage        http://www.gnu.org/software/emacs/emacs.html
 master_sites    gnu
 
-checksums       rmd160  d29ddba846024c7df3e1dc02ac32690f3650e7b9 \
-                sha256  763344b90db4d40e9fe90c5d14748a9dbd201ce544e2cf0835ab48a0aa4a1c67
+if {$subport eq $name} {
+    conflicts   xemacs emacs-devel
+}
+subport emacs-devel {
+    conflicts   xemacs $name
+}
+subport emacs-app {
+    conflicts   emacs-app-devel
+}
+subport emacs-app-devel {
+    conflicts   emacs-app
+}
 
-# our dbus is autolaunched by launchd, so disable the check that it's running
-patchfiles      patch-src_dbusbind.c.diff
+if {$subport eq $name || $subport eq "emacs-app"} {
+    version         25.3
+    
+    checksums       rmd160  8740bb96aeab77cd35c6d4625f3676991281c7bc \
+                    sha256  f72c6a1b48b6fbaca2b991eed801964a208a2f8686c70940013db26cd37983c9
+
+    # our dbus is autolaunched by launchd, so disable the check that it's running
+    patchfiles      patch-src_dbusbind.c.diff
+}
+
+if {$subport eq "emacs-devel" || $subport eq "emacs-app-devel"} {
+    version         20170918
+
+    fetch.type      git
+    #git.url         git://git.savannah.gnu.org/emacs.git
+    git.url         http://git.savannah.gnu.org/r/emacs.git
+    git.branch      0bddbbc5aae621d5875880ac3e63f68d481df7c3
+
+    depends_build-append port:autoconf port:automake port:libtool
+
+    # our dbus is autolaunched by launchd, so disable the check that it's running
+    # this patchfile is slightly different for emacs-devel
+    patchfiles      patch-devel-src_dbusbind.c.diff
+
+    
+    pre-configure {
+        system -W ${worksrcpath} "sh ./autogen.sh"
+    }
+    
+    worksrcdir      emacs
+
+    livecheck.type none
+} else {
+    livecheck.type  regex
+    livecheck.url   http://ftp.gnu.org/gnu/emacs/?C=M&O=D
+    livecheck.regex ${name}-(\\d+\\.\\d+\\w*)\\.tar
+}
 
 configure.args  --without-ns \
                 --without-x \
@@ -39,12 +81,13 @@ configure.args  --without-ns \
                 --without-gpm \
                 --without-gnutls \
                 --with-xml2 \
+                --with-modules \
                 --infodir ${prefix}/share/info/${name}
 
-depends_build   port:pkgconfig \
-                port:texinfo
-depends_lib     port:ncurses \
-                port:libxml2
+depends_build-append   port:pkgconfig \
+                       port:texinfo
+depends_lib-append     port:ncurses \
+                       port:libxml2
 
 post-destroot {
     xinstall -d ${destroot}${prefix}/share/emacs/${version}/leim
@@ -52,9 +95,6 @@ post-destroot {
     delete ${destroot}${prefix}/share/man/man1/ctags.1.gz
 }
 
-livecheck.type  regex
-livecheck.url   http://ftp.gnu.org/gnu/emacs/?C=M&O=D
-livecheck.regex ${name}-(\\d+\\.\\d+\\w*)\\.tar
 
 variant x11 description {Builds emacs as a X11 program with Lucid widgets} {
     configure.args-delete   --without-x
@@ -93,30 +133,104 @@ platform darwin {
     }
 }
 
-variant motif requires x11 description {Builds emacs as an X11 program with Motif widgets} {
-    configure.args-delete   --with-x-toolkit=lucid
-    configure.args-append   --with-x-toolkit=motif
-    depends_lib-append      lib:libXm:openmotif
+if {${subport} eq "emacs" || ${subport} eq "emacs-devel"} {
+    PortGroup  muniversal 1.0
+    
+    variant motif requires x11 description {Builds emacs as an X11 program with Motif widgets} {
+        configure.args-delete   --with-x-toolkit=lucid
+        configure.args-append   --with-x-toolkit=motif
+        depends_lib-append      lib:libXm:openmotif
+    }
+
+    variant gtk requires x11 description {Builds emacs as an X11 program with GTK+2 widgets} {
+        configure.args-delete   --with-x-toolkit=lucid
+        configure.args-delete   --without-gconf
+        configure.args-delete   --without-rsvg
+        configure.args-append   --with-x-toolkit=gtk2
+        configure.args-append   --with-gconf
+        configure.args-append   --with-rsvg
+        depends_lib-append      port:gtk2 \
+                                path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                                port:gconf \
+                                port:librsvg
+
+        # see #21917
+        require_active_variants gtk2 x11
+    }
+
+    # imagemagick variant requires either x11 or quartz, so we have to
+    # define it twice; see #53315
+    variant imagemagick requires x11 description {Use ImageMagick} {
+        depends_lib-append  port:ImageMagick
+        configure.args-append --with-imagemagick
+    }
+
+    post-destroot {
+        xinstall -m 755 -d ${destroot}${prefix}/include/emacs
+        xinstall -m 644 ${worksrcpath}/src/emacs-module.h \
+                        ${destroot}${prefix}/include/emacs
+    }
 }
-
-variant gtk requires x11 description {Builds emacs as an X11 program with GTK+2 widgets} {
-    configure.args-delete   --with-x-toolkit=lucid
-    configure.args-delete   --without-gconf
-    configure.args-delete   --without-rsvg
-    configure.args-append   --with-x-toolkit=gtk2
-    configure.args-append   --with-gconf
-    configure.args-append   --with-rsvg
-    depends_lib-append      port:gtk2 \
-                            path:lib/pkgconfig/glib-2.0.pc:glib2 \
-                            port:gconf \
-                            port:librsvg
-
-    # see #21917
-    require_active_variants gtk2 x11
-}
-
+    
 variant dbus description {Builds emacs with D-Bus support} {
     configure.args-delete   --without-dbus
     configure.args-append   --with-dbus
     depends_lib-append      port:dbus
+}
+
+
+if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
+    categories-append   aqua
+    
+    if {$subport eq "emacs-app"} {
+        patchfiles          patch-src_emacs.c.diff
+    } elseif {$subport eq "emacs-app-devel"} {
+        patchfiles          patch-devel-src_emacs.c.diff
+    }
+
+    post-patch {
+        reinplace "s|__PREFIX__|${prefix}|" ${worksrcpath}/src/emacs.c
+    }
+
+    configure.args-append --with-ns
+    configure.args-delete --without-x
+
+    universal_variant   no
+
+    destroot {
+        system -W ${worksrcpath} "make install"
+        xinstall -m 755 -d ${destroot}${applications_dir}
+        file copy ${worksrcpath}/nextstep/Emacs.app \
+            ${destroot}${applications_dir}
+        # fix read-permission to resources
+        system "chmod a+r ${destroot}${applications_dir}/Emacs.app/Contents/Resources/*"
+        file copy ${filespath}/site-start.el \
+            ${destroot}${applications_dir}/Emacs.app/Contents/Resources/site-lisp
+        reinplace "s|__PREFIX__|${prefix}|g" \
+            ${destroot}${applications_dir}/Emacs.app/Contents/Resources/site-lisp/site-start.el
+    }
+
+    variant inline description {Apply inline patch} {
+        # patch-inline-24.4-20141103.diff: inline patch for 24.4 from
+        # http://plamo.linet.gr.jp/~matsuki/mac/emacs-25.1-inline.patch.bz2
+        # patch-src-macim.m.diff: fix for 10.6 or earlier, see #45666
+        patchfiles-append   patch-inline-25.1-20151017.diff \
+                            patch-src-macim.m.diff
+        # http://sakito.jp/emacs/emacs24.html
+        depends_build-append port:autoconf port:automake port:libtool
+        build.target        bootstrap
+    }
+
+    variant multicolor_font description {Apply multicolor font patch} {
+        # Revert "Disable multicolor fonts on OS X..."
+        # This reverts commit 9344612d3cd164317170b6189ec43175757e4231.
+        patchfiles-append   patch-enable-multicolor-fonts.diff
+    }
+
+    variant imagemagick description {Use ImageMagick} {
+        depends_lib-append  port:ImageMagick
+        configure.args-append --with-imagemagick
+    }
+
+    default_variants +inline
 }

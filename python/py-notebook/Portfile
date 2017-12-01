@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-notebook
-version             4.2.3
+version             5.2.1
 revision            0
 categories-append   devel science
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -24,12 +23,11 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  79285f3f3f4280795dc80d1712a93ce1a63e08fa \
-                    sha256  39a9603d3fe88b60de2903680c965cf643acf2c16fb2c6bac1d905e1042b5851
+checksums           rmd160  54a67120556f52d8fbf4f245654ca4a28a77ce3f \
+                    sha256  4ae5b81dd39b37cdd99dcffe83a5182c849947b92d46ac4d2b5093af2bb9f224
 
 if {${name} ne ${subport}} {
-    depends_lib-append  port:py${python.version}-setuptools \
-                        port:py${python.version}-jinja2 \
+    depends_lib-append  port:py${python.version}-jinja2 \
                         port:py${python.version}-tornado \
                         port:py${python.version}-ipython_genutils \
                         port:py${python.version}-traitlets \
@@ -40,9 +38,5 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-ipykernel \
                         port:py${python.version}-terminado
 
-    patchfiles-append   patch-setup.py.diff
-
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

@@ -1,10 +1,9 @@
 # -*- Mode: Tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                freeciv
-version             2.4.2
+version             2.5.6
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          games
 maintainers         nomaintainer
@@ -21,9 +20,8 @@ master_sites        sourceforge:project/${name}/Freeciv%20${branch}/${version}/ 
                     ftp://ftp.freeciv.org/freeciv/stable/
 use_bzip2           yes
 
-checksums           rmd160  6afef825310ca32ad977ddfe5f5be01117b92cad \
-                    sha256  025d3cf51237a0c12422a5f100460a22ce1236b650a1e73cbd1c13c0b0676ce0
-
+checksums           rmd160  f7c858a4b710b42369707efb349770f34b329306 \
+                    sha256  cfadc23eec11a5a8ae74a7d3719eb126026137f0700da065367fd55cbab6999b
 
 depends_build       port:pkgconfig
 
@@ -41,7 +39,7 @@ configure.args      --with-readline \
                     --disable-sdltest
 
 if {${name} eq ${subport}} {
-    revision                0
+    revision                1
     conflicts               freeciv-x11
     
     platforms               macosx
@@ -49,7 +47,9 @@ if {${name} eq ${subport}} {
     depends_lib-append      port:freetype \
                             port:libpng \
                             port:libsdl \
-                            port:libsdl_image
+                            port:libsdl_image \
+                            port:libsdl_gfx \
+                            port:libsdl_ttf
     
     configure.args-append   --enable-client=sdl
     
@@ -58,13 +58,14 @@ if {${name} eq ${subport}} {
     app.icon                data/icons/128x128/freeciv-client.png
     
     livecheck.type          regex
+    livecheck.url           http://www.freeciv.org/download.html
     livecheck.regex         ${name}-(\[0-9.\]+)${extract.suffix}
 } else {
     livecheck.type          none
 }
 
 subport freeciv-x11 {
-    revision                0
+    revision                1
     conflicts               freeciv
     
     platforms               darwin

@@ -1,5 +1,4 @@
 # -*- mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
-# $Id$
 
 PortSystem 1.0
 
@@ -73,8 +72,8 @@ build.args      CC="${configure.cc} [get_canonical_archflags cc]"
 build.env       CFLAGS="${configure.cflags}" \
                 LDFLAGS="${configure.ldflags}"
 
-eval destroot.args ${build.args}
-eval destroot.env ${build.env}
+destroot.args {*}${build.args}
+destroot.env {*}${build.env}
 
 livecheck.type  regex
 livecheck.url   ${homepage}log/?h=stable

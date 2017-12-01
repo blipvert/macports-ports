@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           select 1.0
 
 name                ruby23
-version             2.3.1
-revision            1
+version             2.3.5
+revision            0
 
 categories          lang ruby
 maintainers         kimuraw openmaintainer
@@ -26,13 +25,16 @@ master_sites        ruby:2.3
 use_bzip2           yes
 distname            ruby-${version}
 
-checksums           md5 c194281f63d7fcd816747fe78474be5e \
-                    rmd160 1b7a7105765f6dfb5d72d67e30fe636b87cc9bd5 \
-                    sha1 4ee76c7c1b12d5c5b0245fc71595c5635d2217c9 \
-                    sha256 4a7c5f52f205203ea0328ca8e1963a7a88cf1f7f0e246f857d595b209eac0a4d
+# ruby-2.3.5 cannot link libgmp nor jemalloc (will be fixed in 2.3.6)
+# https://bugs.ruby-lang.org/issues/13402
+# https://bugs.ruby-lang.org/issues/13899
+patchfiles          patch-configure.diff
 
-# mkmf.rb MakeMakefile#pkg_config() looks to be broken (#50868)
-patchfiles          patch-lib-mkmf.rb.diff
+checksums           md5 e1efc3d5a948ca1f552005efe5925513 \
+                    rmd160 37c3619b6bebf5857602c493e62f46942c49c80e \
+                    sha1 48302800c78ef9bbfc293ffcc4b6e2c728705bca \
+                    sha256 f71c4b67ba1bef424feba66774dc9d4bbe02375f5787e41596bc7f923739128b
+
 use_parallel_build  no
 
 depends_lib         port:readline \
@@ -111,6 +113,7 @@ variant gmp description "use gmp" {
 
 variant jemalloc description "use jemalloc" {
         configure.args-delete   --without-jemalloc
+        configure.args-append   --with-jemalloc
         depends_lib-append      port:jemalloc
 }
 
@@ -130,6 +133,6 @@ variant relative description "Enable relative loading of libraries to allow for 
 }
 
 livecheck.type  regex
-livecheck.url   http://cache.ruby-lang.org/pub/ruby/2.3/
-livecheck.regex ruby-(${version})${extract.suffix}
+livecheck.url   https://cache.ruby-lang.org/pub/ruby/2.3/
+livecheck.regex ruby-(2.3.\\d+)${extract.suffix}
 

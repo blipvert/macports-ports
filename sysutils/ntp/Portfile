@@ -1,11 +1,9 @@
-# $Id$
-
 PortSystem 1.0
 
 name		ntp
-version		4.2.8p8
+version		4.2.8p10
 categories	sysutils net
-maintainers	geeklair.net:dluke
+maintainers	{geeklair.net:dluke @danielluke}
 description	NTP is a protocol designed to synchronize the clocks of computers over a network.
 #license	NTP (http://www.eecis.udel.edu/~mills/ntp/html/copyright.html), see http://opensource.org/licenses/NTP
 license		Permissive
@@ -14,11 +12,11 @@ long_description	NTP is an implementation of RFC-5905. It is widely \
 			used to synchronize a computer to Internet time \
 			servers or other sources.
 homepage	http://www.ntp.org/
-master_sites	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-[join [lrange [split ${version} .] 0 1] .]/ 
+master_sites	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-[join [lrange [split ${version} .] 0 1] .]/
 
-checksums	md5	4a8636260435b230636f053ffd070e34 \
-		sha1	208ae3e2ce1237ad684c3bc818b6314d28636e46 \
-		rmd160	45d393abb749c46bbd3a5fd93a53c892613587c8
+checksums	md5	745384ed0dedb3f66b33fe84d66466f9 \
+		rmd160	c341340b93a5e1b5d88621a9e9d7eb6551f26c5e \
+		sha256	ddd2366e64219b9efa0f7438e06800d0db394ac5c88e13c17b70d0dcdf99b99f
 
 platforms	darwin
 
@@ -31,12 +29,21 @@ startupitem.create	yes
 startupitem.netchange	yes
 startupitem.executable	${prefix}/sbin/ntpd -n -g -p ${prefix}/var/run/ntpd.pid -f ${prefix}/var/db/ntp.drift -c ${prefix}/etc/ntp.conf
 
+# High Sierra doesn't like the way libntp.a is set up
+# see https://lists.macports.org/pipermail/macports-dev/2017-October/036569.html
+platform darwin 17 {
+	post-configure {
+		reinplace "s|^RANLIB = ranlib|RANLIB = ranlib -c|" \
+			$worksrcpath/libntp/Makefile
+	}
+}
+
 post-destroot	{
 			xinstall -o root -m 644 ${filespath}/ntp.conf \
 				${destroot}${prefix}/etc/ntp.conf.dist
 
 			xinstall -m 755 -d ${destroot}${prefix}/var/run \
-				${destroot}${prefix}/var/db		
+				${destroot}${prefix}/var/db
 
 			destroot.keepdirs ${destroot}${prefix}/var/run \
 				${destroot}${prefix}/var/db

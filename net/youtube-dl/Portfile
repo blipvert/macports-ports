@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                youtube-dl
-version             2016.10.26
+version             2017.11.26
 categories          net
 platforms           darwin
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 supported_archs     noarch
 license             public-domain
 
@@ -15,11 +14,12 @@ description         command-line program to download videos from YouTube.com and
 
 long_description    ${name} is a small ${description}.
 
-homepage            http://rg3.github.com/youtube-dl/
-master_sites        http://youtube-dl.org/downloads/${version}
+homepage            https://rg3.github.io/youtube-dl/
+master_sites        https://yt-dl.org/downloads/${version}
 
-checksums           rmd160  d4b7a74c8bdd46d0fbbbecab0a1b2543f7f5999f \
-                    sha256  df9f9848198ef225bc351db016d54843fb93252704a786e7e34418f60617b1a5
+checksums           rmd160  4b61726ccb2916cf89cae7d915996eb4a0146feb \
+                    sha256  47d30aec89cd2456b7ee7026c66c0ee4f56ab7d2700c44af27be0e00627d2d5a \
+                    size    2839867
 
 depends_build       bin:zip:zip
 
@@ -30,13 +30,18 @@ post-extract {
     delete ${worksrcpath}/${name}
 }
 
-patchfiles          patch-Makefile.diff \
+patchfiles          patch-config-location.diff \
                     patch-youtube_dl-update.py.diff
 patch.args          --backup
 
 post-patch {
+    reinplace -W ${worksrcpath} "s|@PREFIX@|${prefix}|g" \
+            youtube_dl/options.py \
+            README.md \
+            youtube-dl.1
+
     # Restore original mtimes of files changed by the patch so that `make` doesn't try to regenerate the documentation with `pandoc`.
-    foreach f {youtube_dl/update.py} {
+    foreach f {youtube_dl/update.py youtube_dl/options.py README.md youtube-dl.1} {
         file mtime ${worksrcpath}/${f} [file mtime ${worksrcpath}/${f}.orig]
     }
 }
@@ -69,24 +74,28 @@ variant python27 conflicts python34 python35 description {Use Python 2.7} {
     configure.python        ${prefix}/bin/python2.7
 }
 
-variant python33 requires python34 description {Legacy compatibility variant} {}
-
-variant python34 conflicts python27 python35 description {Use Python 3.4} {
+variant python34 conflicts python27 python35 python36 description {Use Python 3.4} {
     depends_run-append      port:python34
     depends_build-append    port:python34
     configure.python        ${prefix}/bin/python3.4
 }
 
-variant python35 conflicts python27 python34 description {Use Python 3.5} {
+variant python35 conflicts python27 python34 python36 description {Use Python 3.5} {
     depends_run-append      port:python35
     depends_build-append    port:python35
     configure.python        ${prefix}/bin/python3.5
 }
 
-if {![variant_isset python27] && ![variant_isset python34] && ![variant_isset python35]} {
+variant python36 conflicts python27 python34 python35 description {Use Python 3.6} {
+    depends_run-append      port:python36
+    depends_build-append    port:python36
+    configure.python        ${prefix}/bin/python3.6
+}
+
+if {![variant_isset python27] && ![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36]} {
     default_variants +python27
 }
 
 livecheck.type      regex
-livecheck.url       http://rg3.github.com/youtube-dl/update/versions.json
-livecheck.regex     {"latest":\s*"([0-9.]+)"}
+livecheck.url       ${homepage}update/LATEST_VERSION
+livecheck.regex     {^([0-9.]+)$}

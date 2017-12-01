@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                latex2rtf
-version             2.3.11
+version             2.3.16
 categories          tex
 platforms           darwin
 license             GPL-2+
@@ -18,10 +17,8 @@ long_description    LaTeX2rtf is a translator program which is intended to trans
 
 homepage            http://latex2rtf.sourceforge.net/
 master_sites        sourceforge
-checksums           rmd160  d546fdd17162b6e8a11fbbbd1a65511ab86460e7 \
-                    sha256  d4e5d84e8cbf7de13f7cce5572bfeb97b5c18e338513b7398e23c744acc147c2
-
-distfiles           latex2rtf-2.3.11a${extract.suffix} 
+checksums           rmd160  77c9a795a1a57161d68a78c384cc1038c7b74f32 \
+                    sha256  e1538fe0dcadec28afae087cf8a6ee073e6368ca7a75728360068c6f3914b35b
 
 patchfiles          patch-Makefile.diff
 
@@ -46,4 +43,4 @@ destroot.pre_args-append \
 test.run            yes
 
 livecheck.type      sourceforge
-livecheck.distname  ${name}-unix
+livecheck.url       https://sourceforge.net/projects/${name}/files/${name}-unix/

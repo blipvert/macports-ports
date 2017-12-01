@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           bitbucket 1.0
 
-bitbucket.setup     seanfarley mercurial 3.9.2
+bitbucket.setup     seanfarley mercurial 4.4.1
 categories          devel python
 license             GPL-2+
 maintainers         sean openmaintainer
@@ -24,10 +23,10 @@ long_description    Mercurial is a fast, lightweight Source Control Management \
                     CGI, SSH or a stream of patch emails. Mercurial supports \
                     Apples' FileMerge for merges.
 
-homepage            http://www.selenic.com/mercurial/
+homepage            http://www.mercurial-scm.org
 platforms           darwin
-checksums           rmd160  7a2933a6c94fc4b513f7a539a2fc490349052e8a \
-                    sha256  b8eb211e4b4da094b18e3bfd3503ddf0ec0b577a304aff11a19b2c107c7f0006
+checksums           rmd160  af86e17f57a2d6185856e649e606ad4ea5776ef3 \
+                    sha256  1f742c4f3541e1f82a75039efa4e4bbc31a2efc6e801658532736a56c8dec822
 
 depends_build       port:py27-docutils
 
@@ -43,21 +42,21 @@ build.cmd           make
 build.target        all PYTHON=${python.bin}
 
 subport mercurial-devel {
-    bitbucket.setup     seanfarley mercurial 1c518d69d994
+    bitbucket.setup     seanfarley mercurial 602c168c0207
     name                mercurial-devel
-    version             3.9.99
-    revision            2
+    version             4.4.99
+    revision            0
 
     conflicts           mercurial
-    checksums           rmd160  ab131654dba0a6880f487c6628d57a05a51f5026 \
-                        sha256  e73492f244d98509559ac7321550df22c28ce665bceb11513bf8861064ec9934
+    checksums           rmd160  19724b95ad2a431e2a914befdd20c957da829c23 \
+                        sha256  0be4db54974bb00871bece37c70bf921219b716f655ed8b651896673c4f4c1e8
 }
 
 # chg is not installed by default yet
 post-build {
     system -W ${worksrcpath}/contrib/chg "${build.cmd} CC=\"${configure.cc} \
         [get_canonical_archflags]\" CFLAGS=\"${configure.cflags}\" \
-        CPPFLAGS='-DHGPATH=\\\"${prefix}/bin/hg\\\"' \
+        HGPATH=${prefix}/bin/hg \
         PYTHON=${prefix}/bin/python2.7 HG=${prefix}/bin/hg \
         HGEXTDIR=${frameworks_dir}/Python.framework/Versions/2.7/lib/python2.7/site-packages/hgext"
 }

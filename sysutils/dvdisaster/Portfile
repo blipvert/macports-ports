@@ -1,5 +1,3 @@
-# $Id$
-
 PortSystem 1.0
 
 name                    dvdisaster
@@ -38,5 +36,5 @@ post-patch {
         reinplace "/^REQUIRE_GCC/d" ${worksrcpath}/configure ${worksrcpath}/tools/configure
 }
 
-livecheck.url           ${homepage}en/
-livecheck.regex         "<i>Version *\(.*?\) */.*</i>"
+# OS X and Windows are no longer supported.
+livecheck.type          none

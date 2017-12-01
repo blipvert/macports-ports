@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               python 1.0
@@ -9,7 +8,7 @@ version                 1997
 categories-append       science
 platforms               darwin
 supported_archs         noarch
-maintainers             aronnax
+maintainers             {aronnax @lpsinger}
 description             High-precision JPL DE405 solar system ephemeris
 long_description \
   This is the high-precision JPL DE405 solar system ephemeris, packaged for use \

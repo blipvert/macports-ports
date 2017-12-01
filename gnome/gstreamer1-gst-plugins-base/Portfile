@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           gobject_introspection 1.0
@@ -9,7 +8,12 @@ PortGroup           muniversal 1.0
 
 name                gstreamer1-gst-plugins-base
 set my_name         gst-plugins-base
-version             1.8.2
+# unstable versions of the gstreamer1 series are typically, well, unstable
+# typical issues are movement of plugins from one category to another (e.q. bad->good),
+# addition of new plugins and removal of others, missing files, etc
+# beginning with the 1.12 stable series please only push stable versions to git
+# and then only after addressing any possible issues discovered during the previous unstable series.
+version             1.12.3
 description         This is gst-plugins, a set of plug-ins for GStreamer.
 long_description    ${description}
 maintainers         nomaintainer
@@ -23,15 +27,15 @@ distname            ${my_name}-${version}
 
 use_xz              yes
 
-checksums           rmd160  67301eb26bbe8821f851007794a418a427b6511e \
-                    sha256  9d7109c8fb0a5dec8edb17b0053c59a46aba7ddf48dc48ea822ebbbd4339d38d
+checksums           rmd160  ec50b1ee866a3be8ad93004ac1c1b6f01e333b54 \
+                    sha256  d3d37b8489d37fa0018973d850bd2067b98af335fef2fa543ee7d40359e3cea5
 
 depends_build       port:pkgconfig
 depends_lib         port:gstreamer1 \
                     port:libopus \
                     port:orc \
                     path:lib/pkgconfig/pango.pc:pango \
-                    port:zlib 
+                    port:zlib
 
 gobject_introspection yes
 
@@ -56,12 +60,11 @@ configure.args-append \
 #:info:build gstbasetextoverlay.c:1511: error: 'for' loop initial declaration used outside C99 mode
 configure.cflags-append -std=c99
 
-# in version 1.8.0 plugin opus has moved from bad to base
-
+# in version 1.12.0 plugin rawparse moved from bad to base
 pre-activate {
     if {![catch {set installed [lindex [registry_active gstreamer1-gst-plugins-bad] 0]}]} {
         set _version [lindex $installed 1]
-        if {[vercmp $_version 1.8.0] < 0} {
+        if {[vercmp $_version 1.12.0] < 0} {
             registry_deactivate_composite gstreamer1-gst-plugins-bad "" [list ports_nodepcheck 1]
         }
     }
@@ -130,4 +133,4 @@ if {[variant_isset universal]} {
 livecheck.type      regex
 livecheck.name      ${my_name}
 livecheck.url       ${master_sites}
-livecheck.regex     "${my_name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"
+livecheck.regex     "${my_name}-(\\d+\\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"

@@ -1,14 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
 PortSystem          1.0
 
 name                subversion-perlbindings
-version             1.9.4
+version             1.9.7
 revision            1
 categories          devel perl
 platforms           darwin
-maintainers         geeklair.net:dluke blair
+maintainers         {geeklair.net:dluke @danielluke} blair
 description         Perl bindings for the subversion version control system (svn)
 license             Apache-2
 
@@ -19,7 +17,7 @@ long_description    Subversion (svn) is a version control system designed to be 
 
 homepage            http://subversion.apache.org/
 
-set perl5.branches {5.24}
+set perl5.branches {5.24 5.26}
 foreach branch ${perl5.branches} {
     set p_idx [lsearch ${perl5.branches} ${branch}]
     set other_perls [lreplace ${perl5.branches} $p_idx $p_idx]
@@ -36,9 +34,9 @@ if {${subport} eq ${name}} {
     distfiles
     supported_archs noarch
     # depend on a default perl version
-    depends_lib     port:${name}-5.24
+    depends_lib     port:${name}-5.26
     # avoid conflict with old version when upgrading
-    replaced_by     ${name}-5.24
+    replaced_by     ${name}-5.26
     use_configure   no
     build {}
     destroot {
@@ -52,9 +50,10 @@ if {${subport} eq ${name}} {
 
     master_sites    apache:subversion
     use_bzip2       yes
-	checksums	sha1	bc7d51fdda43bea01e1272dfe9d23d0a9d6cd11c \
-				rmd160	9ea97e177a673f7b64f6f4ea8848b8640918387f
-        
+	checksums	sha1	874b81749cdc3e88152d103243c3623ac6338388 \
+			rmd160	d4ede3249729ce56ff7c9d7993a238d7a5446733 \
+			sha256	c3b118333ce12e501d509e66bb0a47bcc34d053990acab45559431ac3e491623
+
     distname        subversion-${version}
     dist_subdir     subversion
 

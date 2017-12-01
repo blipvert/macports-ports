@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           gobject_introspection 1.0
 
 name                gnome-dictionary
-version             3.20.0
+version             3.24.1
 license             GPL-2 GFDL-1.1 LGPL-2.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         GNOME dictionary application.
 long_description    GNOME Dictionary can look for the definition or translation \
                     of a word in existing databases over the Internet.
 
-maintainers         juanrgar devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 categories          gnome
 platforms           darwin
 homepage            https://www.gnome.org
@@ -20,8 +19,8 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  763b9cdc31185161887557554b45edb782fc2e51 \
-                    sha256  efb36377d46eff9291d3b8fec37baab2355f9dc8bc7edb791b6a625574716121
+checksums           rmd160  c28fd4123a7be494e87cefc8fe00b09b56cfe35d \
+                    sha256  64a00c93eb582b8dd19876a894ed4340cc375af1a7ffa5d27915333ef625f51e
 
 depends_build       port:pkgconfig \
                     port:intltool \

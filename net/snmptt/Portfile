@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
@@ -65,8 +64,8 @@ destroot {
 
     xinstall -m 755 -W ${worksrcpath} ChangeLog INSTALL README   ${destroot}${docsdir}
 
-    eval xinstall -m 644 [glob ${worksrcpath}/sample-*]          ${destroot}${docsdir}
-    eval xinstall -m 644 [glob ${worksrcpath}/examples/*-trap.*] ${destroot}${docsdir}
+    xinstall -m 644 {*}[glob ${worksrcpath}/sample-*]          ${destroot}${docsdir}
+    xinstall -m 644 {*}[glob ${worksrcpath}/examples/*-trap.*] ${destroot}${docsdir}
 
     xinstall -m 644 ${worksrcpath}/snmptt.ini                    ${destroot}${etcdir}/snmptt.ini.sample
     xinstall -m 644 ${worksrcpath}/examples/snmptt.conf.generic  ${destroot}${etcdir}

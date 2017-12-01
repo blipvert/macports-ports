@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem                  1.0
 
 name                        e2fsprogs
-version                     1.43.3
+version                     1.43.7
 categories                  sysutils
 platforms                   darwin
-maintainers                 ryandesign openmaintainer
+maintainers                 {ryandesign @ryandesign} openmaintainer
 license                     GPL-2 LGPL-2+ MIT BSD
 
 description                 Utilities for use with the ext2, ext3 and ext4 \
@@ -20,8 +19,9 @@ long_description            Utilities to create, check and manipulate extended 2
 homepage                    http://e2fsprogs.sourceforge.net/
 master_sites                sourceforge:project/e2fsprogs/e2fsprogs/v${version}
 
-checksums                   rmd160  7f40f0a5553d49f5c9be79377838df6c7d6e599d \
-                            sha256  ce8ef1bbb0d4730f170167284fda156ac9d6bf18db2750eb94af619a81b19927
+checksums                   rmd160  947c45f8bdf353c4cf9373b41bf039b13d3a3915 \
+                            sha256  87035f2eae8da5f9869f78ffc177969b4e3cf75a5da489521c1ffe4268e1a1c4 \
+                            size    7492811
 
 depends_build               port:pkgconfig
 depends_lib                 port:gettext

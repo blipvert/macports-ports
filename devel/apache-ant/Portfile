@@ -1,10 +1,8 @@
-# $Id$
-
 PortSystem 1.0
 PortGroup               java 1.0
 
 name                    apache-ant
-version                 1.9.7
+version                 1.10.1
 categories              devel java
 license                 Apache-2 W3C
 maintainers             openmaintainer blair
@@ -23,9 +21,8 @@ platforms               darwin freebsd
 distname                ${name}-${version}-bin
 master_sites            apache:ant/
 master_sites.mirror_subdir        binaries
-checksums               md5    99a86981333a0ff39bb56c963d1f492b \
-                        sha1   230c6a5c59dc08364f615deb240aa50c23ccfe2a \
-                        sha512 3954a6ad3f522c135f327ba0d376eb16ae42103849c8cc5cd6c8c6e87b8c5433c95a0f2d4dfa3e6c2705ee0b8996e5b27d0b2248f64a05fc8c902116cc45a7b2
+checksums               rmd160 e627aa699f3ed4399c4871126c6f5d6ef17d4b9f \
+                        sha512 91992ae8ed122be8d5a6cc423149a8d0cef4e49ada60691c4802eab44bf65dc4d14b9cdfde61b3d4b705a24c7cdc8ab62502f93b4b8a1cbf0b3ffa580ff23738
 
 worksrcdir              ${name}-${version}
 set workTarget          ""

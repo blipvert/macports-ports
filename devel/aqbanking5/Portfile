@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem        1.0
 
@@ -13,7 +12,7 @@ set package       03
 revision          1
 
 categories        devel net finance
-maintainers       mk dports openmaintainer
+maintainers       mk {dports @drkp} openmaintainer
 platforms         darwin
 license           {GPL-2 GPL-3 OpenSSLException}
 
@@ -27,7 +26,7 @@ long_description  aqbanking is a generic online banking interface mainly \
 
 homepage          http://www2.aquamaniac.de/sites/aqbanking/index.php
 
-conflicts         aqbanking aqbanking5 aqbanking5-devel aqbanking5-gtk aqbanking5-gtk-devel aqbanking5-svn
+conflicts         aqbanking5 aqbanking5-devel aqbanking5-gtk aqbanking5-gtk-devel aqbanking5-svn
 
 depends_lib       port:ktoblzcheck \
                   port:libofx \

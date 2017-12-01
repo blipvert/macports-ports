@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 
@@ -101,7 +100,8 @@ if {${name} eq ${subport}} {
     }
 
     livecheck.version       ${version_dashes}
-    livecheck.regex         {reduce-src-(\d{4}-\d{2}-\d{2})}
+    livecheck.url           https://sourceforge.net/projects/reduce-algebra/files/
+    livecheck.regex         {snapshot_(\d{4}-\d{2}-\d{2})}
 } else {
     livecheck.type          none
 }
@@ -122,7 +122,7 @@ This installs the files that are independent of the Lisp system used.
     # Fixed in r142269.
     depends_build-append \
         port:texlive-basic\
-        port:texlive-htmlxml\
+        port:texlive-formats-extra\
         port:dvipng
 
     patch {

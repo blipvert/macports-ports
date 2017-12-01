@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           bitbucket 1.0
 
-bitbucket.setup     Mekk mercurial_keyring 1.1.5
+bitbucket.setup     Mekk mercurial_keyring 1.1.8
 name                py-mercurial_keyring
 
 categories-append   devel
@@ -20,8 +19,8 @@ long_description \
 
 platforms           darwin
 
-checksums           rmd160  44f04c6f564fdbe6a0ecae8e65ccc082fe68f3be \
-                    sha256  7c48c44ca1819936c80ee3e0c5038f84fda932d30b9fab721f554bd16c881ecd
+checksums           rmd160  a70d0c7fb877f5e5776f7d9eb300783b050cda61 \
+                    sha256  3c710a400d9a42ecd8c776d45039d645ed56899db7831975852fd623f79ce46b
 
 #not supporting 3x because py-keyring is broken on python 3.x
 python.versions     27

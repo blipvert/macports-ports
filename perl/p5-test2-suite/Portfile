@@ -1,25 +1,49 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Test2-Suite 0.000060 ../by-authors/id/E/EX/EXODIST
+perl5.branches      5.24 5.26
+perl5.setup         Test2-Suite 0.000094 ../by-authors/id/E/EX/EXODIST
 license             {Artistic-1 GPL}
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 description         Test2::Suite - Distribution with a rich set of tools built upon the Test2 framework.
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  903c0e088c5d7f4f43e91fc3c1a07dd504795e31 \
-                    sha256  535cdfe9ce5ea59c97a57aba8b6b2a7890bac79e1af53190add7a9a5b6d336f4
+checksums           rmd160  c2c94ca5a478a32af0ce55425c0b241757d422f6 \
+                    sha256  7135ccb6af82bac39801234e1ce49eb8693dfe8f8e215c7de577c7ded65b6e5f
 
 if {${perl5.major} != ""} {
     depends_lib-append \
                     port:p${perl5.major}-importer \
-                    port:p${perl5.major}-test-simple
+                    port:p${perl5.major}-module-pluggable \
+                    port:p${perl5.major}-scope-guard \
+                    port:p${perl5.major}-sub-info \
+                    port:p${perl5.major}-term-table \
+                    port:p${perl5.major}-test-simple \
+                    port:p${perl5.major}-time-hires
+
+   # Test2::Workflow, now part of this module, was previously provided by separate port p5-test2-workflow
+   # deactivate old conflicting p5-test2-workflow before activation
+
+    pre-activate {
+        set pname p${perl5.major}-test2-workflow
+        if {![catch {set installed [lindex [registry_active $pname] 0]}]} {
+            registry_deactivate_composite $pname "" [list ports_nodepcheck 1]
+        }
+    }
+
+   # Test2::AsyncSubtest, now part of this module, was previously provided by separate port p5-test2-asyncsubtest
+   # deactivate old conflicting p5-test2-asyncsubtest before activation
+
+    pre-activate {
+        set pname p${perl5.major}-test2-asyncsubtest
+        if {![catch {set installed [lindex [registry_active $pname] 0]}]} {
+            registry_deactivate_composite $pname "" [list ports_nodepcheck 1]
+        }
+    }
 
     supported_archs noarch
 }

@@ -1,35 +1,39 @@
-# $Id$
-
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 set vim_version     8.0
-set snapshot        110
+set snapshot        142
 github.setup        macvim-dev macvim ${snapshot} snapshot-
 name                MacVim
 version             ${vim_version}.snapshot${snapshot}
 categories          editors
 platforms           darwin
 license             Vim GPL-2+
-maintainers         raimue
+maintainers         {raimue @raimue}
 description         MacVim is a GUI version of vim for Mac OS X
 long_description \
     MacVim is a port of the text editor Vim to Mac OS X that is meant to look \
     better and integrate more seamlessly with the Mac than vim-app.
 
 homepage            https://macvim-dev.github.io/macvim/
-
-checksums           rmd160  08b672b2969c6a41ae3a85ec9a1306bc5d6f6a02 \
-                    sha256  d8b67a8bbb0893f6dfdc33d902aeafde4e6dfa4d63e650b3160aa30bf0e3d0c6
+ 
+checksums           rmd160  81265e32c1499645fe25ac990d163dc3724087a9 \
+                    sha256  677ec9e1b8da3358014c12be4515e80cdf030eb82bb35aa5592cfcf33dcaed6c \
+                    size    19729947
 
 depends_build       bin:grep:grep
 depends_lib         port:ncurses \
                     port:gettext \
                     port:libiconv
 
+# MacVim does not build for arch i386
+# https://trac.macports.org/ticket/54666
+supported_archs     x86_64
+
 patchfiles          patch-MacVim-GCC-VERSION.diff \
-                    patch-remove-sparkle.diff
+                    patch-remove-sparkle.diff \
+                    patch-remove-Homebrew-python.diff
 
 pre-fetch {
     if {${os.platform} eq "darwin" && ${os.major} < 12} {
@@ -47,9 +51,6 @@ post-extract {
 }
 
 post-patch {
-    reinplace "s|^# VIM_APP_DIR=/Applications$|VIM_APP_DIR=${applications_dir}|" \
-         ${worksrcpath}/src/MacVim/mvim
-    
     # recompile patched .nib
     foreach nib {Preferences MainMenu} {
         ui_info "--->  Running ibtool for ${nib}.nib"
@@ -73,13 +74,13 @@ build.args          XCODEFLAGS="CACHE_ROOT=${workpath}/caches"
 
 destroot {
     copy ${worksrcpath}/src/MacVim/build/Release/MacVim.app ${destroot}${applications_dir}
-    copy ${worksrcpath}/src/MacVim/mvim ${destroot}${prefix}/bin
+    ln -s ${applications_dir}/MacVim.app/Contents/bin/mvim ${destroot}${prefix}/bin/mvim
 
     # Create MacVim vimdiff, view, ex equivalents
-    ln -s mvim ${destroot}${prefix}/bin/mvimdiff
-    ln -s mvim ${destroot}${prefix}/bin/mview
+    ln -s ${applications_dir}/MacVim.app/Contents/bin/mvim ${destroot}${prefix}/bin/mvimdiff
+    ln -s ${applications_dir}/MacVim.app/Contents/bin/mvim ${destroot}${prefix}/bin/mview
     # Link as mvimex as bin/mex conflicts with texlive
-    ln -s mvim ${destroot}${prefix}/bin/mvimex
+    ln -s ${applications_dir}/MacVim.app/Contents/bin/mvim ${destroot}${prefix}/bin/mvimex
 }
 
 test.run            yes
@@ -102,11 +103,6 @@ variant perl description {Enable Perl scripting} {
     depends_lib-append      path:bin/perl:perl5
 }
 
-# Compatibility variants, can be removed after 2015-12-26
-variant python25 requires python27 description {Legacy variant} {}
-variant python31 requires python34 description {Legacy variant} {}
-variant python32 requires python34 description {Legacy variant} {}
-
 variant python26 conflicts python27 description {Enable Python scripting} {
     configure.args-append   --enable-pythoninterp --with-python=${prefix}/bin/python2.6
     patchfiles-append       patch-python.diff
@@ -121,7 +117,7 @@ variant python27 conflicts python26 description {Enable Python scripting} {
 
     use_autoconf yes
 }
-variant python33 conflicts python34 python35 description {Enable Python scripting} {
+variant python33 conflicts python34 python35 python36 description {Enable Python scripting} {
     configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.3
     patchfiles-append       patch-python3.diff
     depends_lib-append      port:python33
@@ -130,7 +126,7 @@ variant python33 conflicts python34 python35 description {Enable Python scriptin
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
-variant python34 conflicts python33 python35 description {Enable Python scripting} {
+variant python34 conflicts python33 python35 python36 description {Enable Python scripting} {
     configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.4
     patchfiles-append       patch-python3.diff
     depends_lib-append      port:python34
@@ -139,8 +135,7 @@ variant python34 conflicts python33 python35 description {Enable Python scriptin
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
-
-variant python35 conflicts python33 python34 description {Enable Python scripting} {
+variant python35 conflicts python33 python34 python36 description {Enable Python scripting} {
     configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.5
     patchfiles-append       patch-python3.diff
     depends_lib-append      port:python35
@@ -149,32 +144,46 @@ variant python35 conflicts python33 python34 description {Enable Python scriptin
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
+variant python36 conflicts python33 python34 python35 description {Enable Python scripting} {
+    configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.6
+    patchfiles-append       patch-python3.diff
+    depends_lib-append      port:python36
+
+    use_autoconf yes
+    # Overwriting autoconf.cmd above removes dependency, add it again
+    depends_build-append port:autoconf
+}
 
 variant ruby requires ruby18 description {Compatibility variant, requires +ruby18} {}
-variant ruby18 conflicts ruby19 ruby20 ruby21 ruby22 description {Enable Ruby scripting} {
+variant ruby18 conflicts ruby19 ruby20 ruby21 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby1.8
     depends_lib-append      port:ruby
 }
-variant ruby19 conflicts ruby18 ruby20 ruby21 ruby22 description {Enable Ruby scripting} {
+variant ruby19 conflicts ruby18 ruby20 ruby21 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby1.9
     depends_lib-append      port:ruby19
 }
-variant ruby20 conflicts ruby18 ruby19 ruby21 ruby22 description {Enable Ruby scripting} {
+variant ruby20 conflicts ruby18 ruby19 ruby21 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.0
     depends_lib-append      port:ruby20
 }
-variant ruby21 conflicts ruby18 ruby19 ruby20 ruby22 description {Enable Ruby scripting} {
+variant ruby21 conflicts ruby18 ruby19 ruby20 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.1
     depends_lib-append      port:ruby21
 }
-variant ruby22 conflicts ruby18 ruby19 ruby20 ruby21 description {Enable Ruby scripting} {
+variant ruby22 conflicts ruby18 ruby19 ruby20 ruby21 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.2
     depends_lib-append      port:ruby22
+}
+variant ruby23 conflicts ruby18 ruby19 ruby20 ruby21 ruby22 description {Enable Ruby scripting} {
+    configure.args-append   --enable-rubyinterp
+    configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.3
+    depends_lib-append      port:ruby23
 }
 
 variant tcl description {Enable Tcl scripting} {

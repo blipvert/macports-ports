@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           muniversal 1.0
 
 name                mpg123
-version             1.21.0
+version             1.25.7
 categories          audio
 maintainers         gmx.at:astifter openmaintainer
 license             GPL-2 LGPL-2.1
@@ -21,19 +20,19 @@ long_description \
     This version uses EsounD on a pure Darwin install and CoreAudio \
     on Mac OS X.
 
-homepage            http://www.mpg123.de/
+homepage            https://www.mpg123.de/
 platforms           darwin
 master_sites        sourceforge:project/mpg123/mpg123/${version} \
                     ${homepage}download/
 use_bzip2           yes
 
-checksums           rmd160  5f5e0c8c482a16d093603845f67bfe733aac3e79 \
-                    sha256  3ad197f77c9ffdf3601e1c3183ae0709ccb3c3de68309527ce9375fcfb15dcba
+checksums           rmd160  f702f46a536db69376fb5d034b03f373bd529e6b \
+                    sha256  31b15ebcf26111b874732e07c8e60de5053ee555eea15fb70c657a4f9f0344f3
 
 depends_lib         port:libtool
 
 platform macosx {
-    configure.args-append --with-audio=coreaudio --with-module-suffix=.so
+    configure.args-append --with-audio=coreaudio
 }
 
 # For i386 we'd like to use --with-cpu=sse but this fails with:

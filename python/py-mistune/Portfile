@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-mistune
-version             0.7.3
+version             0.8.1
 revision            0
 categories-append   devel textproc
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -23,8 +22,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  0093a594cff2ca59b9223e8f40b7463314dafa1e \
-                    sha256  21d0e869df3b9189f248e022f1c9763cf9069e1a2f00676f1f1852bd7f98b713
+checksums           rmd160  1f777b69e7ff672a70305f9bca6ccdc629133c70 \
+                    sha256  4c0f66924ce28f03b95b210ea57e57bd0b59f479edd91c2fa4fe59331eae4a82
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -32,6 +31,4 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-cython
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

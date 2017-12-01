@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
@@ -8,7 +7,7 @@ epoch               3
 version             3.20
 revision            2
 categories          math
-maintainers         hum openmaintainer
+maintainers         nomaintainer
 license             BSD
 platforms           darwin
 
@@ -70,10 +69,6 @@ variant java description {Install Java JAR files} {
         file rename ${worksrcpath}/java ${jdir}/${name}
     }
 }
-
-# TODO: Remove after 2016-05-14.
-variant python26 requires python27 description {Legacy variant} {}
-variant python33 requires python34 description {Legacy variant} {}
 
 variant python27 description {Install Python 2.7 interface} {
     depends_lib-append  port:python27

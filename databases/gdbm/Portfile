@@ -1,10 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                gdbm
-version             1.12
+version             1.13
+revision            3
 categories          databases
 platforms           darwin
 license             GPL-3+
@@ -18,19 +18,22 @@ long_description    The GNU `dbm' is a library of database functions \
                     manipulate a hashed database.
 homepage            http://www.gnu.org/software/gdbm/gdbm.html
 
-depends_lib         port:gettext
+depends_lib         port:gettext \
+                    port:readline
 
 master_sites        gnu
-checksums           rmd160  5f47e6adfec14b31c3e26c1027684ba4845eef8a \
-                    sha256  d97b2166ee867fd6ca5c022efee80702d6f30dd66af0e03ed092285c3af9bcea
+checksums           rmd160  ad3d3258d3ae82eb16237051ea0e981178d6e93e \
+                    sha256  9d252cbd7d793f7b12bcceaddda98d257c14f4d1890d851c386c37207000a253
 
 # Don't link using "-flat_namespace -undefined suppress" on Yosemite and
 # later (#45709).
-patchfiles          yosemite-libtool.patch
+patchfiles          yosemite-libtool.patch \
+                    patch-src_gdbm.h.in-fix-typo.diff
 
 configure.ccache    no
 
-configure.args      --disable-silent-rules
+configure.args      --disable-silent-rules \
+                    ac_cv_prog_AWK=awk
 
 post-install {
     # gdbm @1.8.3_1 installed files outside the destroot; remove them if found

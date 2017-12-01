@@ -1,18 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
-PortSystem 1.0
-PortGroup  cmake 1.0
-PortGroup  qt4 1.0
+PortSystem      1.0
+PortGroup       cmake 1.0
+PortGroup       qt5 1.0
 
 name            stellarium
-version         0.12.5
-revision        2
 categories      science
 platforms       darwin
 license         GPL-2+
-maintainers     raimue \
-                michaelld
+maintainers     {michaelld @michaelld} openmaintainer
 
 description     Stellarium is a free open source planetarium for your computer.
 long_description \
@@ -23,43 +19,50 @@ long_description \
 homepage        http://stellarium.org/
 
 master_sites    sourceforge
-checksums       rmd160  e925e75f0fbaa65f9f2ce04d200b50f73c01c5a5 \
-                sha256  15fbc0f12f25e4dbf7eb360c422987ca312201e3b41e6eadba028f1af9174559
+
+version         0.16.1
+checksums       rmd160 96fcc1e87ebdffeb5c30afc899bbb3289ac88f36 \
+                sha256 b001c252afddaa1c470fb444fcbb5595b7f7a7db028d884743d20bcb5635fd20
+
+# builds as 64-bit only, according to its top-level CMakeLists.txt file
+universal_variant no
 
 depends_lib-append \
-                port:freetype \
-                port:libiconv \
-                path:lib/libssl.dylib:openssl \
-                port:phonon
+    port:zlib \
+    port:gpsd \
+    port:gettext \
+    port:doxygen \
+    port:python27 \
+    port:qt5-qtbase \
+    port:qt5-qtlocation \
+    port:qt5-qtmultimedia \
+    port:qt5-qtscript \
+    port:qt5-qtserialport \
+    port:qt5-qttools
 
-patchfiles      patch-libc++.diff
+# for libqcocoa.dylib (if not above)
 
-post-patch {
-    reinplace "s:SET(CMAKE_INSTALL_PREFIX \"\$\{PROJECT_BINARY_DIR\}/:SET(CMAKE_INSTALL_PREFIX \"${applications_dir}/:" ${worksrcpath}/CMakeLists.txt
+depends_lib-append \
+    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+    port:fontconfig \
+    port:freetype
 
-    # Determine which archs to build
-    if {[variant_isset universal]} {
-        set archs ${configure.universal_archs}
-    } else {
-        set archs ${configure.build_arch}
-    }
-    reinplace "s:SET(CMAKE_OSX_ARCHITECTURES \".*\"):SET(CMAKE_OSX_ARCHITECTURES \"${archs}\"):" ${worksrcpath}/CMakeLists.txt
+patchfiles patch-CMakeLists.txt.diff
+
+# do VPATH (out of source tree) build
+
+cmake.out_of_source yes
+
+# prevent opportunistic use of ccache
+if {![tbool configure.ccache]} {
+    configure.args-append -DCCACHE_PROGRAM=""
 }
 
-configure.cmd       cmake
-# specify MacPorts' dependencies to cmake
-configure.pre_args  -DFreeType2_INCLUDE_DIR:PATH=${prefix}/include/freetype2 \
-                    -DFreeType2_LIBRARIES:FILEPATH=${prefix}/lib/libfreetype.dylib \
-                    -DZLIB_INCLUDE_DIR:PATH=${prefix}/include \
-                    -DZLIB_LIBRARY:FILEPATH=${prefix}/lib/libz.dylib \
-                    -DICONV_INCLUDE_DIR:PATH=${prefix}/include \
-                    -DICONV_LIBRARIES:FILEPATH=${prefix}/lib/libiconv.dylib \
-                    -DOPENSSL_CRYPTO_LIBRARIES:FILEPATH=${prefix}/lib/libcrypto.dylib \
-                    -DOPENSSL_INCLUDE_DIR:PATH=${prefix}/include/openssl \
-                    -DOPENSSL_SSL_LIBRARIES:FILEPATH=${prefix}/lib/libssl.dylib \
-                    ${qt_cmake_defines}
+# special args for our needs
 
-configure.args      .
+configure.args-append \
+    -DMP_APPLICATIONS_DIR=${applications_dir} \
+    -DPYTHON_EXECUTABLE=${prefix}/bin/python2.7
 
 # This post-destroot phase is similar to the 'make macosx_bundle' target,
 # but it does not copy libraries into the bundle and does not require perl as
@@ -69,7 +72,7 @@ post-destroot {
 
     move ${appdir}/bin ${appdir}/MacOS
     move ${appdir}/share ${appdir}/Resources
-    eval move [glob ${appdir}/Resources/stellarium/*] ${appdir}/Resources/
+    move {*}[glob ${appdir}/Resources/stellarium/*] ${appdir}/Resources/
     delete ${appdir}/Resources/stellarium
 
     # copy .app-specific files
@@ -79,10 +82,12 @@ post-destroot {
 
     # copy other useful file(s)
     copy ${worksrcpath}/util/qt.conf ${appdir}/Resources/
-}
 
-# Supports universal builds through cmake, archs are set in post-patch
-variant universal {}
+    # copy the required qcocoa plugin
+    xinstall -m 755 -d ${appdir}/plugins/platforms
+    copy ${qt_plugins_dir}/platforms/libqcocoa.dylib \
+        ${appdir}/plugins/platforms
+}
 
 livecheck.url http://sourceforge.net/projects/stellarium/files/
 livecheck.regex "Stellarium-sources/.*/stellarium-(.*)[quotemeta ${extract.suffix}]"

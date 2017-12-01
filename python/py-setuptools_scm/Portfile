@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-setuptools_scm
-version             1.15.0
+version             1.15.6
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -24,13 +23,11 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  b91bf70229673f4523205eb7138f11f41f7a97d8 \
-                    sha256  daf12d05aa2155a46aa357453757ffdc47d87f839e62114f042bceac6a619e2f
+checksums           rmd160  6db2ec8144cbbc2b0c2e7e294ae52d5f4403edd2 \
+                    sha256  49ab4685589986a42da85706b3311a2f74f1af567d39fee6cb1e088d7a75fb5f
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
@@ -8,7 +7,7 @@ set _name           pyshp
 set _n              [string index ${_name} 0]
 
 name                py-${_name}
-version             1.2.3
+version             1.2.11
 categories-append   gis
 platforms           darwin
 supported_archs     noarch
@@ -24,16 +23,16 @@ long_description    PyShp library provides read and write support for the \
                     files with all types of geometry. Everything in the \
                     public ESRI shapefile specification is implemented.
 
-homepage            http://code.google.com/${_n}/${_name}/
+homepage            https://github.com/GeospatialPython/${_name}
 
 distname            ${_name}-${version}
 master_sites        pypi:${_n}/${_name}
 
-checksums           md5     f857099a57f93830e0c72a31e9c506a8 \
-                    rmd160  47b64bca853f1d0e3ac5300e40cae588e3b57587 \
-                    sha256  e18cc19659dadc5ddaa891eb780a6958094da0cf105a1efe0f67e75b4fa1cdf9
+checksums           md5     6734346e50ad4b6003318d00dff8da4c \
+                    rmd160  a28ac551ce9ed3e880a08d68e4751d4a8139dda3 \
+                    sha256  8b4be2ec3d816067972e9ecc38526e9c45e9ee9b49b7fd94acfab9c0fc84fa63
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools
@@ -43,7 +42,7 @@ if {${name} ne ${subport}} {
         set dest_doc ${destroot}${prefix}/share/doc/${subport}
         xinstall -d  ${dest_doc}
         xinstall -m 755 -W ${worksrcpath} \
-            README.txt \
+            README.md \
                 ${dest_doc}
     }
 

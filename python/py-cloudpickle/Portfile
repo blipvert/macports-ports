@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-cloudpickle
-version             0.2.1
+version             0.5.1
 revision            0
 categories-append   science
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -24,11 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  da5dbd946c5814ff97224067e44f2d1038f501b6 \
-                    sha256  eea4b655e6aed3dba39b104ad1872226e3f9e23d8d202fc003f3e65f2d125c3b
+checksums           rmd160  7fe6121e55a362b637f1bb2a2734d91b02bc7d76 \
+                    sha256  e82822730c0bc19c882762229b58d536c0117e57626afdcfd4892042653d5428
 
 if {${name} ne ${subport}} {
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

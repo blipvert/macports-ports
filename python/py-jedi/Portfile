@@ -1,29 +1,32 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        davidhalter jedi 0.9.0 v
+github.setup        davidhalter jedi 0.11.0 v
 name                py-jedi
+revision            0
+categories-append   devel
 platforms           darwin
+license             MIT
 supported_archs     noarch
-license             GPL-2+
-maintainers         nomaintainer
 
-description         Awesome autocompletion library for python
-long_description    Jedi is an autocompletion tool for Python that can \
-                    be used in IDEs/editors. Jedi works. Jedi is fast. \
-                    It understands all of the basic Python syntax \
-                    elements including many builtin functions.
+python.versions     27 34 35 36
 
-checksums           rmd160  572d54192478974ad6197e1e55fdfb762f4589b4 \
-                    sha256  01e5b59b3ae32cb0596e1189e1727fd695c01c2ec032d3345e0569267ecd10f5
+maintainers         stromnov openmaintainer
 
-python.versions     27 34 35
+description         An autocompletion tool for Python that can be used for text editors.
+long_description    ${description}
+
+checksums           rmd160  a483c2392ea159724609e8b5df291270bb2f5642 \
+                    sha256  f37b8fd95f7a588570413ae185520800e5c9dc10e28de1a18156392420788167
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools
-    livecheck.type          none
+    # setuptools is mandatory due to 'include_package_data' option
+    depends_build-append \
+                        port:py${python.version}-setuptools
+    depends_lib-append  port:py${python.version}-parso
+
+    livecheck.type      none
 }

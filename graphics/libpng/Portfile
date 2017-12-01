@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 
 name                    libpng
-version                 1.6.26
+version                 1.6.34
 set branch              [join [lrange [split ${version} .] 0 1] ""]
 categories              graphics
-maintainers             ryandesign
+maintainers             {ryandesign @ryandesign}
 license                 zlib
 platforms               darwin openbsd freebsd sunos linux
 homepage                http://www.libpng.org/pub/png/libpng.html
@@ -29,8 +28,9 @@ long_description        Libpng was written as a companion to the PNG \
 master_sites            sourceforge:project/${name}/${name}${branch}/${version} \
                         ftp://ftp.simplesystems.org/pub/libpng/png/src/${name}${branch}/
 
-checksums               rmd160  9139502d8d4d00d6637b5a363ba97040f5153dc9 \
-                        sha256  266743a326986c3dbcee9d89b640595f6b16a293fd02b37d8c91348d317b73f9
+checksums               rmd160  cc14798ac8ab2a69f2ca6153c3b52452a972b9ae \
+                        sha256  2f1e960d92ce3b3abd03d06dfec9637dfbd22febf107a536b44f7a47c60659f6 \
+                        size    997968
 
 depends_lib             port:zlib
 

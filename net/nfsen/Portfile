@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
@@ -63,10 +62,10 @@ post-patch {
         ${worksrcpath}/install.pl
     reinplace "s|__DESTDIR__|${destroot}|g" \
         ${worksrcpath}/install.pl
-    eval reinplace "s|__PREFIX__|${prefix}|g" \
-        [glob ${worksrcpath}/bin/*]
-    eval reinplace "s|/usr/bin/perl|${perl5.bin}|g" \
-        [glob ${worksrcpath}/installer-items/*.pm]
+    reinplace "s|__PREFIX__|${prefix}|g" \
+        {*}[glob ${worksrcpath}/bin/*]
+    reinplace "s|/usr/bin/perl|${perl5.bin}|g" \
+        {*}[glob ${worksrcpath}/installer-items/*.pm]
 }
 
 destroot {

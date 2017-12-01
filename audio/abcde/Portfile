@@ -1,16 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 
 name                    abcde
-version                 2.7
+version                 2.8.1
 categories              audio
 platforms               darwin
-maintainers             nomaintainer
+maintainers             eclipsed.net:gr openmaintainer
 license                 GPL-2
 supported_archs         noarch
-
 description             A Better CD Encoder
 
 long_description        abcde is a frontend command-line utility (actually, a \
@@ -18,11 +16,11 @@ long_description        abcde is a frontend command-line utility (actually, a \
                         them to Ogg/Vorbis, MP3, FLAC, Ogg/Speex and/or \
                         MPP/MP+(Musepack) format, and tags them, all in one go.
 
-homepage                http://abcde.einval.com/
+homepage                https://abcde.einval.com/
 master_sites            ${homepage}download/
 
-checksums               rmd160  a675dad88c6df27e11a5d3dc2625e871b0ddec5a \
-                        sha256  0148698a09fedcbae37ee9da295afe411a1190cf8ae224b7814d31b5bf737746
+checksums               rmd160  e98d53ec173ecec0386282f9249423af7f9190fe \
+                        sha256  e49c71d7ddcd312dcc819c3be203abd3d09d286500ee777cde434c7881962b39
 
 depends_lib             port:vorbis-tools \
                         port:lame \
@@ -32,19 +30,14 @@ depends_lib             port:vorbis-tools \
                         port:id3v2 \
                         port:normalize
 
-patchfiles              patch-Makefile-2.5.4.diff
+patchfiles              patch-Makefile-fixpaths.diff
 
 use_configure           no
 
 destroot.destdir        prefix=${destroot}${prefix}
 
 post-destroot {
-    set docdir ${destroot}${prefix}/share/doc/${name}
-    xinstall -d ${docdir}
-    xinstall -m 644 -W ${worksrcpath} \
-        COPYING \
-        FAQ \
-        README \
-        changelog \
-        ${docdir}
+    # default has always been to use cddb
+    # This requires perl modules not in macports
+    delete "${destroot}${prefix}/bin/abcde-musicbrainz-tool"
 }

@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
 name                file
-version             5.29
+version             5.32
 categories          sysutils
 license             BSD
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 description         File - determine file type
 long_description \
     File tests each argument in an attempt to classify it. There are three  \
@@ -26,12 +25,11 @@ master_sites        freebsd \
                     ftp://ftp.astron.com/pub/${name}/ \
                     ftp://ftp.gw.com/mirrors/pub/unix/${name}/
 
-checksums           rmd160  19a5f2d37b6bbf41b88d1fb6c535dc6a5416981a \
-                    sha256  ea661277cd39bf8f063d3a83ee875432cc3680494169f952787e002bdd3884c0
+checksums           rmd160  b7d41a4c6b2c28d9f202d740e353416e2036c1ef \
+                    sha256  8639dc4d1b21e232285cd483604afc4a6ee810710e00e579dbe9591681722b50
 
 patchfiles          patch-magic-Makefile.am.diff \
                     patch-getline.diff
-patchfiles-append   patch-src-file.h.diff
 
 configure.args      --disable-silent-rules \
                     --enable-fsect-man5

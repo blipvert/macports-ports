@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                autoconf-archive
-version             2016.03.20
+version             2017.09.28
 categories          devel
 platforms           darwin
 license             Permissive
@@ -26,8 +25,8 @@ homepage            http://www.gnu.org/software/autoconf-archive/
 master_sites        gnu
 use_xz              yes
 
-checksums           rmd160  7390f3799e3e2efd575e8b26528c7ccb2e6f3ec0 \
-                    sha256  88fb2efff640eddd28a52ae550ff5561bca3bd2bba09e1d7b0580e719875e437
+checksums           rmd160  0535df39ee33b5cb4890cd66e4e9e0321a5f721b \
+                    sha256  5c9fb5845b38b28982a3ef12836f76b35f46799ef4a2e46b48e2bd3c6182fa01
 
 # deactivate versions of gnome-common < 3.18.0 when updating
 # to avoid collisions on activation

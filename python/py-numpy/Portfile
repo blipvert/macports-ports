@@ -1,24 +1,21 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               python 1.0
 PortGroup               github 1.0
 PortGroup               compilers 1.0
 
-github.setup            numpy numpy 1.11.2 v
-revision                1
 name                    py-numpy
-
 categories-append       math
 license                 BSD
 platforms               darwin
-maintainers             michaelld openmaintainer
+maintainers             {michaelld @michaelld} openmaintainer
 description             The core utilities for the scientific library scipy for Python
 long_description        ${description}
 
-checksums               rmd160 e2442df917593d8666025d04b892098956cccc3d \
-                        sha256 44685b9667b9e1a334e4ede73c0b3856c9049fdaca1cd5cb8169ed4c767d557b
+github.setup            numpy numpy 1.13.3 v
+checksums               rmd160 bdc1b9dedf466aaa1bf721972fce2ade5c1a2fe3 \
+                        sha256 4bdde66e14ba0899f61d568a111ea079f47542d714a2a398f2de41a0d64431f2
 
 if {${name} ne ${subport}} {
     # the python PortGroup puts compiler names in build.env and destroot.env
@@ -27,7 +24,7 @@ if {${name} ne ${subport}} {
     pre-destroot { set_compilers }
 }
 
-python.versions         26 27 33 34 35
+python.versions         26 27 33 34 35 36
 
 # respect ${build_arch} value
 compilers.clear_archflags  no
@@ -40,14 +37,24 @@ python.consistent_destroot yes
 #universal_variant no
 
 if {${name} ne ${subport}} {
-    compilers.setup         require_fortran -clang -dragonegg -gcc44 -gcc45 -gcc46 \
-                            -gcc47 -gcc48 -g95 clang37
+    if {${python.version} == 26} {
+        github.setup        numpy numpy 1.11.3 v
+        checksums           rmd160 8cc323d5944301aefa1f66f17d4af14c364c6b32 \
+                            sha256 dbdda9104c7dbc2d8ae691367a2bb1815a62598c5278097b4eee035b85abf6a1
+        patchfiles-append   patch-numpy_core_setup.py.26.diff \
+                            patch-numpy_distutils_fcompiler_gnu.py.26.diff \
+                            patch-numpy_tests_test_scripts.py.26.diff
+    } else {
+        patchfiles-append   patch-numpy_core_setup.py.diff \
+                            patch-numpy_distutils_fcompiler_gnu.py.diff \
+                            patch-numpy_tests_test_scripts.py.diff
+    }
+    compilers.setup         require_fortran -clang -dragonegg -gcc44 -gcc45 \
+                            -gcc46 -gcc47 -gcc48 -g95 clang37
 
-    patchfiles              patch-f2py_setup.py.diff \
-                            patch-fcompiler_g95.diff \
-                            patch-numpy_core_setup.py.diff \
-                            patch-numpy_distutils_fcompiler_gnu.py.diff
-
+    patchfiles-append       patch-f2py_setup.py.diff \
+                            patch-fcompiler_g95.diff
+    
     depends_lib-append      port:fftw-3 \
                             port:py${python.version}-nose \
                             port:py${python.version}-cython
@@ -60,7 +67,7 @@ if {${name} ne ${subport}} {
         destroot.env-append     ARCHFLAGS="[get_canonical_archflags ld]"
     }
 
-    variant atlas description conflicts openblas {Use MacPorts ATLAS Libraries} {
+    variant atlas conflicts openblas description "Use MacPorts ATLAS Libraries" {
         depends_lib-append      port:atlas
     }
 

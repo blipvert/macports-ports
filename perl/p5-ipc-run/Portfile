@@ -1,17 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
-# This comment was inserted on 20160713 to force reindexing of
-# this port after the default homepage definition in the perl5
-# PortGroup was changed to use metacpan.org (r150080).
-# Reindexing is necessary for the new definition to take effect.
-# This comment may be removed in subsequent updates of this port.
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         IPC-Run 0.94
+perl5.branches      5.24 5.26
+perl5.setup         IPC-Run 0.96
 maintainers         nomaintainer
 license             {Artistic-1 GPL}
 description         system() and background procs w/ piping, redirs, ptys
@@ -20,8 +13,8 @@ long_description    ${description}
 platforms           darwin
 supported_archs     noarch
 
-checksums           rmd160  e158c2537370ae5b6f0c72586ad2791be2e64dcf \
-                    sha256  2eb336c91a2b7ea61f98e5b2282d91020d39a484f16041e2365ffd30f8a5605b
+checksums           rmd160  ef9c6daafb87fbd0685487d2ed5ab2b710f3f247 \
+                    sha256  bbd24ff027e1c232b3dc027562c9f4386da72b76991d30f9f3d4119e87cf4640
 
 if {${perl5.major} != ""} {
     depends_lib-append \

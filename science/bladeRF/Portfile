@@ -1,28 +1,23 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           cmake 1.0
 PortGroup           github 1.0
 
-github.setup        Nuand bladeRF fcd775f2b92bcb3cb70781df5824ca7ddfc3e00f
-version             20160824
-checksums           rmd160 4591bb30945e4c403b701678dd6a07e6c0c398d4 \
-                    sha256 3109a44cc97d0d2dc9e200d74717fde981a10c86edd35016aee6d085e48edd5f
+github.setup        Nuand bladeRF 6116d090494943c41656a4852d2183f9d68d9a2c
+version             20170809
+checksums           rmd160 90e71c19d435b3377ac9a2258e745dd0a315937b \
+                    sha256 263f0be80226cc8a60562488ee13f39c975f8c28bbcd8295a1213e56b801b541
 
 categories          science comms
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 description         bladeRF is an open-source hardware and software software-defined radio (SDR) platform.
 long_description    ${description} This port provides all the source code required to program and interact with a bladeRF platform, including firmware for the Cypress FX3 USB controller, HDL for the Altera Cyclone IV FPGA, and C code for the host side libraries, drivers, and utilities.
-license             mit lgpl-2 gpl-2
+license             MIT LGPL-2 GPL-2
 platforms           darwin
 
 depends_build-append port:pkgconfig
 depends_lib-append  path:lib/libusb-1.0.dylib:libusb
-
-# temporary patch to fix use of clock_gettime
-
-patchfiles-append   patch-clock_gettime.diff
 
 # do VPATH (out of source tree) build
 
@@ -39,7 +34,6 @@ configure.ldflags-delete -L${prefix}/lib
 configure.args-append -DVERSION_INFO_OVERRIDE="MacPorts-${version}"
 
 # do not treat compiler warnings as errors
-
 configure.args-append -DTREAT_WARNINGS_AS_ERRORS=OFF
 
 # do not use 'pandoc' even if it is installed

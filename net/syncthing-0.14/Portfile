@@ -1,15 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        syncthing syncthing 0.14.9 v
+github.setup        syncthing syncthing 0.14.40 v
 name                syncthing-0.14
 categories          net
 platforms           darwin
 license             MPL-2
-maintainers         schenkel.net:leonardo mk openmaintainer
+maintainers         {lbschenkel @lbschenkel} openmaintainer
 
 description         Open Source Continuous File Synchronization
 long_description    Syncthing replaces proprietary sync and cloud services \
@@ -19,8 +18,8 @@ long_description    Syncthing replaces proprietary sync and cloud services \
                     and how it's transmitted over the Internet.
 homepage            https://syncthing.net
 
-checksums           rmd160  4b4a4c7e1fbe87a15962278db57e32fc3c15f3a8 \
-                    sha256  fbfe1e8256fe94472271dfd06ea14fba03fbf6ea784ec73142009493fbd4cd91
+checksums           rmd160  602ee22855a4bb09f972b6f370c4add613b04925 \
+                    sha256  92d2539c0c564ff3f637e9e2ef2a23a4b386a46fc2f0ae51349f34de63d2f951
 
 worksrcdir          src/github.com/syncthing/syncthing
 extract.mkdir       yes
@@ -54,3 +53,4 @@ notes-append        \
     "2. Edit syncthing.plist by replacing USERNAME with your actual username" \
     "3. Log out and in again, or run: launchctl load ~/Library/LaunchAgents/syncthing.plist"
 
+livecheck.url       ${github.homepage}/releases/latest

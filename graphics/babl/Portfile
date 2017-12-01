@@ -1,16 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           muniversal 1.0
+PortGroup           compiler_blacklist_versions 1.0
 
 name                babl
 conflicts           babl-devel
-version             0.1.18
+version             0.1.38
 license             LGPL-3+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          graphics
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 platforms           darwin
 homepage            http://gegl.org/babl
 description         Dynamic, any to any, pixel format conversion library.
@@ -21,12 +21,16 @@ master_sites        gimp:${name}/${branch}/
 
 use_bzip2           yes
 
-checksums           rmd160  ee4ea7f76dcb1a8c98ef31b39e7fd8de127544f6 \
-                    sha256  483a495bc9fa68be624e27e72d2144ebfcbbf63e061eb986db1fb82b04b6fbf9
+checksums           rmd160  c3e228706c1b80d2d1cd93c93fc05ef115972a8a \
+                    sha256  a0f9284fcade0377d5227f73f3bf0c4fb6f1aeee2af3a7d335a90081bf5fee86
 
 # In 0.1.12, i386 fails to compile with SL's gcc-4.2:
 #    babl-cpuaccel.c:169: error: ‘asm’ operand has impossible constraints
 compiler.blacklist-append *gcc*
+
+# additionally blacklist compilers that don't support C11 (typedef redefinition in C)
+# babl-icc.c:1031:25: error: redefinition of typedef 'UTF8' is invalid in C
+compiler.blacklist-append {clang < 300}
 
 configure.args      --disable-silent-rules \
                     ac_cv_prog_AWK=/usr/bin/awk

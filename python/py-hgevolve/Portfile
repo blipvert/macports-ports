@@ -1,10 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               python 1.0
 PortGroup               bitbucket 1.0
 
+bitbucket.setup         marmoute mutable-history 7.0.1
 name                    py-hgevolve
 
 categories-append       devel
@@ -17,25 +17,22 @@ description             Mutable history for mercurial
 long_description        This extension provides several commands to mutate history \
                         and deal with issues it may raise.
 
+checksums               rmd160  afc6a782a55b4a4e23145755f472003c17f5b820 \
+                        sha256  74effa368389711f21bcb590e14bd19cba45d6987000530ad98d88289a38fe41
+
 # can't set python.versions before adding custom subports
 subport py27-hgevolve-devel {
 }
 
 if {[string match "*-devel" $subport]} {
-    bitbucket.setup     marmoute mutable-history cb5edd4b160c
+    bitbucket.setup     marmoute mutable-history 0b85da2e8e2a
     bitbucket.livecheck default
     name                py-hgevolve-devel
-    version             5.4.99
-    revision            4
+    version             7.0.99
+    revision            0
 
-    checksums           rmd160  f2a45aa6d9209453406c6b7cad107e1fadd3eb3d \
-                        sha256  aba0d474fa36fbd2777abfb1c1c17621af00f7476a7461153929cff62b2e7384
-} else {
-    bitbucket.setup     marmoute mutable-history 5.4.1
-    name                py-hgevolve
-
-    checksums           rmd160  c94d1473b8d3b1d177de2c45eea3bb0742a68d5c \
-                        sha256  22ecfd6bbb092f43105ef896b298101d6aad2f9672a2344c4836aff34017dd7e
+    checksums           rmd160  269189384485d8a831a30d0a0ea1715f782a8963 \
+                        sha256  8f7c20baea93a16064176b19b912675718c171f7299817000caf898a5cbab171
 }
 
 python.versions         27
@@ -49,15 +46,9 @@ if {${name} ne ${subport}} {
     }
 
     post-destroot {
-        file delete ${destroot}${python.pkgd}/hgext/__init__.py
-        file delete ${destroot}${python.pkgd}/hgext/__init__.pyc
-
-        foreach f [glob -nocomplain ${destroot}${python.pkgd}/hgext/*.py] {
-            move $f ${destroot}${python.pkgd}
-        }
-        foreach f [glob -nocomplain ${destroot}${python.pkgd}/hgext/*.pyc] {
-            move $f ${destroot}${python.pkgd}
-        }
+        file delete ${destroot}${python.pkgd}/hgext3rd/__init__.py
+        file delete ${destroot}${python.pkgd}/hgext3rd/__init__.pyc
+        file delete -force -- ${destroot}${python.pkgd}/hgext3rd/topic
     }
 
     notes               "

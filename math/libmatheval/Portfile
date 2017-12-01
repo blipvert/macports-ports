@@ -1,14 +1,12 @@
-# $Id$
-
 PortSystem 1.0
 
 name		libmatheval
 version		1.1.11
-revision        1
+revision        2
 categories	math devel
 platforms	darwin
 license		GPL-3
-maintainers	mww openmaintainer
+maintainers	nomaintainer
 description	in-memory tree representations of mathematical functions
 long_description	GNU libmatheval is comprised of several procedures \
 			that make it possible to create in-memory tree \
@@ -34,7 +32,8 @@ post-patch {
     reinplace "s/libguile.h/libguile18.h/g" ${worksrcpath}/configure ${worksrcpath}/tests/matheval.c
 }
 
-depends_build	port:guile18 port:flex
+depends_build	port:guile18
+depends_lib	port:flex
 
 configure.args	--infodir=${prefix}/share/info
 configure.env-append	GUILE=${prefix}/bin/guile18 GUILE_CONFIG=${prefix}/bin/guile18-config GUILE_TOOLS=${prefix}/bin/guile18-tools

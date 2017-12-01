@@ -1,20 +1,19 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Devel-CheckOS 1.77
+perl5.branches      5.24 5.26
+perl5.setup         Devel-CheckOS 1.80
 license             {Artistic-1 GPL}
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 description         Devel::CheckOS - check what OS we're running on
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  6acf9ebb72a8730842758ac7fd106e35fb318bbc \
-                    sha256  42a1e784902a16f8f553034a71ac570e46c183089721c0794d31ff37e314a39f
+checksums           rmd160  27d80c65cb1d84c223ba6e9ec9ef1a87b2c9460b \
+                    sha256  0e2b7f6fe2029b8da7f5fe47d99c63b371e1d3db910ef9a7aa2343caa8131628
 
 if {${perl5.major} != ""} {
     depends_lib-append \

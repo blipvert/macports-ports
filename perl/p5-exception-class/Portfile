@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Exception-Class 1.40
+perl5.branches      5.24 5.26
+perl5.setup         Exception-Class 1.43
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 supported_archs     noarch
@@ -17,8 +16,8 @@ long_description    Exception::Class allows you to declare exception \
 
 platforms           darwin
 
-checksums           rmd160  5ba38e326198c22c9350e533c5c91f8b6354b1c1 \
-                    sha256  d1171f2d03a485e87eb561f34688991c17b939d2689bcda47f3f51b372669a1f
+checksums           rmd160  bd5c0fb76097de3766e7b2033fba3c4d86485caf \
+                    sha256  ff3b4b3f706e84aaa87ab0dee5cec6bd7a8fc9f72cf76d115212541fa0a13760
 
 if {${perl5.major} != ""} {
     depends_lib-append \

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           active_variants 1.1
@@ -9,12 +8,12 @@ PortGroup           conflicts_build 1.0
 
 name                magic-devel
 conflicts           magic
-version             8.1.111
+version             8.2.40
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          science
 # mostly very permissively licensed, but includes a copy of GNU readline
 license             GPL-2+
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 description         A VLSI Layout System
 
 long_description    Magic is a venerable VLSI layout tool, written in the \
@@ -33,6 +32,7 @@ distname            magic-${version}
 extract.suffix      .tgz
 
 depends_lib         port:blt \
+                    path:lib/pkgconfig/cairo.pc:cairo \
                     port:libglu \
                     port:mesa \
                     port:tcl \
@@ -40,8 +40,9 @@ depends_lib         port:blt \
 
 require_active_variants tk x11
 
-checksums           rmd160  c998bc2a633939dd5f39553f01590dcdb061ceb5 \
-                    sha256  3905b6d42d17e97939bce6d7033d7804dee129465e990591448ad2535b1b1df6
+checksums           rmd160  423617ef8fb6437b9a80cf5f23e7278dc3df2c28 \
+                    sha256  8f0d4bebe3edd94e6fc63eee4839ac7cc8e13469589016cdbfac62b97b09154c \
+                    size    3975993
 
 universal_variant   no
 

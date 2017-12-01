@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 #
 # Copyright (c) 2004 Robert Shaw <rshaw@opendarwin.org>,
 #                    Toby Peterson <toby@opendarwin.org>
@@ -108,7 +107,10 @@ proc perl5.create_variants {branches} {
 # Add conflicts
         set conflicts {}
         if {${perl5.conflict_variants}} {
-            set conflicts "conflicts {[lreplace ${perl5.variants} ${index} ${index}]}"
+            set filtered [lreplace ${perl5.variants} ${index} ${index}]
+            if {$filtered ne ""} {
+                set conflicts "conflicts {$filtered}"
+            }
         }
         eval "variant ${variant} ${conflicts} description Use MacPorts perl${branch} {}"
         if {[variant_isset ${variant}]} {
@@ -232,8 +234,8 @@ proc perl5.setup {module vers {cpandir ""}} {
             fs-traverse file ${configure.dir} {
                 if {[file isfile ${file}] && [file tail ${file}] eq "Makefile"} {
                     ui_info "Fixing flags in [string map "${configure.dir}/ {}" ${file}]"
-                    reinplace -locale C "/^CCFLAGS *=/s/$/ [get_canonical_archflags cc]/" ${file}
-                    reinplace -locale C "/^OTHERLDFLAGS *=/s/$/ [get_canonical_archflags ld]/" ${file}
+                    reinplace -locale C -q "/^CCFLAGS *=/s/$/ [get_canonical_archflags cc]/" ${file}
+                    reinplace -locale C -q "/^OTHERLDFLAGS *=/s/$/ [get_canonical_archflags ld]/" ${file}
                 }
             }
         }
@@ -246,7 +248,7 @@ proc perl5.setup {module vers {cpandir ""}} {
             fs-traverse file ${destroot}${perl5.lib} {
                 if {[file isfile ${file}] && [file tail ${file}] eq ".packlist"} {
                     ui_info "Fixing paths in [string map "${destroot}${perl5.lib}/ {}" ${file}]"
-                    reinplace -n "s|${destroot}||p" ${file}
+                    reinplace -n -q "s|${destroot}||p" ${file}
                 }
             }
             if {${perl5.link_binaries}} {
@@ -263,9 +265,9 @@ proc perl5.setup {module vers {cpandir ""}} {
     
     if {${perl5.use_search_cpan_org}} {
         livecheck.url       http://search.cpan.org/dist/${perl5.module}/
-        livecheck.regex     _gaq.push\\(\\\["_setCustomVar",5,"Release","[quotemeta ${perl5.module}]-(\[^"\]+?)\"
+        livecheck.regex     >[quotemeta ${perl5.module}]-(\[^"\]+?)<
     } else {
-        livecheck.url       http://api.metacpan.org/release/${perl5.module}/
+        livecheck.url       https://fastapi.metacpan.org/v1/release/${perl5.module}/
         livecheck.regex     \"name\" : \"[quotemeta ${perl5.module}]-(\[^"\]+?)\"
     }
 

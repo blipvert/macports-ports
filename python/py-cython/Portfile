@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-cython
-version             0.25.1
+version             0.27.3
 revision            0
 categories-append   devel
 platforms           darwin
 license             Apache-2
 
-python.versions     26 27 33 34 35
+python.versions     26 27 33 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -28,18 +27,12 @@ master_sites        pypi:C/Cython
 
 distname            Cython-${version}
 
-checksums           rmd160  a44b0accf27ae0ae59274fd59c8b16a1e9ca067e \
-                    sha256  e0941455769335ec5afb17dee36dc3833b7edc2ae20a8ed5806c58215e4b6669
+checksums           rmd160  c6fa763137e0c000beff0898e3af0f6c23c9d9bc \
+                    sha256  6a00512de1f2e3ce66ba35c5420babaef1fe2d9c43a8faab4080b0dbcc26bc64
 
 if {${name} ne ${subport}} {
-    post-destroot {
-        xinstall -m 755 -d ${destroot}${python.prefix}/share/doc/cython
-        xinstall -m 644 -W ${worksrcpath}/Doc About.html FAQ.html \
-            extension_types.html index.html overview.html primes.c sharing.html \
-            special_methods.html ${destroot}${python.prefix}/share/doc/cython
-        xinstall -m 644 -W ${worksrcpath} INSTALL.txt README.txt \
-            ToDo.txt USAGE.txt ${destroot}${python.prefix}/share/doc/cython
-    }
+    depends_build-append \
+                        port:py${python.version}-setuptools
 
     depends_run         port:cython_select
     test.run            no
@@ -57,5 +50,4 @@ port select --set ${select.group} [file tail ${select.file}]
     livecheck.type      none
 } else {
     livecheck.name      Cython
-    livecheck.type      pypi
 }

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem       1.0
 
@@ -43,7 +42,7 @@ destroot {
     xinstall -m 755 ${filespath}/${name} ${binpath}
     reinplace "s|__PREFIX__|${prefix}|" ${binpath}
 
-    eval copy [glob ${worksrcpath}/build/www/*] ${docdir}
+    copy {*}[glob ${worksrcpath}/build/www/*] ${docdir}
 }
 
 livecheck.type   none

@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-bokeh
-version             0.12.3
+version             0.12.10
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -26,8 +25,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  b4d5abedf8caf2defc2818df5d22dc49191eab7b \
-                    sha256  e138941b62f59bc48bc5b8d249e90c03fed31c1d5abe47ab2ce9e4c83202f73c
+checksums           rmd160  7fba1d06f7f4f57f7ea96bfb83683c8aa15fb885 \
+                    sha256  6465fae82e94223f16584645b38d34a73d95712870f29c0244649c2cbf2c8393
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-six \
@@ -43,6 +42,4 @@ if {${name} ne ${subport}} {
     }
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

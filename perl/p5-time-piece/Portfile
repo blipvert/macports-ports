@@ -1,24 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
-# This comment was inserted on 20160713 to force reindexing of
-# this port after the default homepage definition in the perl5
-# PortGroup was changed to use metacpan.org (r150080).
-# Reindexing is necessary for the new definition to take effect.
-# This comment may be removed in subsequent updates of this port.
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Time-Piece 1.31
+perl5.branches      5.24 5.26
+perl5.setup         Time-Piece 1.3202
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 
 description         Object-oriented time objects
 long_description    ${description}
 
-checksums           rmd160  71e65fe846a22e107d0c5452f8ded66d50408f25 \
-                    sha256  05084024dc6fcec9ea5218038d1933e9c2cc5aa5f769d70404480e977cd167b9
+checksums           rmd160  ce56ff61c40aed3ae2257bb4bbdb2c4e55ee0523 \
+                    sha256  1f682a1c8938a80c1bccfcecdc1edd8c226e2509157e7d6370f70412dd6452e1
 
 platforms           darwin

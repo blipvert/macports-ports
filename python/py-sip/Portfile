@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sip
 categories-append   devel
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 license             {GPL-2 GPL-3 PSF}
 platforms           macosx
 
@@ -21,7 +20,7 @@ long_description \
 
 homepage            http://www.riverbankcomputing.co.uk/software/sip/intro
 
-version             4.18.1
+version             4.19.6
 
 # from siplib/sip.h.in:
 #
@@ -32,6 +31,10 @@ version             4.18.1
 # removed or the order changed then the major number must be
 # incremented and the minor number set to 0.
 #
+# SIP 4.19.[4-6] provides SIP API 12.3
+# SIP 4.19.3 provides SIP API 12.2
+# SIP 4.19.[1-2] provides SIP API 12.1
+# SIP 4.19.0 provides SIP API 12.0
 # SIP 4.18.[0-1] provides SIP API 11.3
 # SIP 4.17.0 provides SIP API 11.2
 # SIP 4.16.[8-9] provides SIP API 11.2
@@ -43,7 +46,7 @@ version             4.18.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 set patch           [lindex [split ${version} .] 2]
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 python.default_version 27
 
 if {${name} ne ${subport}} {
@@ -56,8 +59,8 @@ if {${name} ne ${subport}} {
         distname        sip-${version}
     }
 
-    checksums           rmd160 adcbd5a87b375e1b357922b608db45862ccf37ea \
-                        sha256 9bce7a2dbf7f105bf68ad1bab58eebc0ce33087ec40396da756463f086ffa290
+    checksums           rmd160 8cff31053f90efb30633e78e6beadb6dd351300a \
+                        sha256 9dda27ae181bea782ebc8768d29f22f85ab6e5128ee3ab21f491febad707925a
 
     patchfiles          patch-siputils.py.diff \
                         patch-specs_macx-g++.diff \

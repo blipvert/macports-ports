@@ -1,14 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem                  1.0
 PortGroup                   muniversal 1.0
 
 name                        fontconfig
-version                     2.12.1
+version                     2.12.6
 revision                    1
 categories                  graphics
-maintainers                 ryandesign
+maintainers                 {ryandesign @ryandesign}
 license                     fontconfig
 platforms                   darwin
 use_parallel_build          yes
@@ -22,8 +21,8 @@ homepage                    https://www.freedesktop.org/wiki/Software/fontconfig
 master_sites                https://www.freedesktop.org/software/fontconfig/release/
 use_bzip2                   yes
 
-checksums                   rmd160  66907dbb317309bcb5013ea45c53dbf5050e6376 \
-                            sha256  b449a3e10c47e1d1c7a6ec6e2016cca73d3bd68fbbd4f0ae5cc6b573f7d6c7f3
+checksums                   rmd160  d6e7a5c0dbd658b39701fda897414640d032cdb1 \
+                            sha256  cf0c30807d08f6a28ab46c61b8dbd55c97d2f292cf88f3a07d3384687f31f017
 
 depends_build               port:pkgconfig
 
@@ -41,13 +40,21 @@ set docdir                  ${prefix}/share/doc/${name}
 
 patchfiles                  patch-docbook-4.2.diff
 patchfiles-append           patch-src-fcweight.c.diff
-patchfiles-append           patch-src-fccache.c.diff
 
 configure.args              --disable-silent-rules HASDOCBOOK=no
 
 # We put this into a pre-configure block so it can be evaluated _after_ platform selection.
 pre-configure {
     configure.args-append   --with-add-fonts=[join ${add_fonts} ,]
+
+    # Fix building for older macOS versions via MACOSX_DEPLOYMENT_TARGET
+    # https://github.com/macports/macports-ports/pull/802
+    if {${os.platform} eq "darwin" && [vercmp $macosx_version 10.12] >= 0} {
+        if {[vercmp $macosx_deployment_target 10.12] < 0 } {
+            ui_info "Disabling mkostemp for older versions of macOS..."
+            configure.args-append ac_cv_func_mkostemp=no
+        }
+    }
 }
 
 post-destroot {
@@ -65,6 +72,12 @@ post-activate {
     # fc-cache can fail due to /Network/Library/Fonts being unavailable, so force success.
     system "${prefix}/bin/fc-cache -sv || true"
     system "${prefix}/bin/fc-cache -v || true"
+}
+
+pre-pkg {
+    xinstall -m 0755 ${filespath}/postinstall ${package.scripts}/
+    reinplace -locale C "s|@PREFIX@|${prefix}|g" ${package.scripts}/postinstall
+    long_description-append  Install prefix: ${prefix}
 }
 
 platform macosx {

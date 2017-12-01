@@ -1,11 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           muniversal 1.0
+PortGroup           cxx11 1.1
 
-github.setup        jedisct1 libsodium 1.0.11
+github.setup        jedisct1 libsodium 1.0.15
+github.tarball_from releases
 
 categories          devel security
 platforms           darwin
@@ -18,18 +19,11 @@ description         Portable and packageable NaCl-based crypto library
 long_description    libsodium is a library for network communication, \
                     encryption, decryption, signatures, etc.
 
-checksums           rmd160  8218ba22131a43af92b4e526153cf224a34192bc \
-                    sha256  12b3f7dbeb67c3f913a11d9c26e588d24c485a947f59cf69145eed0f02450229
+checksums           rmd160  84791d8341181225acfa3bba5d1168460e73684a \
+                    sha256  fb6a9e879a2f674592e4328c5d9f79f082405ee4bb05cb6e679b90afe9e178f4
 
 depends_build-append \
-                    port:pkgconfig \
-                    port:autoconf \
-                    port:automake \
-                    port:libtool
-
-pre-configure {
-    system -W ${worksrcpath} "./autogen.sh"
-}
+                    port:pkgconfig
 
 configure.args      --disable-silent-rules
 

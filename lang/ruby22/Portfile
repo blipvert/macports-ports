@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           select 1.0
 
 name                ruby22
-version             2.2.5
+version             2.2.8
 revision            0
 
 categories          lang ruby
@@ -26,10 +25,10 @@ master_sites        ruby:2.2
 use_bzip2           yes
 distname            ruby-${version}
 
-checksums           md5 0c7edd1ff3650c3b74da2efaf641bf34 \
-                    rmd160 b690115c7c4e6a70c560b72c2bafa62ae8f37957 \
-                    sha1 f78473fe60a632b778599374ae64612592c2c9c1 \
-                    sha256 22f0c6f34c0024e0bcaaa8e6831b7c0041e1ef6120c781618b833bde29626700
+checksums           md5 054d2e2904d5175662293e29c3bdb927 \
+                    rmd160 a005f9bd7d4459b1f3a8b66a7021600efe677fb7 \
+                    sha1 d851324bf783221108ce79343fabbcd559b9e60b \
+                    sha256 b19085587d859baf9d7763f92e34a84632fceac5cc593ca2c0efa28ed8c6e44e
 use_parallel_build  no
 
 depends_lib         port:readline \
@@ -129,6 +128,6 @@ variant relative description "Enable relative loading of libraries to allow for 
 }
 
 livecheck.type  regex
-livecheck.url   http://cache.ruby-lang.org/pub/ruby/2.2/
-livecheck.regex ruby-(${version})${extract.suffix}
+livecheck.url   https://cache.ruby-lang.org/pub/ruby/2.2/
+livecheck.regex ruby-(2.2.\\d+)${extract.suffix}
 

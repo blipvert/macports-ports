@@ -1,20 +1,19 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                mariadb-10.1
 set name_mysql      ${name}
-version             10.1.17
+version             10.1.24
 set version_branch  [join [lrange [split ${version} .] 0 1] .]
 # Please set revision_client and revision_server to 0 if you bump version.
-set revision_client 1
-set revision_server 1
+set revision_client 0
+set revision_server 0
 categories          databases
 platforms           darwin
 license             GPL-2
 maintainers         pixilla openmaintainer
-homepage            http://mariadb.org/
+homepage            https://mariadb.org/
 
 if {$subport eq $name} {
 
@@ -46,8 +45,8 @@ if {$subport eq $name} {
     patchfiles          patch-cmake-install_layout.cmake.diff \
                         patch-CMakeLists.txt.diff
 
-    checksums           rmd160  55086373d63f86d056566eb9af52d05153f53ce5 \
-                        sha256  4ca45ac5e34418761868115ebc8c068d511fed08e283b2cac52559d63ba4aab5
+    checksums           rmd160  dab5b7afacd82de0d1cbb6e6afca53701dc5a3d1 \
+                        sha256  b3df99ae5b1ec8cf6cede4cbc4ae3f54ce66464549cba6d56d9ff4d24e4d551e
 
     depends_lib-append  port:zlib port:tcp_wrappers port:ncurses
     depends_run-append  port:mysql_select

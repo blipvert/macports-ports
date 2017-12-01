@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           muniversal 1.0
 
 name                nss
-version             3.27.1
+version             3.33
 set NSS_VMAJOR      [lindex [split ${version} .] 0]
 set NSS_VMINOR      [lindex [split ${version} .] 1]
 set NSS_VPATCH      [lindex [split ${version} .] 2]
@@ -27,11 +26,11 @@ platforms           darwin
 set my_release      NSS_[strsed ${version} {g/\./_/}]_RTM
 
 use_bzip2           no
-master_sites        ftp://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/${my_release}/src/ \
-                    http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/${my_release}/src/
+master_sites        https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/${my_release}/src/ \
+                    ftp://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/${my_release}/src/
 
-checksums           rmd160  70158d5ffeed658c0fd9663c1a7ac83dc99f18a4 \
-                    sha256  fd3637a1930cd838239a89633a7ed9a18859ae9b599043f3a18f726dc4ec2a6b
+checksums           rmd160  fe4d2fb56f15db3531e0efbdff8eda4aced41a03 \
+                    sha256  98f0dabd36408e83dd3a11727336cc3cdfee4cbdd9aede2b2831eb2389c284e4
 
 depends_lib     port:nspr \
                 port:zlib \

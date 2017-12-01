@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           active_variants 1.1
@@ -7,12 +6,12 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           conflicts_build 1.0
 PortGroup           github 1.0
 
-github.setup        arvidn libtorrent 1_1_1 libtorrent-
+github.setup        arvidn libtorrent 1_1_5 libtorrent-
 name                libtorrent-rasterbar
 version             [string map {_ .} ${version}]
 license             BSD
 categories          net
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 platforms           darwin
 homepage            http://www.rasterbar.com/products/libtorrent/
 
@@ -21,8 +20,8 @@ description         A C++ bittorrent library (not the same as port libtorrent)
 long_description    A C++ bittorrent library designed to run on anything from embedded systems to large scale \
                     seed servers. It comes with python bindings and detailed documentation.
 
-checksums           rmd160  18ad6a0bf99556d5e7b60659e53dbd33b895dc3d \
-                    sha256  f2c6dee65b97645ba88aa3bb84af0b8e0f4b7190ccfe2b6cce107bf05bc1a125
+checksums           rmd160  6aa26a87745c5e4e4ce6ba3388d39eb2baee6faa \
+                    sha256  c9d41585e803e2e99d7d9cdd6556dec93b4ec4bfb73c479adb08fb508d164637
 
 depends_build       port:pkgconfig \
                     port:autoconf \

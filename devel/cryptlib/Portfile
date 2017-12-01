@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           conflicts_build 1.0
@@ -13,7 +12,8 @@ PortGroup           conflicts_build 1.0
 PortGroup           muniversal 1.0
 
 name                cryptlib
-version             3.4.3
+version             3.4.3.1
+revision            1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          devel security crypto
 platforms           darwin
@@ -34,11 +34,13 @@ long_description    cryptlib is a powerful security toolkit that allows even \
 homepage            https://www.cs.auckland.ac.nz/~pgut001/cryptlib/
 master_sites        ftp://ftp.franken.de/pub/crypt/cryptlib/ \
                     http://www.cypherpunks.to/~peter/
+# 3.4.3.1 was stealth-updated 2017-01-30
+dist_subdir         ${name}/${version}_1
 distname            cl[join [split $version .] ""]
 use_zip             yes
 
-checksums           rmd160  407a473d64cad30931f93b6d52bc3eb77c63e55f \
-                    sha256  08b104442bb5c7281a3299853d5585cc63bd928454dff3150569c02b957427ad
+checksums           rmd160  e4b48ea2b888a4cc684d425520b49e0578c39263 \
+                    sha256  4a608d725f66669d983083420f9f57f763f320292c50346de3e8c1caeee743bd
 
 pre-extract {
     # DOS to UNIX line endings.
@@ -47,7 +49,6 @@ pre-extract {
 extract.mkdir       yes
 
 patchfiles-append   patch-makefile.diff \
-                    patch-random-unix.c.diff \
                     patch-tools-ccopts.sh.diff
 
 # Build fails when compiler is gcc or llvm-gcc; warnings are printed when compiler is clang.

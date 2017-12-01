@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-regex
-version             2016.10.22
+version             2017.11.09
 revision            0
 categories-append   devel
 platforms           darwin
 license             PSF
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -23,11 +22,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  95541c0363f00d8a0ab943d19d0e741db961c0b8 \
-                    sha256  4415b5b5408ad36ad73ee6c27a0ac01880d460f69014671b719a10320322e4d5
+checksums           rmd160  0acbeaffb5714918f8c3f46d909c621f45e9604d \
+                    sha256  d440fbbf5a3e6dcc6c5ecb8e2dba1e01978a25a6540cbea6a583f654007bb7d5
 
 if {${name} ne ${subport}} {
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                angband
-version             4.0.5
+version             4.1.0
 set branch          [join [lrange [split ${version} .] 0 1] .]
 
 categories          games
@@ -22,12 +21,10 @@ armor you can find, and finally face Morgoth - The Dark Enemy.
 homepage            http://rephial.org/
 master_sites        ${homepage}downloads/${branch}
 
-checksums           rmd160  3ef1c798f974fa03edc54b898d093bf6d5681b66 \
-                    sha256  0d769a0f349842b0c78cbcd1804a9e08f064e75ca26b957710e4c2a3eb14f852
+worksrcdir          angband-master
 
-depends_build       port:autoconf \
-                    port:automake \
-                    port:libtool
+checksums           rmd160  c2a161b288c29313ff3bf8992b78c41dfec1ea4c \
+                    sha256  ea52266e52b66d6bf2ab3728b3bc6c7c3875130973430021e31bf56000c0df8b
 
 post-patch {
     addgroup games
@@ -35,6 +32,10 @@ post-patch {
 
 use_autoreconf      yes
 autoreconf.cmd      ./autogen.sh
+
+depends_build       port:autoconf \
+                    port:automake \
+                    port:libtool
 
 configure.args      --with-setgid=games --bindir=${prefix}/bin --without-x
 
@@ -65,7 +66,7 @@ platform darwin {
         use_configure       no
 
         build {
-            system -W ${worksrcpath}/src "make -f Makefile.osx"
+            system -W ${worksrcpath}/src "make -f Makefile.osx CC=${configure.cc}"
         }
 
         destroot.keepdirs   ${destroot}${applications_dir}/Angband.app/Contents/Resources/lib/info
@@ -85,4 +86,4 @@ platform darwin {
 }
 
 livecheck.type      regex
-livecheck.regex     ${name}-v(\[0-9.\]+)${extract.suffix}
+livecheck.regex     ${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}

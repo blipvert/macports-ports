@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                leptonica
-version             1.73
+version             1.74.4
 revision            0
 categories          graphics science devel
 platforms           darwin
@@ -18,8 +17,10 @@ long_description    ${description}
 homepage            http://www.leptonica.com/
 master_sites        http://www.leptonica.com/source/
 
-checksums           rmd160  a95b69ca0ea40203519b2cf59ea71f037179fb46 \
-                    sha256  19e4335c674e7b78af9338d5382cc5266f34a62d4ce533d860af48eaa859afc1
+checksums           rmd160  f4a469d36c1de4f393dd6307474bccf9eecef022 \
+                    sha256  29c35426a416bf454413c6fec24c24a0b633e26144a17e98351b6dffaa4a833b
+
+depends_build       port:pkgconfig
 
 depends_lib         port:tiff \
                     port:zlib \
@@ -28,6 +29,8 @@ depends_lib         port:tiff \
                     port:openjpeg \
                     port:giflib \
                     port:webp
+
+configure.args      --disable-silent-rules
 
 # ${prefix}/bin/fileinfo
 conflicts-append    osxutils

@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           compiler_blacklist_versions 1.0
+PortGroup           gobject_introspection 1.0
+
+github.setup        ebassi graphene 1.6.0
+license             Permissive
+categories          graphics gnome
+maintainers         {devans @dbevans} openmaintainer
+platforms           darwin
+homepage            http://ebassi.github.io/${name}/
+
+description         A thin layer of graphic data types
+
+long_description    ${description}
+
+checksums           rmd160  afa97d00c3c2d8975bd5e24a7b192649381018af \
+                    sha256  2c2196e5d33f67a8e433170108b212c33fbc1e4682d34b81d1c8e1a82836fe48
+
+depends_build       port:pkgconfig \
+                    port:autoconf \
+                    port:automake \
+                    port:libtool \
+                    port:gtk-doc \
+                    port:python36
+
+depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2
+
+compiler.blacklist-append {clang >= 703.0.29 < 800}
+
+gobject_introspection yes
+
+configure.cmd       ./autogen.sh
+
+# attempt to fix build on 10.6 using gcc-4.2
+# error: ‘for’ loop initial declaration used outside C99 mode
+configure.cflags-append \
+                    -std=c99
+
+configure.args      --disable-silent-rules \
+                    --disable-benchmarks \
+                    --disable-tests \
+                    --enable-gtk-doc \
+                    PYTHON3_PATH=${prefix}/bin/python3.6
+
+livecheck.regex     "archive/(\\d+\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 #
 # Copyright (c) 2012-2013, 2015 The MacPorts Project
 # All rights reserved.
@@ -60,7 +59,7 @@
 # compiler.blacklist-delete clang
 #
 # This PortGroup was created following this discussion:
-# http://lists.macosforge.org/pipermail/macports-dev/2012-November/021103.html
+# https://lists.macosforge.org/pipermail/macports-dev/2012-November/021103.html
 
 option_proc compiler.blacklist compiler_blacklist_versions._set_compiler_blacklist
 

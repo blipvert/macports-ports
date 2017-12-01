@@ -1,13 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           cmake 1.0
 PortGroup           compilers 1.0
 
 name                lapack
-version             3.6.0
-revision            1
+version             3.7.1
 categories          math devel science
 platforms           darwin
 license             BSD
@@ -21,8 +19,8 @@ long_description \
 homepage            http://www.netlib.org/${name}/
 master_sites        ${homepage}
 
-checksums           rmd160  a92d0d869e42cf5835039b043e613e323b069f04 \
-                    sha256  a9a0082c918fe14e377bbd570057616768dca76cbdc713457d8199aaa233ffc3
+checksums           rmd160  db7d1e3cd904d01459db3c40bc613cb8738ad114 \
+                    sha256  f6c53fd9f56932f3ddb3d5e24c1c07e4cd9b3b08e7f89de9c867125eecc9a1c8
 extract.suffix      .tgz
 
 compilers.choose    cc fc f77 f90
@@ -30,15 +28,10 @@ compilers.setup     require_fortran -clang -llvm -dragonegg
 
 cmake.out_of_source yes
 
-patchfiles          patch-lapack.pc.in.diff \
-                    patch-BLAS-CMakeLists.txt.diff \
-                    patch-BLAS-blas.pc.in.diff \
-                    patch-CBLAS-CMakeLists.txt.diff \
-                    patch-CBLAS-cblas.pc.in.diff \
-                    patch-CMakeLists.txt.diff \
-                    patch-LAPACKE-CMakeLists.txt.diff \
-                    patch-LAPACKE-lapacke.pc.in.diff
-
+configure.cppflags-append \
+                    -DADD_
+# remove MACOSX_DEPLOYMENT_TARGET #53565
+macosx_deployment_target
 configure.args-delete \
                     -DCMAKE_INSTALL_RPATH=${prefix}/lib \
                     -DCMAKE_INSTALL_NAME_DIR=${prefix}/lib

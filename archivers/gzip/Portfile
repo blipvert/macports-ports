@@ -1,14 +1,13 @@
-# $Id$
-
 PortSystem          1.0
 
 name                gzip
 version             1.8
+revision            2
 categories          archivers
 license             GPL-3+
 installs_libs       no
 platforms           darwin freebsd
-maintainers         mww openmaintainer
+maintainers         nomaintainer
 conflicts           ncompress
 
 description         gnu replacement utility for unix compress
@@ -26,6 +25,8 @@ checksums           rmd160  9f0a0ee06321f3327f9948f85b3453d193f09742 \
 depends_build       port:texinfo
 
 installs_libs       no
+
+patchfiles          secure_snprintf.patch
 
 configure.args      --disable-silent-rules \
                     DEFS=NO_ASM

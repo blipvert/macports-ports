@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem  1.0
 
 name            nagios
-version         4.2.1
+version         4.3.4
 categories      net
 license         GPL-2
 maintainers     nomaintainer
@@ -23,8 +22,8 @@ homepage        http://nagios.org
 livecheck.regex     nagios-(\[0-9.\]+)${extract.suffix}
 
 master_sites        sourceforge:project/nagios/nagios-4.x/nagios-${version}
-checksums       rmd160 ae6eed1681bfff139dc3197d37c4aa5b46ef09b5 \
-                sha256 cb62c5c16964cfc143b126a576a7f8130e634cb9dda4dd3bd3632598d7855a87
+checksums       rmd160 bddc8310f82351923288620dc635c535d2ac2a32 \
+                sha256 c90b7812d9e343db12be19a572e15c415c5d6353a91c5e226e432c2d4aaa44f1
 
 depends_build       port:gd2
 depends_lib         path:lib/libssl.dylib:openssl \
@@ -61,15 +60,13 @@ startupitem.start       "${prefix}/var/nagios/nagios.init start"
 startupitem.stop        "${prefix}/var/nagios/nagios.init stop"
 
 post-patch {
-        reinplace "s|INIT_OPTS=-o root -g root|INIT_OPTS=-o nagios -g nagios|g" \
-                "${worksrcpath}/Makefile.in"
+    reinplace "s|WORKER_LDFLAGS=\"-L ../../lib -l nagios\"|WORKER_LDFLAGS=\"-L../../lib -l nagios\"|g" \
+        "${worksrcpath}/configure"
 
     reinplace "s|daemon-init \$(DESTDIR)\$(INIT_DIR)/nagios|daemon-init \$(DESTDIR)\$(INIT_DIR)/nagios.init|g" \
         "${worksrcpath}/Makefile.in"
 
     reinplace "s|NagiosLockDir=/var/lock/subsys|NagiosLockDir=${prefix}/var/nagios|g" \
-        ${worksrcpath}/daemon-init.in
-    reinplace "s|su -|su -m|g" \
         ${worksrcpath}/daemon-init.in
 }
 

@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 PortGroup python 1.0
 
 name            py-biopython
-version         1.68
+version         1.70
 categories-append     science
-maintainers     mmoll openmaintainer
+maintainers     {mmoll @mamoll} openmaintainer
 platforms       darwin
 description     python tools for computational molecular biology
 long_description    python tools for computational molecular biology: \
@@ -18,11 +17,13 @@ homepage        http://www.biopython.org/
 license         MIT
 master_sites    ${homepage}/DIST
 distname        biopython-${version}
-checksums           md5     078e915185485a5327937029b7577ddc \
-                    sha1    380d8a7b5ced009613cdce5d4075d099e6a15c40 \
-                    rmd160  d68bf7b336db7675c72740cc03adf871bc3ee8c4
+checksums           md5     feff7a3e2777e43f9b13039b344e06ff \
+                    sha1    d75a3a0a2d87d0184e6b37587976290d0fd3d2ee \
+                    rmd160  a10df455aa95dc9f322961ffbb13f499de19885c \
+                    sha256  4a7c5298f03d1a45523f32bae1fffcff323ea9dce007fb1241af092f5ab2e45b
 
-python.versions 27 34 35
+
+python.versions 27 34 35 36
 
 if { ${name} ne ${subport} } {
     depends_lib-append  port:py${python.version}-numpy

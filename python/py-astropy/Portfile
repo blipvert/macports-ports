@@ -1,12 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 name                py-astropy
-version             1.2
-revision            4
-maintainers         robitaille
+version             2.0.2
+maintainers         robitaille gmail.com:Deil.Christoph
 
 dist_subdir         ${name}/${version}
 
@@ -21,11 +19,11 @@ license             BSD
 homepage            http://www.astropy.org
 master_sites        pypi:a/astropy/
 distname            astropy-${version}
-checksums           md5     3a215762e1688c7d53bd32c78e7fa67a \
-                    sha1    2fd4410b51d1e8b657ad9c101f8612fa505284f6 \
-                    rmd160  ea9dad7b5124e6a577979f6e2c1a5f9fcbf0eeed
+checksums           md5     1b514f83f8475d4a6e3121de6622cec9 \
+                    rmd160  ec4c044414c43990ad818bb7ed037f0db81fc38d \
+                    sha256  4544a422b1173d79b2d65ba74c627f04a5fd8530d97fb604752d657d754e103d
 
-python.versions     27 33 34 35
+python.versions     27 33 34 35 36
 
 build.args-append   --use-system-cfitsio \
                     --use-system-expat \

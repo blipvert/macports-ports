@@ -1,4 +1,4 @@
-# $Id$
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 #
 # Copyright (c) 2010 The MacPorts Project
 # All rights reserved.
@@ -66,7 +66,7 @@ proc hocbinding.setup {framework version {source ""}} {
     long_description ${description}
 
     if {${source} eq "hoc"} {
-        homepage    http://code.google.com/p/hoc/
+        homepage    https://code.google.com/p/hoc/
 
         worksrcdir  hoc/Bindings/Generated/HOC-${framework}
 

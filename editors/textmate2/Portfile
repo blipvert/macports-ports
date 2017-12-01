@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               github 1.0
 PortGroup               xcodeversion 1.0
 
 epoch                   4
-github.setup            textmate textmate 2.0-beta.9.2 v
-revision                0
+github.setup            textmate textmate 2.0-rc.4 v
+revision                1
 
 maintainers             cal openmaintainer
 name                    textmate2
@@ -33,12 +32,7 @@ post-fetch {
 }
 
 patchfiles              patch-configure-versionnumber.diff \
-                        patch-target.diff \
-                        patch-frameworks_license_target.diff \
                         patch-Applications_commit_target.diff
-
-# The build will fail with deployment target set to 10.8
-macosx_deployment_target 10.7
 
 post-patch {
     reinplace "s/@VERSION@/${version}/" ${worksrcpath}/configure
@@ -53,7 +47,8 @@ post-patch {
 depends_build-append    port:ninja \
                         port:ragel \
                         port:sparsehash \
-                        port:proctools
+                        port:proctools \
+                        path:share/curl/curl-ca-bundle.crt:curl-ca-bundle
 
 depends_skip_archcheck  ninja ragel proctools
 
@@ -65,18 +60,19 @@ depends_lib-append      port:boost \
                         port:zlib \
                         port:capnproto
 
-if {${os.platform} ne "darwin" || ${os.major} < 11} {
+if {${os.platform} ne "darwin" || ${os.major} < 12} {
     depends_fetch
     depends_build
     depends_lib
     pre-fetch {
-        ui_error "${name} only works with Mac OS X 10.7 Lion or later."
+        ui_error "${name} only works with Mac OS X 10.8 Mountain Lion or later."
         return -code error "incompatible Mac OS X version"
     }
 }
 
 configure.env-append    builddir=${worksrcpath}/build \
-                        capnp_prefix=${prefix}
+                        capnp_prefix=${prefix} \
+                        libressl_prefix=${prefix}
 
 pre-configure {
     # the textmate build expects this to be present
@@ -90,7 +86,7 @@ post-configure {
 }
 
 build.cmd               ninja
-build.args              -v -j ${build.jobs}
+build.args              -v -j${build.jobs}
 build.target            TextMate mate
 
 destroot {

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 #
 # Copyright (c) 2009-2012 The MacPorts Project
 # All rights reserved.
@@ -273,10 +272,10 @@ proc php.setup {extensions version {source ""}} {
     if {"pecl" == ${source}} {
         global php.pecl_livecheck_stable
 
-        set php.homepage        http://pecl.php.net/package/${php.rootname}
+        set php.homepage        https://pecl.php.net/package/${php.rootname}
 
         homepage                ${php.homepage}
-        master_sites            http://pecl.php.net/get/
+        master_sites            https://pecl.php.net/get/
         extract.suffix          .tgz
 
         livecheck.type          regexm

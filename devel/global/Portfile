@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                global
-version             6.5.5
+version             6.5.7
 categories          devel
 platforms           darwin
 maintainers         sean openmaintainer
@@ -23,8 +22,8 @@ long_description    GNU GLOBAL is a source code tag system that works the \
 homepage            http://www.gnu.org/software/global/
 master_sites        gnu
 
-checksums           rmd160  528a17f87478b107754d32e16ec99de21736173e \
-                    sha256  bc5b42a2c58d1570ff6b6acf7479c3e1609fe0ec8b44e5baa5290dc47148cf7b
+checksums           rmd160  2e03a959f8014103b009e889e8906c7b738c103a \
+                    sha256  d9c08fa524f9499b54241cb2d72f8a7df01453b6d5e012a63784ded08e3acd32
 
 depends_lib         port:libtool \
                     port:ncurses

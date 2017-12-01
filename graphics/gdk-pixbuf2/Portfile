@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           gobject_introspection 1.0
@@ -7,11 +6,11 @@ PortGroup           gobject_introspection 1.0
 name                gdk-pixbuf2
 set my_name         gdk-pixbuf
 epoch               2
-version             2.36.0
+version             2.36.11
 license             LGPL
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          graphics
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 homepage            http://www.gtk.org/
 platforms           darwin
 distname            ${my_name}-${version}
@@ -23,8 +22,8 @@ long_description    ${description}
 
 master_sites        gnome:sources/${my_name}/${branch}/
 
-checksums           rmd160  0a6079ba5a018ff62aaeb0af699a1355c7500f5c \
-                    sha256  85ab52ce9f2c26327141b3dcf21cca3da6a3f8de84b95fa1e727d8871a23245c
+checksums           rmd160  855d1321e3f74b41fa4e80e3c4abddc1147f59f7 \
+                    sha256  ae62ab87250413156ed72ef756347b10208c00e76b222d82d9ed361ed9dde2f3
 
 depends_build       port:pkgconfig
 

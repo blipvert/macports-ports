@@ -1,14 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           gobject_introspection 1.0
 
 name                libdmapsharing
-version             2.9.36
+version             2.9.39
 categories          devel
 license             LGPL-2+
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 
 description         A DMAP client and server library
 
@@ -20,8 +19,8 @@ master_sites        ${homepage}
 
 platforms           darwin
 
-checksums           rmd160  f800e77980e54b9640155ebb184612a53e35fd9d \
-                    sha256  844769a42a7e6083ce6eb2aa72d25fb3588eb6dabb284820e9031231a0f0c46a
+checksums           rmd160  d6a9d9adab4776079de8781e89ba2acaa5213f22 \
+                    sha256  a90dc0681ae81700e46efc539f70edb6edd936b782a9a695434bea660a43a5ef
 
 depends_build       port:pkgconfig
 

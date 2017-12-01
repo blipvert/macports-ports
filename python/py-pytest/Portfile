@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pytest
-version             3.0.3
+version             3.2.5
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -26,16 +25,17 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  001b59ef4a176130bec62fdedd83f5e137656a55 \
-                    sha256  f213500a356800a483e8a146ff971ae14a8df3f2c0ae4145181aad96996abee7
+checksums           rmd160  13dbd9a2b499bbdea62447f1407b8a2ae33cbfa9 \
+                    sha256  6d5bd4f7113b444c55a3bbb5c738a3dd80d43563d063fc42dcb0aaefbdd78b81
 
 if {${name} ne ${subport}} {
+    depends_build-append \
+                        port:py${python.version}-setuptools_scm
+
     depends_lib-append  port:py${python.version}-setuptools \
                         port:py${python.version}-py
 
     patchfiles-append   patch-setup.py.diff
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

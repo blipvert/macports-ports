@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                chromedriver
-version             2.21
+version             2.33
 categories          www
 platforms           darwin
 maintainers         nomaintainer
@@ -19,14 +18,14 @@ long_description    WebDriver is an open source tool for automated testing of \
                     and more.
 
 homepage            https://sites.google.com/a/chromium.org/chromedriver/
-master_sites        http://chromedriver.storage.googleapis.com/${version}/
+master_sites        https://chromedriver.storage.googleapis.com/${version}/
 
 dist_subdir         ${name}/${version}
-distname            ${name}_mac32
+distname            ${name}_mac64
 use_zip             yes
 
-checksums           rmd160  dc8c8a2e1c4a07848c43267605772e42e617adf3 \
-                    sha256  41f21005b498adc5896e4c3e264d718e4ade09609a7544ea8753d4e8ef1e787f
+checksums           rmd160  a0bc29dbd3fc98ca13b3c16c6ada0c415315a2ee \
+                    sha256  064b243c4236380cc705f183e100d7a229815db7b143f6ad3eaae072a48cc827
 
 extract.mkdir       yes
 

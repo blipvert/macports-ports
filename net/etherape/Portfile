@@ -1,12 +1,10 @@
-# $Id$
-
 PortSystem      1.0
 
 name            etherape
 version         0.9.10
 categories      net
 license         GPL-2+
-maintainers     gmail.com:stuartwesterman openmaintainer
+maintainers     nomaintainer
 description     graphical network monitor
 long_description  \
           EtherApe is a graphical network monitor for Unix modeled after \

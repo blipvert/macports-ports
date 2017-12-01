@@ -1,16 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           cmake 1.0
 PortGroup           github 1.0
 
-github.setup        mossmann hackrf 784032223419e87dfeedaab7e3cacfe7fe32d692
-version             20160922
-checksums           rmd160 6793eef02035518f9cd3d8b8aafa3907ee9158a0 \
-                    sha256 612dbaed821c4b54bcc5f3bed6719c4476c095a2f8f3186181d6e1642d9452a8
-
-maintainers         michaelld openmaintainer
+name                hackrf
+maintainers         {michaelld @michaelld} openmaintainer
 
 description         ${name} is a project to build a low cost software radio (SDR) platform.
 
@@ -20,8 +15,31 @@ platforms           darwin macosx
 
 long_description    ${description}
 
+subport hackrf-devel {}
+
+if {${subport} eq ${name}} {
+
+    # release
+    github.setup        mossmann hackrf 2017.02.1 v
+    checksums           rmd160 8437d618c974f507550ec526c037c6b08d0af9f4 \
+                        sha256 74c7a046f076feb18f4996de8856020d683a2ca9ef07df34c6f1542f3601a461
+
+    # bump the epoch because I moved the version from 20170219 to 2017.02.1
+    epoch               1
+
+} else {
+
+    # devel
+    github.setup        mossmann hackrf fb83ad64953bf7f8707bc209968f9e49f894369e
+    version             20171116
+    checksums           rmd160 833194e13eac23c15035e492b12b61e9edc2e14e \
+                        sha256 5db38b040b28c864b62071855ed76b11a031c18f60e6ca8001bb320be6959469
+
+}
+
 depends_build-append port:pkgconfig
-depends_lib-append   path:lib/libusb-1.0.dylib:libusb
+depends_lib-append   path:lib/libusb-1.0.dylib:libusb \
+                     port:fftw-3-single
 
 # Many compilers do not recognize "-std=gnu90", so remove it.
 # Temporary patch.

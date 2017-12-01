@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-boto3
-version             1.2.3
+version             1.4.5
 platforms           darwin
 license             Apache-2
 maintainers         nomaintainer
@@ -17,17 +16,18 @@ homepage            https://github.com/boto/boto3
 master_sites        pypi:b/boto3
 distname            boto3-${version}
 
-checksums           rmd160  adcc22281811c6722c35ab4808a65d0bea20834a \
-                    sha256  091206847d296520e5ec57706a5e4b428d017352eb3168c6bcb9a1ac9feab224
+checksums           rmd160  a45d8d533081b41ed26b3b24242a03deb35172b1 \
+                    sha256  6d570df0f692e82b35e9abafbb4584b899b2803e8cfcb70d1f371ca08919831d
 
-python.versions     27 34
+python.versions     27 34 35 36
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
     depends_run-append \
                         port:py${python.version}-botocore \
-                        port:py${python.version}-jmespath
+                        port:py${python.version}-jmespath \
+                        port:py${python.version}-s3transfer
 
     livecheck.type      none
 } else {

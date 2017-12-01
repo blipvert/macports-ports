@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         MCE 1.806 ../by-authors/id/M/MA/MARIOROY
+perl5.branches      5.24 5.26
+perl5.setup         MCE 1.832 ../by-authors/id/M/MA/MARIOROY
 
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 license             {Artistic-1 GPL}
 
 description         Many-Core Engine for Perl providing parallel processing capabilities
@@ -15,8 +14,8 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  a1e0d64dca711c58dbae5ecf346b75ca529665e1 \
-                    sha256  0899345c3bcb239b896320ae98b72328cd483d1814520c588558b94525cfd0cb
+checksums           rmd160  075f27342622e67812ca8da334ab2dd893e08217 \
+                    sha256  517fb8bd2f11c252090c62330dbe347d23e91bd280d6f5f0138ec090a357b470
 
 if {${perl5.major} != ""} {
 # Sereal is loaded automatically if available

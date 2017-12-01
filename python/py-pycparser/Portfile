@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pycparser
-version             2.17
+version             2.18
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     26 27 33 34 35
+python.versions     26 27 33 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -28,13 +27,9 @@ master_sites        pypi:p/pycparser/
 
 distname            pycparser-${version}
 
-checksums           rmd160  12f533fd134bf2d6cbf8be0e3fa718997ca759d3 \
-                    sha256  0aac31e917c24cb3357f5a4d5566f2cc91a19ca41862f6c3c22dc60a629673b6
+checksums           rmd160  a8ea47d6601a7511e95f64e799f4c02c2e9b5323 \
+                    sha256  99a8ca03e29851d96616ad0404b4aad7d9ee16f25c9f9708a11faf2810f7b226
 
 if {${name} ne ${subport}} {
     livecheck.type      none
-} else {
-    livecheck.type      regex
-    livecheck.url       https://pypi.python.org/pypi/pycparser/json
-    livecheck.regex     {pycparser-(\d+(?:\.\d+)*)\.[tz]}
 }

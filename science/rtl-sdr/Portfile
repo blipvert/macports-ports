@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           cmake 1.0
@@ -8,20 +7,15 @@ name                rtl-sdr
 categories          science comms
 platforms           darwin
 license             GPL-2
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 description         ${name} allows using devices with a RTL2832U chipset as software defined radio (SDR)
 long_description    ${description}
 homepage            http://sdr.osmocom.org/trac/wiki/rtl-sdr
 
-set commit          e3c03f738f5aef4dc51e2b741fbdb542b9cc1bb1
-version             20150608
-revision            1
-checksums           rmd160 0e9f78acdadbf3fdf59da5064aca4bcf19290f99 \
-                    sha256 85213c12fe271126d74d2818e32b3f06643efa703195295811edcfa487fac784
-
-# Handle stealth updates #51050;
-# remove this on the next commit update
-dist_subdir   ${name}/${version}_1
+set commit          b04c2f9f035c5aede43d731e5d58e4725d2f8bb4
+version             20170919
+checksums           rmd160 c9249a41f4214358f4bb7b97e6a644e67474f266 \
+                    sha256 35d17803a83fe146ab62a51b61c071de24e6fbc8cd0e3f169e860bc3896a24ed
 
 distname            ${name}-${commit}
 master_sites        http://cgit.osmocom.org/rtl-sdr/snapshot/

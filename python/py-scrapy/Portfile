@@ -1,16 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               python 1.0
 
 name                    py-scrapy
-version                 1.0.6
-# Updating to 1.1.x requires a newer version of py-dispatcher (lp-requires bzr)
-# and possiblity other dependencies not in macports.
-# epoch needed due to downgrading version
+version                 1.4.0
+# epoch needed due to previous downgrading version
 epoch                   1
-maintainers             khindenburg openmaintainer
+maintainers             {khindenburg @kurthindenburg} openmaintainer
 platforms               darwin
 
 description             Scrapy is a high level scraping and web crawling \
@@ -24,10 +21,10 @@ homepage                http://pypi.python.org/pypi/Scrapy
 distname                Scrapy-${version}
 master_sites            https://files.pythonhosted.org/packages/source/S/Scrapy/
 
-checksums               rmd160  1e332efb5d56b092a964520c9d66b7665f58ab28 \
-                        sha256  548999910fcd18216626e569f6362bc390acfda4cfc1dfe2423d56d9f1ad91c5
+checksums               rmd160  ef20b9288851962fb552c1045e297c8917a74d17 \
+                        sha256  04a08f027eef5d271342a016439533c81ba46f14bfcf230fecf602e99beaf233
 
-python.versions 27
+python.versions 27 34 35 36
 python.default_version 27
 
 if {${name} ne ${subport}} {
@@ -37,8 +34,25 @@ if {${name} ne ${subport}} {
                             port:py${python.version}-w3lib \
                             port:py${python.version}-cssselect \
                             port:py${python.version}-openssl \
+                            port:py${python.version}-parsel \
                             port:py${python.version}-queuelib \
-                            port:py${python.version}-service_identity
+                            port:py${python.version}-service_identity \
+                            port:py${python.version}-dispatcher
+
+    # Missing testfixtures
+    if 0 {
+    depends_test-append \
+        port:py${python.version}-pytest \
+        port:py${python.version}-botocore \
+        port:py${python.version}-jmespath \
+        port:py${python.version}-leveldb
+
+    set pyver [join [split ${python.version} {}] {.}]
+    test.run            yes
+    test.cmd            py.test-${pyver}
+    test.target
+    test.env            PYTHONPATH=${worksrcpath}/build/lib
+    }
 
     livecheck.type          none
 } else {

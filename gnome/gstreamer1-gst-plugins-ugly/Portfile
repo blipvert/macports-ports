@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
@@ -8,7 +7,12 @@ PortGroup           muniversal 1.0
 
 name                gstreamer1-gst-plugins-ugly
 set my_name         gst-plugins-ugly
-version             1.8.2
+# unstable versions of the gstreamer1 series are typically, well, unstable
+# typical issues are movement of plugins from one category to another (e.q. bad->good),
+# addition of new plugins and removal of others, missing files, etc
+# beginning with the 1.12 stable series please only push stable versions to git
+# and then only after addressing any possible issues discovered during the previous unstable series.
+version             1.12.3
 description         A set of good-quality plug-ins for GStreamer that might pose distribution \
                     problems.
 long_description    GStreamer Ugly Plug-ins is a set of plug-ins that have good quality and \
@@ -24,8 +28,8 @@ distname            ${my_name}-${version}
 license             GPL-2+ LGPL-2+
 use_xz              yes
 
-checksums           rmd160  26d4452c373b5984a1800a29a508b1b060e1082b \
-                    sha256  9c5b33a2a98fc1d6d6c99a1b536b1fb2de45f53cc8bf8ab85a8b8141fed1a8ac
+checksums           rmd160  6c740784b09e73523dc568cb32ab7d86522a3855 \
+                    sha256  e88ca584c94ea78eeecbf3af00ef7f134b66bdee7408aa4aa6c547235e060052
 
 depends_build       port:pkgconfig
 depends_lib         port:gstreamer1-gst-plugins-base \
@@ -84,4 +88,4 @@ pre-activate {
 
 livecheck.type      regex
 livecheck.url       ${master_sites}
-livecheck.regex     "${my_name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"
+livecheck.regex     "${my_name}-(\\d+\\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"

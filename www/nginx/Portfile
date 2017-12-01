@@ -1,15 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                nginx
-version             1.11.5
-revision            1
+version             1.13.7
 categories          www mail
 platforms           darwin
 license             BSD
-maintainers         cal mps openmaintainer
+maintainers         cal {mps @Schamschula} openmaintainer
 
 description         High-performance HTTP(S) server, HTTP(S) reverse proxy and IMAP/POP3 proxy server
 long_description    \
@@ -31,12 +29,13 @@ master_sites        http://nginx.org/download:nginx \
                     https://github.com/arut/nginx-rtmp-module/archive/:rtmp_module \
                     https://github.com/slact/nchan/archive/:http_push_module \
                     https://github.com/simpl/ngx_devel_kit/archive/:devel_kit_module \
-                    https://github.com/openresty/lua-nginx-module/archive/:lua_module
+                    https://github.com/openresty/lua-nginx-module/archive/:lua_module \
+                    https://github.com/openresty/headers-more-nginx-module/archive/:h_more_module
 
 distfiles           ${name}-${version}${extract.suffix}:nginx
 checksums           ${name}-${version}${extract.suffix} \
-                    rmd160  52039e2317083fd0199b0e661dffe4e8ec1e573d \
-                    sha256  223f8a2345a75f891098cf26ccdf208b293350388f51ce69083674c9432db6f6
+                    rmd160  1b35a882e440ba6255d77b7e3c0e26c956032b0c \
+                    sha256  beb732bc7da80948c43fd0bf94940a21a21b1c1ddfba0bd99a4b88e026220f5c
 
 depends_lib         port:pcre \
                     port:zlib
@@ -54,6 +53,7 @@ set nginx_all_confs {fastcgi.conf fastcgi_params mime.types nginx.conf scgi_para
 set auto_activate_confs {nginx.conf mime.types fastcgi.conf}
 
 # portfile-scoped vars for variant routines to re-def and use in port-stages (post-extract, pre-patch, etc)
+set nginx_lua_mod_dirname      ""
 set nginx_rtmp_mod_dirname     ""
 set nginx_upload_mod_dirname   ""
 
@@ -75,8 +75,7 @@ configure.args-append \
                     --http-client-body-temp-path=${nginx_rundir}/client_body_temp \
                     --http-proxy-temp-path=${nginx_rundir}/proxy_temp \
                     --http-fastcgi-temp-path=${nginx_rundir}/fastcgi_temp \
-                    --http-uwsgi-temp-path=${nginx_rundir}/uwsgi_temp \
-                    --with-ipv6
+                    --http-uwsgi-temp-path=${nginx_rundir}/uwsgi_temp
 
 # remove --disable-dependency-tracking
 configure.universal_args-delete   --disable-dependency-tracking
@@ -112,14 +111,14 @@ post-activate {
 
 startupitem.create      yes
 startupitem.pidfile     auto ${nginx_pidfile}
-startupitem.executable  ${prefix}/sbin/nginx
+startupitem.executable  ${prefix}/sbin/nginx -g "daemon off;"
 
 notes "\
     A set of sample configuration files has been installed in ${nginx_examples}.\n\n\
     Additionally, the files [join ${auto_activate_confs} ", "] have been copied to ${nginx_confdir} if they didn't exist yet.\n\
     Adjust these files to your needs before starting nginx."
 
-default_variants +mp4 +flv +secure_link +ssl
+default_variants +mp4 +flv +secure_link +ssl +http2
 
 variant auth_request description {Add client authorization based on the result of a subrequest} {
     configure.args-append   --with-http_auth_request_module
@@ -161,22 +160,25 @@ variant geoip description {Enable Ngx http GeoIP module (http://wiki.nginx.org/H
     depends_lib-append      port:libgeoip
 }
 
-variant google_perftools description {Enable Google Performance Tools profiling for workers} {
+variant gperftools description {Enable Google Performance Tools profiling for workers} {
     configure.args-append   --with-google_perftools_module
-    depends_lib-append      port:google-perftools
+    depends_lib-append      port:gperftools
 
     # If 'google_perftools' port doesn't find headers needed for the profiler lib, it just quietly skips it.
     # Check if "-lprofiler" will fail -- if so, pre-empt configure-stage error with a more useful error msg.
     pre-configure {
         if {![file exists "${prefix}/lib/libprofiler.dylib"] && ![file exists "${prefix}/lib/libprofiler.a"]} {
             ui_error "\
-                The 'google-perftools' port did not install a libprofiler library (libprofiler.dylib or\
+                The 'gperftools' port did not install a libprofiler library (libprofiler.dylib or\
                 libprofiler.a) on your version of OS X, but the +google_perftools variant will not work\
                 without this library. Disable the +google_perftools variant to continue installing ${name}"
-            error "Required libprofiler library missing from google-perftools port."
+            error "Required libprofiler library missing from gperftools port."
         }
     }
 }
+
+# Can be removed after May 2018
+variant google_perftools requires gperftools description {Legacy compatibility variant} {}
 
 variant gzip_static description {Avoids compressing the same file each time it is requested} {
     configure.args-append   --with-http_gzip_static_module
@@ -299,6 +301,8 @@ variant zip description {Enable Ngx zip download module \
                             rmd160  17a465d87b8e1ba71bdd6ad40e20d21cc7dcd434 \
                             sha256  d30546b4be8308c721df0240ebc38c474c6b577381a110321eded6dbed5104b1
     configure.args-append   --add-module=${workpath}/${zip_distname}
+    patchfiles-append       patch-src-http-ngx_http_upstream.c.diff \
+                            patch-src-http-ngx_http_upstream.h.diff
 }
 
 variant redis description {Enable Ngx HTTP Redis module} {
@@ -360,18 +364,42 @@ variant devel_kit description {Enable ngx_devel_kit module (https://github.com/s
 variant lua requires devel_kit description {Enable Lua module (https://github.com/openresty/lua-nginx-module)} {
     depends_lib-append      port:luajit
     set ngx_lua_filename    lua-nginx-module
-    set ngx_lua_version     0.10.1rc0
+    set ngx_lua_version     0.10.8
     set ngx_lua_distname    ${ngx_lua_filename}-${ngx_lua_version}
     distfiles-append        v${ngx_lua_version}.tar.gz:lua_module
     checksums-append        v${ngx_lua_version}.tar.gz \
-                            rmd160  c9add9c5755741b12a428ba60943900ff7d23d62 \
-                            sha256  1bae94d2a0fd4fad39f2544a2f8eaf71335ea512a6f0027af190b46562224c68
+                            rmd160  7e0959c91c439c679a8c2276d9817b279fed5315 \
+                            sha256  d67449c71051b3cc2d6dd60df0ae0d21fca08aa19c9b30c5b95ee21ff38ef8dd
+    patchfiles-append       patch-src-ngx_http_lua_headers.c.diff
 
     configure.cflags        -I${prefix}/include/luajit-2.0/ ${configure.cflags}
     configure.env           LUAJIT_INC=${prefix}/include/luajit-2.0/
     configure.env           LUAJIT_LIB=${prefix}/lib
     configure.args-append   --add-module=${workpath}/${ngx_lua_distname}
+
+    nginx_set_portfile_var  nginx_lua_mod_dirname    "${ngx_lua_distname}"
+
+    # patch routine balks on file names with "../", but rel-paths in patchfiles start from $worksrcpath
+    pre-patch {
+        ln -s   "${workpath}/${nginx_lua_mod_dirname}" "${worksrcpath}/nginx_lua_module.tmp"
+    }
+    post-patch {
+        file delete   "${worksrcpath}/nginx_lua_module.tmp"
+    }
 }
+
+variant headers_more description {Enable headers-more module (https://github.com/openresty/headers-more-nginx-module)} {
+    set ngx_h_more_filename   headers-more-nginx-module
+    set ngx_h_more_version    0.32
+    set ngx_h_more_distname   ${ngx_h_more_filename}-${ngx_h_more_version}
+    distfiles-append          v${ngx_h_more_version}.tar.gz:h_more_module
+    checksums-append          v${ngx_h_more_version}.tar.gz \
+                              rmd160  a0fd69817659321c2d51d9143de413e43cb049b4 \
+                              sha256  c6d9dab8ea1fc997031007e2e8f47cced01417e203cd88d53a9fe9f6ae138720
+
+    configure.args-append     --add-module=${workpath}/${ngx_h_more_distname}
+}
+
 
 livecheck.type      regexm
 livecheck.url       ${homepage}

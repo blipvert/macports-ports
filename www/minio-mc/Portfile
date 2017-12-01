@@ -1,0 +1,56 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+# UPDATE THESE IN SYNC!
+set relversion      2017-10-14T00:51:16Z
+set commit          785e14a725357b39e22b74483cd202e7effa6195
+
+github.setup        minio mc [string map {: -} ${relversion}] RELEASE.
+name                minio-mc
+revision            0
+
+categories          www
+maintainers         eborisch openmaintainer
+description         Provides cloud-enabled UNIX commands like ls, cat, cp, etc.
+long_description \
+    ${description} It supports filesystems and Amazon S3 compatible cloud \
+    storage service (AWS Signature v2 and v4). See minio port for server.
+license             Apache-2
+
+checksums \
+    rmd160  d6ea0ecf775fd1ef931fab98498f9a46b354e486 \
+    sha256  32d62df01cfcc7e7a952aa9522602371d7027de6d087ce8432b816dec0b4e0db
+
+set goproj          github.com/${github.author}/${github.project}
+
+conflicts           mc
+depends_lib         port:go
+platforms           darwin
+use_configure       no
+worksrcdir          src/${goproj}
+
+post-extract {
+    xinstall -d ${workpath}/src/github.com/${github.author}
+    move ${workpath}/mc-${github.version} \
+        ${worksrcpath}
+}
+
+build {
+    system -W ${worksrcpath} "GOPATH=${workpath} \
+      ${prefix}/bin/go build -v -o ${workpath}/${github.project} \
+      -ldflags '-X ${goproj}/cmd.Version=${relversion} \
+                -X ${goproj}/cmd.ReleaseTag=RELEASE.${version} \
+                -X ${goproj}/cmd.CommitID=${commit} \
+                -X ${goproj}/cmd.ShortCommitId=[string range ${commit} 0 11]'"
+}
+
+destroot {
+    xinstall ${workpath}/mc ${destroot}${prefix}/bin
+
+    set docdir ${prefix}/share/doc/mc
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        README.md LICENSE NOTICE ${destroot}${docdir}
+}

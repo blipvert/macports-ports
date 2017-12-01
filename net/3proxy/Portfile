@@ -1,28 +1,27 @@
-# $Id$
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
+PortGroup               github 1.0
 
-name                    3proxy
-version                 0.6.1
+github.setup            z3APA3A 3proxy 0.8.11
 categories              net
 platforms               darwin
 license                 BSD GPL-2+ LGPL-2.1+ Apache
 maintainers             mail.ru:nano103
+
 description             tiny free proxy server
+
 long_description        3proxy is a universal proxy server. It can be used \
                         to provide internal users with fully controllable \
                         access to external resources or to provide external \
                         users with access to internal resources.
-homepage                http://3proxy.ru/
-master_sites            ${homepage}${version}/
 
-extract.suffix          .tgz
+homepage                https://3proxy.ru/
 
-checksums               md5     03790467a12e16ed8785ae688ecf9b68 \
-                        sha1    07e3f687585c6281847316b0f9220c5b071b3dde \
-                        rmd160 9c0394401f31341e09f653a709ca0392c9451e32
+checksums               rmd160  eb49fb2708f2dc5600e58df95f5af1c0b4bd3520 \
+                        sha256  8c9c405ec57f7f18109b52b4dc804707d9e4e4f075b2765e2b27053305939dd3
 
-patchfiles              Makefile.unix-install.diff
+patchfiles              patch-Makefile.unix-install.diff
 post-patch {
     reinplace "s|__PREFIX__|${prefix}|g" ${worksrcpath}/Makefile.unix-install
     reinplace "s/-O2/-O2 ${configure.cc_archflags}/g" ${worksrcpath}/Makefile.unix
@@ -33,3 +32,11 @@ use_configure           no
 build.args              -f Makefile.unix CC="${configure.cc}" \
                         LN="${configure.cc}"
 destroot.args           -f Makefile.unix-install
+
+post-destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 644 -W ${worksrcpath} copying README \
+        ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.regex         archive/(\\d+(?:\\.\\d+)*)${extract.suffix}

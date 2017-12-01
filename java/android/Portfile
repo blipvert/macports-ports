@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 8; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4
-# $Id$
 # vim: set fileencoding=utf-8 tabstop=8 shiftwidth=4 softtabstop=4 noexpandtab filetype=tcl :
 
 PortSystem 1.0
@@ -7,7 +6,7 @@ PortSystem 1.0
 name		    android
 version		    23
 categories	    java devel emulators
-maintainers	    openmaintainer krischik
+maintainers	    nomaintainer
 license		    Apache-2
 platforms	    darwin
 description	    Android SDK
@@ -20,7 +19,7 @@ set appbundles	    ${name}-appbundles-r${patchversion}.tar.gz
 set tools	    ${name}-tools-r${patchversion}.tar.gz
 set prog	    ${name}-sdk_r${version}-macosx.zip
 
-homepage	    http://developer.${name}.com/
+homepage	    https://developer.${name}.com/
 master_sites	    http://dl.google.com/${name}:prog			\
 		    macports:${name}:appbundles
 distfiles	    ${prog}:prog					\
@@ -112,5 +111,5 @@ platform macosx {
 #    }
 
 livecheck.type      regex
-livecheck.url       ${homepage}sdk/index.html
-livecheck.regex     ${name}-sdk_r(\[0-9.\]+)-macosx.zip
+livecheck.url       ${homepage}studio/index.html
+livecheck.regex     tools_r(\[0-9.\]+)-macosx.zip

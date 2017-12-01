@@ -1,12 +1,10 @@
-# $Id$
-
 PortSystem      1.0
 
 name				qmail-spamcontrol
 version				2.5.19
 revision			0
 categories			mail
-maintainers			yahoo.com:compconsultant
+maintainers			nomaintainer
 platforms			darwin
 
 description			Qmail, enhanced Spamcontrol version

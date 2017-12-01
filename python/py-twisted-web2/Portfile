@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 PortGroup python 1.0
@@ -11,7 +10,7 @@ python.default_version 27
 set branch [join [lrange [split $version .] 0 1] .]
 categories-append   devel net
 platforms           darwin
-maintainers         snc openmaintainer
+maintainers         {snc @nerdling} openmaintainer
 license             MIT
 description         Twisted.Web2 is the next generation Web Server \
                     Framework built with Twisted.

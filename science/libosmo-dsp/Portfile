@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                libosmo-dsp
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 
 description         A library with SDR DSP primitives
 long_description    ${description}
@@ -14,10 +13,10 @@ homepage            http://sdr.osmocom.org/
 license             GPL-2+
 platforms           darwin macosx
 
-set commit          f68f75e8b75ded7401821d7fa6c1fbb55e10a19c
-version             20141006
-checksums           rmd160 29271b343779d348c28873e701a04dffe8ba37c9 \
-                    sha256 976cb411c3a4b59de8e412f526af3192b6e733cd466437e0ceb73b63a5c3b25a
+set commit          6561cfa8da6ddba35294ede452c1e5771b56e806
+version             20170317
+checksums           rmd160 a9a7814d26b961d478c2ad8ab2af60eb99e46bc8 \
+                    sha256 0dc228808dcd7b4cc5838cc8f455debcc0d3a71a4a2f9fd9d2481d7e9bf662c8
 
 distname            ${name}-${commit}
 master_sites        http://cgit.osmocom.org/libosmo-dsp/snapshot/

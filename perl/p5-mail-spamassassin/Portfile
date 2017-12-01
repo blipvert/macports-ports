@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
+perl5.branches      5.24 5.26
 perl5.setup         Mail-SpamAssassin 3.4.1
-revision            2
+revision            4
 categories-append   mail
 license             Apache-2
 platforms           darwin
@@ -27,7 +26,7 @@ if {${perl5.major} != ""} {
 # use Time::HiRes 1.9739+ for Sierra compatibility
     depends_lib-append \
                     port:curl \
-                    port:gnupg \
+                    path:bin/gpg:gnupg2 \
                     port:p${perl5.major}-archive-tar \
                     port:p${perl5.major}-dbi \
                     port:p${perl5.major}-digest-sha1 \
@@ -56,7 +55,8 @@ if {${perl5.major} != ""} {
         startupitem.executable  ${perl5.bindir}/spamd -l
     }
 
-    patchfiles      patch-lib-Mail-SpamAssassin-DnsResolver.pm.diff
+    patchfiles      patch-lib-Mail-SpamAssassin-DnsResolver.pm.diff \
+                    patch-default-inc-excludes-dot.diff
 
     post-patch {
         reinplace "s|return ''|return 'PRIV'|" ${worksrcpath}/Makefile.PL
@@ -73,7 +73,7 @@ if {${perl5.major} != ""} {
     destroot.target-append conf__install data__install
 
 # All configuration files for spamassassin.
-    set conf_files  {init.pre local.cf v310.pre v312.pre v320.pre v330.pre v340.pre}
+    set conf_files  {init.pre local.cf v310.pre v312.pre v320.pre v330.pre v340.pre v341.pre}
 
     post-destroot {
         set etc ${destroot}${prefix}/etc/mail/spamassassin

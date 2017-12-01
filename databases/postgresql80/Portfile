@@ -1,14 +1,12 @@
-# $Id$
-
 PortSystem 1.0
 
 name			postgresql80
 version			8.0.26
-revision  1
+revision  2
 
 categories		databases
 platforms		darwin
-maintainers		mww
+maintainers		nomaintainer
 license			Permissive
 description		The most advanced open-source database available anywhere
 long_description PostgreSQL is Object-Relational Database Management System. \

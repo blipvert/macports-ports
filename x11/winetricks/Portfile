@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            Winetricks winetricks 20161012
+github.setup            Winetricks winetricks 20171018
 categories              x11
-maintainers             ryandesign
-license                 LGPL-2+
+maintainers             {ryandesign @ryandesign} openmaintainer
+license                 LGPL-2.1+
 homepage                http://www.winetricks.org/
 platforms               darwin
 supported_archs         noarch
@@ -21,8 +20,9 @@ long_description        ${name} can help you prepare your system for Windows \
                         systems have all the needed redistributable runtime \
                         libraries or fonts.
 
-checksums               rmd160  a6eb562e300911bbc4b9c97822ee8c84abe5288c \
-                        sha256  66d8a9be1a5b949f3338bb4a8a7a37d66e0c880b20f78f2df76e37a18a29eeb9
+checksums               rmd160  3f39be25b26be6bf17f93134a6a5446993e42037 \
+                        sha256  d8b02910b033f422009a9c8d4dc50dea94ab4724ac9b2dda5f8934e901d97c57 \
+                        size    644123
 
 depends_run             path:bin/zenity:zenity \
                         path:bin/wine:wine \
@@ -38,5 +38,5 @@ destroot.args           PREFIX=${prefix}
 post-destroot {
     set docdir ${prefix}/share/doc/${name}
     xinstall -d ${destroot}${docdir}
-    xinstall -m 644 ${worksrcpath}/src/COPYING ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} COPYING README.md ${destroot}${docdir}
 }

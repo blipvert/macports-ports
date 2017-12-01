@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-psutil
-version             4.4.2
+version             5.4.1
 revision            0
 categories-append   devel sysutils
 platforms           darwin
 license             MIT
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -30,11 +29,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  a53921a28a688076c11e44800f5035915039ecbc \
-                    sha256  1c37e6428f7fe3aeea607f9249986d9bb933bb98133c7919837fd9aac4996b07
+checksums           rmd160  b90cea961803a0dc711cb90f4a1fe78e82a23dc6 \
+                    sha256  42e2de159e3c987435cb3b47d6f37035db190a1499f3af714ba7af5c379b6ba2
 
 if {${name} ne ${subport}} {
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

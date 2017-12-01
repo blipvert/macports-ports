@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           blip 1.0
@@ -12,7 +11,7 @@ PortGroup           compiler_blacklist_versions 1.0
 
 name                mpfr
 # The actual version is generated below, after patchfiles is defined.
-set base_version    3.1.4
+set base_version    3.1.6
 blip.revision       1
 categories          devel math
 platforms           darwin
@@ -36,8 +35,8 @@ distname            ${name}-${base_version}
 master_sites        http://www.mpfr.org/${distname}
 use_xz              yes
 checksums           ${distname}${extract.suffix} \
-                        rmd160  39e7f7368110ea43a49bbe1007d9e9f67b4de64b \
-                        sha256  761413b16d749c53e2bfd2b1dfaa3b027b0e793e404b90b5fbaeef60af6517f5
+                        rmd160  6b0949bafae2337effe919c927f1d4ab9b11f863 \
+                        sha256  7a62ac1a04408614fccdc506e4844b10cf0ad2c2b1677097f8f35d3a1344a950
 
 # Upstream patch names are not qualified with the base version.
 dist_subdir         ${name}/${base_version}

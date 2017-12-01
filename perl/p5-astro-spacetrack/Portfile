@@ -1,23 +1,23 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         Astro-SpaceTrack 0.094
+perl5.branches      5.24 5.26
+perl5.setup         Astro-SpaceTrack 0.100
 license             {Artistic-1 GPL}
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 description         Astro::SpaceTrack - Retrieve orbital data from www.space-track.org
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  b9689abdbe2308a6d15b68e7242a965326636338 \
-                    sha256  d8a2ace6306fbc64d1fc2e1a729f031e387885d71d3df81329f3bba086795c6a
+checksums           rmd160  db2b22440a48e87cf6ad5075bb7c44e464e51aaa \
+                    sha256  981baa6db3943b00ebb0c2d490b21530a40788d03ef197352180e5c9fa8c9f54
 
 if {${perl5.major} != ""} {
     depends_lib-append \
+                    port:p${perl5.major}-config-identity \
                     port:p${perl5.major}-http-date \
                     port:p${perl5.major}-http-message \
                     port:p${perl5.major}-io-compress \
@@ -28,4 +28,5 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-uri
 
     supported_archs noarch
+    perl5.use_module_build
 }

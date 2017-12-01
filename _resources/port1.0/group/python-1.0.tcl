@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 #
 # Copyright (c) 2011-2016 The MacPorts Project
 #
@@ -53,6 +52,14 @@ use_configure   no
 universal_variant yes
 
 build.target    build
+
+post-extract {
+    # Prevent setuptools' easy_install from downloading dependents
+    set fs [open $env(HOME)/.pydistutils.cfg w+]
+    puts $fs {[easy_install]}
+    puts $fs {allow_hosts = None}
+    close $fs
+}
 
 pre-destroot    {
     xinstall -d -m 755 ${destroot}${prefix}/share/doc/${subport}/examples

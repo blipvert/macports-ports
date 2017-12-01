@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 #
 # Copyright (c) 2013-2014 The MacPorts Project
 # All rights reserved.
@@ -58,6 +57,7 @@ proc handle_tarball_from {option action args} {
     if {[string equal ${action} "set"] && ${args} eq "downloads"} {
         bitbucket.tarball_from ${args}
         bitbucket.master_sites https://bitbucket.org/${bitbucket.author}/${bitbucket.project}/downloads
+        default livecheck.url ${bitbucket.master_sites}
         default distname {${bitbucket.project}-${bitbucket.version}}
     }
 }

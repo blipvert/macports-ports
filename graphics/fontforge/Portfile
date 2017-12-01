@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem      1.0
 
@@ -68,10 +67,14 @@ patchfiles      patch-Makefile.dynamic.in.diff \
                 patch-gutils_dynamic.c.diff \
                 patch-xcode-43.diff
 
+if {${os.platform} eq "darwin" && ${os.major} > 9} {
+    patchfiles-append \
+                require_noerr.patch
+}
 post-patch {
     if {${os.major} > 11 && ${os.platform} eq "darwin"} {
-        eval reinplace -W {${worksrcpath}/fontforge} "s|AnchorPoint|FFAnchorPoint|g" \
-            [glob -tails -directory ${worksrcpath}/fontforge *.c] \
+        reinplace -q -W ${worksrcpath}/fontforge "s|AnchorPoint|FFAnchorPoint|g" \
+            {*}[glob -tails -directory ${worksrcpath}/fontforge *.c] \
             splinefont.h baseviews.h views.h
     }
     reinplace "s|@PREFIX@|${prefix}|g" \

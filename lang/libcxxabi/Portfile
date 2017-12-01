@@ -1,16 +1,13 @@
-# $Id$
-
 PortSystem              1.0
 PortGroup               compiler_blacklist_versions 1.0
 
 name                    libcxxabi
-version                 3.7.0
-revision                1
+version                 3.9.1
 epoch                   1
 categories              lang
 platforms               darwin
 license                 MIT NCSA
-maintainers             jeremyhu
+maintainers             {jeremyhu @jeremyhu}
 description             libc++abi is a new implementation of low level support for a C++ runtime.
 long_description        ${description} \
                         Because objects cannot be passed between different versions of the C++ runtime, this port must \
@@ -27,8 +24,8 @@ dist_subdir             llvm
 use_xz                  yes
 distname                ${name}-${version}.src
 
-checksums               rmd160  d06ebae3fc873f47588c544e5e516b695c8c0809 \
-                        sha256  48b074fd334958b2d8bab893c897a0c8258328782cdec2d229c7bce432b49beb
+checksums               rmd160  fe3ed237640b0c1a8f8ce3b2654f78005308f1cd \
+                        sha256  920d8be32e6f5574a3fb293f93a31225eeba15086820fcb942155bf50dc029e2
 
 set roots_path ${prefix}/var/system_roots/
 set root_name  ${name}-${version}-${revision}
@@ -73,7 +70,14 @@ if {${os.major} < 11 || [variant_isset replacemnt_libcxx]} {
 
     if {[variant_isset universal] && [lsearch ${universal_archs} ppc] != -1} {
         # http://trac.macports.org/wiki/LibcxxOnOlderSystems#Leopardppc
-        compiler.whitelist macports-clang-3.6
+        compiler.whitelist macports-clang-3.7 macports-clang-3.6
+    }
+
+    # delete cxa_noexception.cpp as we're not using the cmake build system
+    # cmake would choose either cxa_exceptions or cxa_noexceptions
+    # but the buildit script just builds every file in the src directory and you can't have both
+    post-extract {
+        system "rm ${worksrcpath}/src/cxa_noexception.cpp"
     }
 
     if {${os.major} < 10} {

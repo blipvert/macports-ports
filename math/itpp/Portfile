@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 name                itpp
@@ -7,6 +6,7 @@ version             4.2.0
 categories          math
 maintainers         nomaintainer
 license             GPL-3+
+platforms           darwin
 description         IT++ is a C++ library of mathematical, signal processing \
                     and communication classes and functions.
 long_description    ${description} Its main use is in simulation of \

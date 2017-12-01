@@ -1,16 +1,14 @@
-# $Id$
-
 PortSystem          1.0
 PortGroup           github 1.0
 
 name                vim
 set vim_version     8.0
-set vim_patchlevel  0003
+set vim_patchlevel  1272
 github.setup        vim vim ${vim_version}.${vim_patchlevel} v
 categories          editors
 platforms           darwin freebsd
 license             Vim GPL-2+
-maintainers         raimue
+maintainers         {raimue @raimue}
 description         Vi \"workalike\" with many additional features
 long_description \
     Vim is an advanced text editor that seeks to provide the power of the   \
@@ -18,8 +16,9 @@ long_description \
 
 homepage            http://www.vim.org/
 
-checksums           rmd160  57836f9ae2f2fb6dddd3f93acc4092243436d6dc \
-                    sha256  d3d3c1e7d72fd0dda59e5ac319be742df08db7c948b992543b994d66c4dcabf0
+checksums           rmd160  f52b961eeba3011f259987315788a8681c2adfc6 \
+                    sha256  7c032182b093bbb9020c6a8485d93fa9617e2f22d52b262268e405a247e0772e \
+                    size    13390896
 
 depends_build       bin:grep:grep
 depends_lib         port:ncurses \
@@ -106,11 +105,6 @@ variant perl description {Enable Perl scripting} {
     depends_lib-append      path:bin/perl:perl5
 }
 
-# Compatibility variants, can be removed after 2015-12-26
-variant python25 requires python27 description {Legacy variant} {}
-variant python31 requires python34 description {Legacy variant} {}
-variant python32 requires python34 description {Legacy variant} {}
-
 variant python26 conflicts python27 description {Enable Python scripting} {
     configure.args-append   --enable-pythoninterp --with-python=${prefix}/bin/python2.6
     patchfiles-append       patch-python.diff
@@ -129,7 +123,7 @@ variant python27 conflicts python26 description {Enable Python scripting} {
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
-variant python33 conflicts python34 python35 description {Enable Python scripting} {
+variant python33 conflicts python34 python35 python36 description {Enable Python scripting} {
     configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.3
     patchfiles-append       patch-python3.diff
     depends_lib-append      port:python33
@@ -138,7 +132,7 @@ variant python33 conflicts python34 python35 description {Enable Python scriptin
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
-variant python34 conflicts python33 python35 description {Enable Python scripting} {
+variant python34 conflicts python33 python35 python36 description {Enable Python scripting} {
     configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.4
     patchfiles-append       patch-python3.diff
     depends_lib-append      port:python34
@@ -147,8 +141,7 @@ variant python34 conflicts python33 python35 description {Enable Python scriptin
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
-
-variant python35 conflicts python33 python34 description {Enable Python scripting} {
+variant python35 conflicts python33 python34 python36 description {Enable Python scripting} {
     configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.5
     patchfiles-append       patch-python3.diff
     depends_lib-append      port:python35
@@ -157,32 +150,46 @@ variant python35 conflicts python33 python34 description {Enable Python scriptin
     # Overwriting autoconf.cmd above removes dependency, add it again
     depends_build-append port:autoconf
 }
+variant python36 conflicts python33 python34 python35 description {Enable Python scripting} {
+    configure.args-append   --enable-python3interp --with-python3=${prefix}/bin/python3.6
+    patchfiles-append       patch-python3.diff
+    depends_lib-append      port:python36
+
+    use_autoconf yes
+    # Overwriting autoconf.cmd above removes dependency, add it again
+    depends_build-append port:autoconf
+}
 
 variant ruby requires ruby18 description {Compatibility variant, requires +ruby18} {}
-variant ruby18 conflicts ruby19 ruby20 ruby21 ruby22 description {Enable Ruby scripting} {
+variant ruby18 conflicts ruby19 ruby20 ruby21 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby1.8
     depends_lib-append      port:ruby
 }
-variant ruby19 conflicts ruby18 ruby20 ruby21 ruby22 description {Enable Ruby scripting} {
+variant ruby19 conflicts ruby18 ruby20 ruby21 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby1.9
     depends_lib-append      port:ruby19
 }
-variant ruby20 conflicts ruby18 ruby19 ruby21 ruby22 description {Enable Ruby scripting} {
+variant ruby20 conflicts ruby18 ruby19 ruby21 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.0
     depends_lib-append      port:ruby20
 }
-variant ruby21 conflicts ruby18 ruby19 ruby20 ruby22 description {Enable Ruby scripting} {
+variant ruby21 conflicts ruby18 ruby19 ruby20 ruby22 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.1
     depends_lib-append      port:ruby21
 }
-variant ruby22 conflicts ruby18 ruby19 ruby20 ruby21 description {Enable Ruby scripting} {
+variant ruby22 conflicts ruby18 ruby19 ruby20 ruby21 ruby23 description {Enable Ruby scripting} {
     configure.args-append   --enable-rubyinterp
     configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.2
     depends_lib-append      port:ruby22
+}
+variant ruby23 conflicts ruby18 ruby19 ruby20 ruby21 ruby22 description {Enable Ruby scripting} {
+    configure.args-append   --enable-rubyinterp
+    configure.args-append   --with-ruby-command=${prefix}/bin/ruby2.3
+    depends_lib-append      port:ruby23
 }
 
 variant tcl description {Enable Tcl scripting} {

@@ -1,39 +1,40 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 PortGroup           blip 1.0
 
 name                git
-version             2.10.1
+version             2.15.1
 blip.revision       1
 
 description         A fast version control system
 long_description    Git is a fast, scalable, distributed open source version \
                     control system focusing on speed and efficiency.
-maintainers         ciserlohn openmaintainer
+maintainers         {ciserlohn @ci42} openmaintainer
 categories          devel
 license             GPL-2 LGPL-2.1+
 platforms           darwin
 homepage            http://git-scm.com/
-master_sites        https://www.kernel.org/pub/software/scm/git/
+master_sites        https://www.kernel.org/pub/software/scm/git/ \
+                    https://cdn.kernel.org/pub/software/scm/git/
 distname            git-${version}
+use_xz              yes
 distfiles           git-${version}${extract.suffix} \
                     git-manpages-${version}${extract.suffix}
 
 checksums           git-${version}${extract.suffix} \
-                    rmd160  d935710c8e98405cb1da0dbaca02b087c7bdfc48 \
-                    sha256  78553f786f1a66cb68983c170be482558028a3376056c0f2ed366f331b1e35f2 \
+                    rmd160  4faa07120bec5376a76330cdebe5b43e283856d7 \
+                    sha256  999c90fd7d45066992cdb87dda35bdff6dfc1d01496118ea718dfb866da4045c \
                     git-manpages-${version}${extract.suffix} \
-                    rmd160  b7e5523697962cad700d8312e0ddcb0948f163bf \
-                    sha256  4572477a8ffa69963f2be7d6e0fe63b8192de2c301edf3e37a888f904bbfd12e
+                    rmd160  5bd31e68d989dfb2ddf1bb529b3380e0dfaaf27a \
+                    sha256  6c6bcf7d53aec8a498a1f5af558ae8f83daf892c3565188ee81ce34f6f022656 \
 
 perl5.require_variant   yes
-perl5.conflict_variants yes
-perl5.branches          5.24
+perl5.conflict_variants no
+perl5.branches          5.24 5.26
+perl5.default_branch    5.26
 perl5.create_variants   ${perl5.branches}
-perl5.default_branch    5.24
 
 depends_lib-append  port:curl \
                     port:zlib \
@@ -49,7 +50,7 @@ depends_run-append  port:p${perl5.major}-authen-sasl \
                     port:p${perl5.major}-cgi \
                     port:rsync
 
-patchfiles          patch-Makefile.diff git-subtree.1.diff gitk-color-lime.diff
+patchfiles          patch-Makefile.diff git-subtree.1.diff
 patch.pre_args      -p1
 
 extract.only        git-${version}${extract.suffix} \
@@ -81,12 +82,12 @@ test.cmd            make
 test.target         test
 test.dir            ${worksrcpath}
 pre-test {
-    eval test.args  ${build.args}
+    test.args  {*}${build.args}
 }
 
 destroot.target     install
 pre-destroot {
-    eval destroot.args  ${build.args}
+    destroot.args  {*}${build.args}
     xinstall -m 644 ${worksrcpath}/contrib/subtree/git-subtree.1 ${workpath}/man1
 }
 
@@ -122,6 +123,7 @@ post-destroot {
     xinstall -m 644 ${worksrcpath}/contrib/completion/git-prompt.sh \
         ${share_path}/git-prompt.sh
 
+    xinstall -d ${destroot}${prefix}/libexec/git-core
     xinstall -m 755 ${worksrcpath}/contrib/subtree/git-subtree.sh \
         ${destroot}${prefix}/libexec/git-core/git-subtree
 
@@ -129,21 +131,21 @@ post-destroot {
     copy ${worksrcpath}/contrib ${share_path}
 
     xinstall -m 755 -d ${destroot}${prefix}/share/emacs/site-lisp/
-    eval xinstall -m 644 [glob ${worksrcpath}/contrib/emacs/*.el] \
+    xinstall -m 644 {*}[glob ${worksrcpath}/contrib/emacs/*.el] \
         ${destroot}${prefix}/share/emacs/site-lisp/
 
 }
 
 variant pcre {
-    build.args-append       LIBPCREDIR=${prefix} USE_LIBPCRE=1
-    depends_lib-append      port:pcre
+    build.args-append       LIBPCREDIR=${prefix} USE_LIBPCRE2=1
+    depends_lib-append      port:pcre2
 }
 
 variant doc description {Install HTML and plaintext documentation} {
     distfiles-append        git-htmldocs-${version}${extract.suffix}
     checksums-append        git-htmldocs-${version}${extract.suffix} \
-                            rmd160  f7bd4fb1c5c90ea5dad678b0da15a7f18898f06c \
-                            sha256  cb36e94cfdfb00d8e763ea46baa59c6d9c7ef5143b9bfb37e35b25b144f10faa
+                            rmd160  ab63ccf6425576d8d80d2171b060891a6760f1db \
+                            sha256  0b3ad20f1f98d548f07a19900852e134cfc958d9664af95d04c028cf8d140166
 
     patchfiles-append       git-subtree.html.diff
 
@@ -209,9 +211,9 @@ variant credential_osxkeychain description {Install git credential-osxkeychain u
         system -W "${worksrcpath}/contrib/credential/osxkeychain" "make [join ${build.args}]"
     }
 
-    pre-destroot {
+    post-destroot {
         xinstall -m 755 "${worksrcpath}/contrib/credential/osxkeychain/git-credential-osxkeychain" \
-            "${destroot}${prefix}/bin/"
+            "${destroot}${prefix}/libexec/git-core/"
     }
 }
 

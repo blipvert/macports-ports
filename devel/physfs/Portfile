@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem      1.0
 PortGroup       cmake 1.0
 
 name            physfs
 version         2.0.3
-revision        1
+revision        2
 categories      devel
 license         zlib
 maintainers     users.sourceforge.net:luiji
@@ -33,5 +32,5 @@ patchfiles      patch-CMakeLists.txt.diff
 configure.args-append -DPHYSFS_BUILD_WX_TEST=FALSE
 
 livecheck.type  regex
-livecheck.url   $master_sites
-livecheck.regex $name-(\\d+(?:\\.\\d+)*)
+livecheck.url   [lindex ${master_sites} 0]LATEST_VERSION.html
+livecheck.regex ${name}-(\\d+(?:\\.\\d+)*)

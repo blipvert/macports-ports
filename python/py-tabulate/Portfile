@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tabulate
-version             0.7.5
+version             0.8.1
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -24,11 +23,11 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  04e667279fa4bf1bddc365a5e8c99d4d2de0cbea \
-                    sha256  9071aacbd97a9a915096c1aaf0dc684ac2672904cd876db5904085d6dac9810e
+checksums           rmd160  71226ae25688759ce2c669694fe2ddb15f159c35 \
+                    sha256  b9b4d2fc712c1e3b8f2970edf6d83fd8a329d0148de78bbe2755a79a96c190fa
 
 if {${name} ne ${subport}} {
+    depends_lib-append  port:py${python.version}-setuptools
+
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

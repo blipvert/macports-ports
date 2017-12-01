@@ -1,13 +1,32 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           cmake 1.0
+PortGroup           conflicts_build 1.0
 PortGroup           github 1.0
 
 name                weechat
 
-homepage            http://weechat.org/
+if {${name} eq ${subport}} {
+    conflicts       weechat-devel
+    github.setup    weechat weechat 1.9.1 v
+
+    checksums       rmd160  d06d3a53c554bbeb5056780962bed821c29c406c \
+                    sha256  f5571251e185afc71cac985e1f7a9e59585de24fb91cf57092d01c4a8a284c48
+
+    livecheck.url   ${github.homepage}/releases/latest
+}
+
+subport weechat-devel {
+    github.setup    weechat weechat ee82ba74616b9050346d01e27b452bee3c5f0afd
+    version         1.8-dev-20170327
+
+    conflicts       weechat
+    checksums       rmd160  10d8d30f0e24d31e6f5260ab6d8bd41ce9449844 \
+                    sha256  7c3a0dcc02d8e045642d490100bb19a4b1b0c6a46c6be06f791b0ffbe3e4f8db
+}
+
+homepage            https://weechat.org/
 license             GPL-3
 description         Fast, light & extensible IRC client
 long_description    \
@@ -27,23 +46,6 @@ maintainers         gmail.com:starkhalo \
                     openmaintainer
 platforms           darwin
 
-if {${name} eq ${subport}} {
-    conflicts       weechat-devel
-    github.setup    weechat weechat 1.5 v
-
-    checksums       rmd160  3eba0f051cc158798a9810a83ff950faeaa48e49 \
-                    sha256  fe8cc22db690ed62b10514acf1142fa3669e50aff35e3bce41e478104fa56446
-}
-
-subport weechat-devel {
-    github.setup    weechat weechat 290b40af8905152e82f83a6f521ee420f7631c7a
-    version         1.6-dev-20160715
-
-    conflicts       weechat
-    checksums       rmd160  6473a48520503ca8941aa5f53f604a83515e2b84 \
-                    sha256  285803b61ab62a7e1e83b494a246b9eb300105a705f1687fd68443720ac9dbef
-}
-
 depends_build-append \
                     port:asciidoc \
                     port:libxslt \
@@ -55,6 +57,8 @@ depends_lib-append  port:gettext \
                     port:ncurses
 
 cmake.out_of_source yes
+
+conflicts_build v8
 
 configure.args-append \
                     -DENABLE_GNUTLS=OFF \
@@ -154,22 +158,7 @@ variant doc description {Build Documentation and plugin API} {
 }
 
 post-destroot {
-#   https://github.com/weechat/weechat/issues/722
-    set ext "adoc"
-    if {${subport} eq ${name}} {set ext "asciidoc"}
     xinstall -m 755 -d ${destroot}${prefix}/share/doc/weechat
-    xinstall -m 644 -W ${worksrcpath} AUTHORS.${ext} COPYING ChangeLog.${ext} README.${ext} ${destroot}${prefix}/share/doc/weechat
-    xinstall -m 644 -W ${worksrcpath} {*}[glob doc/en/weechat*.${ext}] ${destroot}${prefix}/share/doc/weechat
-}
-
-post-install {
-    # if present then remove file previously installed outside destroot
-    foreach file {include/weechat/weechat-plugin.h} {
-        set filepath ${prefix}/${file}
-        if {[file exists ${filepath}] && [registry_file_registered ${filepath}] == "0"} {
-            if {[catch {delete ${filepath}}]} {
-                ui_warn "Cannot delete ${filepath}; please remove it manually"
-            }
-        }
-    }
+    xinstall -m 644 -W ${worksrcpath} AUTHORS.adoc COPYING ChangeLog.adoc README.adoc ${destroot}${prefix}/share/doc/weechat
+    xinstall -m 644 -W ${worksrcpath} {*}[glob doc/en/weechat*.adoc] ${destroot}${prefix}/share/doc/weechat
 }

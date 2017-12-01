@@ -1,12 +1,10 @@
-# $Id$
-
 PortSystem 1.0
 
 name		xorg-fonts
 version		20090102
 revision	1
 categories	x11
-maintainers	jeremyhu openmaintainer
+maintainers	{jeremyhu @jeremyhu} openmaintainer
 license         Permissive
 description	X.org fonts meta-package
 homepage	http://www.x.org/

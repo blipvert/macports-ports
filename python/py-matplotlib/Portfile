@@ -1,18 +1,18 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        matplotlib matplotlib 1.5.3 v
+github.setup        matplotlib matplotlib 2.1.0 v
+revision            2
 
 name                py-matplotlib
 categories-append   graphics math
 platforms           darwin
 license             {PSF BSD}
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         sean openmaintainer
 
@@ -30,8 +30,8 @@ long_description    Matplotlib strives to produce publication quality 2D \
 
 homepage            http://matplotlib.org/
 
-checksums           rmd160  3c610bc6472ce716fe1b1aacb73f4a2411e54f8c \
-                    sha256  f8818ff7f2a9a6f983d406dd45806dec881d839ea3c564e67f4f30ea7daa0341
+checksums           rmd160  7931942596b2dd203db2214bc8fdf3f36843d338 \
+                    sha256  8cd3ed6aa7bfa65583e2914d29ea9cc55b65ebcdf8885cbdd1498c7e491bbf0e
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -48,6 +48,12 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-tornado \
                         port:py${python.version}-tz \
                         port:py${python.version}-cycler
+
+    if {${python.version} == 27} {
+        depends_lib-append port:py27-functools32 \
+                           port:py27-subprocess32 \
+                           port:py27-backports-functools_lru_cache
+    }
 
     patchfiles-append   patch-setup.cfg.diff \
                         patch-setupext.py.diff \
@@ -66,7 +72,7 @@ if {${name} ne ${subport}} {
         if {${name} ne ${subport}} {
             xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport} \
                 ${destroot}${prefix}/share/${subport}
-            xinstall -m 644 -W ${worksrcpath} CHANGELOG README.rst matplotlibrc.template \
+            xinstall -m 644 -W ${worksrcpath} README.rst matplotlibrc.template \
                 ${destroot}${prefix}/share/doc/${subport}
             file copy ${worksrcpath}/examples \
                 ${destroot}${prefix}/share/${subport}
@@ -104,8 +110,7 @@ if {${name} ne ${subport}} {
     }
 
     variant qt4 description "Enable QT4Agg backend" {
-        # Can use either py*-pyqt4 or py*-pyqt4-devel.
-        depends_lib-append  path:share/py${python.version}-sip/PyQt4:py${python.version}-pyqt4
+        depends_lib-append  port:py${python.version}-pyqt4
         post-patch {
             reinplace "s|^qt4agg=False|qt4agg=True|" ${worksrcpath}/setup.cfg
         }
@@ -113,7 +118,8 @@ if {${name} ne ${subport}} {
 
     if {${python.version} == 27 ||
         ${python.version} == 34 ||
-        ${python.version} == 35} {
+        ${python.version} == 35 ||
+        ${python.version} == 36} {
         variant pyside description "Enable PySide backend" {
             depends_lib-append  port:py${python.version}-pyside
             post-patch {

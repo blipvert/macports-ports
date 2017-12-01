@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
@@ -18,7 +17,7 @@ long_description    IUPAC library for standard and non-standard \
                     identifiers for chemical substances.
 
 homepage            http://www.iupac.org/inchi/
-master_sites        ${homepage}download/version${version}/
+master_sites        http://www.inchi-trust.org/download/[string map {. {}} $version]/
 dist_subdir         inchi-1
 
 use_zip             yes

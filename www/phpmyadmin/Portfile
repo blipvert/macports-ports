@@ -1,14 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                phpmyadmin
 set my_name         phpMyAdmin
-version             4.6.4
+version             4.7.5
 categories          www php databases
 platforms           darwin freebsd
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 license             GPL-2
 supported_archs     noarch
 
@@ -26,26 +25,24 @@ master_sites        https://files.phpmyadmin.net/phpMyAdmin/${version}/
 distname            ${my_name}-${version}-all-languages
 use_xz              yes
 
-checksums           sha1    9ae9e5a8d917960106f8359ea555e31097e12a77 \
-                    rmd160  445f08b898ad4255e94abfbc4035db3500114f12 \
-                    sha256  f2ea32a2971efcab073ad41b6512475af1b6da70cf800a5586a12cf49797d319
+checksums           rmd160  e5fe47c06aa856276fabf8d862740da9354a9102 \
+                    sha256  e4f53b8a5a8e32cea389718c6f6f282e9ac22ed5f31f67d88266aa27ae0a1ca3 \
+                    size    6254188
 
 # The php variants deliberately do not conflict
 
-foreach php {php55 php56 php70} {
-    eval [subst {
-        variant ${php} description "Use ${php}" {
-            depends_run-append  port:${php}-gd \
-                                port:${php}-mbstring \
-                                port:${php}-mcrypt \
-                                port:${php}-mysql \
-                                port:${php}-zip
-        }
-    }]
+foreach php {php55 php56 php70 php71} {
+    variant ${php} description "Use ${php}" "
+        depends_run-append  port:${php}-gd \
+                            port:${php}-mbstring \
+                            port:${php}-mcrypt \
+                            port:${php}-mysql \
+                            port:${php}-zip
+    "
 }
 
-if {![variant_isset php55] && ![variant_isset php56] && ![variant_isset php70]} {
-    default_variants +php70
+if {![variant_isset php55] && ![variant_isset php56] && ![variant_isset php70] && ![variant_isset php71]} {
+    default_variants +php71
 }
 
 set docroot         ${destroot}${prefix}/www/${name}

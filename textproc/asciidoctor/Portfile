@@ -1,14 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           ruby 1.0
 
-ruby.setup          asciidoctor 1.5.4 gem {} rubygems ruby22
+ruby.setup          asciidoctor 1.5.6.1 gem {} rubygems ruby22
 name                asciidoctor
 
 # Prevent addition of the ruby interpreter version number as suffix to command line tools
-set ruby.link_binaries_suffix ""
+ruby.link_binaries_suffix
 
 categories          textproc
 platforms           darwin
@@ -26,5 +25,5 @@ long_description    Asciidoctor is a fast text processor and publishing \
                     Ubuntu. Asciidoctor is open source, hosted on GitHub \
                     and released under the MIT license.
 homepage            http://asciidoctor.org/
-checksums           rmd160 eedbb93e9a338061f63d2d803301aed1f6481a8c \
-                    sha256 0ca7c78528165b194b678a71f5bc600aafbee3dfa5bcd40c042e382d5d883477
+checksums           rmd160  d96d9cf2f714734eec0e206bfdabddd4971e26dd \
+                    sha256  c4371c419306d69152809eb896c291ca09969dc26ca34be36f4eab82914fceca

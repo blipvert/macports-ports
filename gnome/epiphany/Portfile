@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                epiphany
-version             3.22.1
+version             3.22.7
 license             GPL-2+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         A GNOME Web browser.
@@ -12,7 +11,7 @@ long_description    A web browser is more than an application, it is a \
                     way of thinking, it is a way of seeing the world. \
                     Epiphany's principles are simplicity and standards \
                     compliance.
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 categories          gnome www
 platforms           darwin
 homepage            https://wiki.gnome.org/Apps/Web
@@ -20,8 +19,8 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  375fdbafa33821c4e5f9d1dfc1b02d93a3ba5451 \
-                    sha256  aab162ede54d71e583e382ab5e3567f28d81e0cd42719a11cad8008b56c5cc0e
+checksums           rmd160  a7bbeb9d6b6a4b87eedbc048ea605d7b3ba9314b \
+                    sha256  a15b7ec19644eec8d40ce11286bbca28ac188202b47e2b9fc593ab0974e9c784
 
 depends_build       port:pkgconfig \
                     port:intltool \
@@ -96,6 +95,9 @@ platform darwin {
                                 port:itstool \
                                 port:yelp-tools
         depends_lib-append      path:lib/pkgconfig/webkit2gtk-4.0.pc:webkit2-gtk
+
+        patchfiles              patch-fix-null-or-empty-string-check.diff \
+                                patch-fix-crash-when-download-fails.diff
 
         post-patch {
             xinstall -m 755 ${filespath}/autogen.sh ${worksrcpath}

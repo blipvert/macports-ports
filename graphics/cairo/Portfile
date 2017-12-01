@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem                  1.0
 PortGroup                   compiler_blacklist_versions 1.0
@@ -11,11 +10,11 @@ PortGroup                   xcodeversion 1.0
 name                        cairo
 conflicts                   cairo-devel
 set my_name                 cairo
-version                     1.14.6
+version                     1.14.10
 categories                  graphics
-maintainers                 ryandesign
+maintainers                 {ryandesign @ryandesign}
 license                     {LGPL-2.1 MPL-1.1}
-homepage                    http://cairographics.org/
+homepage                    https://www.cairographics.org/
 master_sites                ${homepage}releases/
 platforms                   darwin macosx
 use_parallel_build          yes
@@ -30,8 +29,8 @@ long_description            Cairo is ${description}. It is designed to produce \
                             advantage of display hardware acceleration when \
                             available (e.g. through the X Render Extension).
 
-checksums                   rmd160  cc6a805a468f74933a858b9e188971b2d5f60aa0 \
-                            sha256  613cb38447b76a93ff7235e17acd55a78b52ea84a9df128c3f2257f8eaa7b252
+checksums                   rmd160  c50d540033688e7371b2bffbe116ea70c4d2ffc2 \
+                            sha256  7e87878658f2c9951a14fc64114d4958c0e65ac47530b8ac3078b2ce41b66a09
 
 depends_build               port:pkgconfig
 
@@ -50,18 +49,8 @@ patchfiles-append           patch-configure.diff
 
 if {[vercmp ${macosx_deployment_target} 10.5] < 0} {
     # Restore support for Quartz on Tiger.
+    # https://cgit.freedesktop.org/cairo/commit/?id=5a8a9c97ed268004cbac510d39739ff56c0fb43c
     patchfiles-append       patch-tiger.diff
-    notes-append "
-The developers of Cairo may remove support for Mac OS X v10.4 Tiger soon. See:
-
-http://lists.cairographics.org/archives/cairo/2015-March/026057.html
-
-Many ports in MacPorts require Cairo, including anything that uses GTK+.\
-If you rely on Cairo on Tiger, please politely let the developers of Cairo know\
-by writing to their mailing list:
-
-http://lists.cairographics.org/mailman/listinfo/cairo
-"
 }
 
 # https://trac.macports.org/ticket/34137

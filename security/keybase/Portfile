@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        keybase client 1.0.18 v
+github.setup        keybase client 1.0.33 v
 name                keybase
-categories          devel
+categories          security
 platforms           darwin
 license             BSD
 maintainers         sean openmaintainer
@@ -14,17 +13,17 @@ description         Command-line interface to Keybase.io
 long_description    $description
 
 depends_build       port:go
-depends_run         bin:gpg:gnupg
+depends_run         path:bin/gpg:gnupg2
 
-checksums           rmd160  e397126c504ab4d920769bde4275b9a9173081b2 \
-                    sha256  aa59a6f79c7af9fdc0965ab3372820f007f736292e3aaf0f5b87ff43c4488872
+checksums           rmd160  7f9ecb009c41e5f7df881275227fb42571359c82 \
+                    sha256  9a9b6a5c2872e52663e04f6cd70a8f8479775aaccf896fbfca89b6df3ff4cabd
 
 use_configure       no
 
 use_parallel_build  no
 build.cmd           go
 build.target        build -a -tags production github.com/keybase/client/go/keybase
-build.env           GOPATH=${workpath}/go GO15VENDOREXPERIMENT=1
+build.env           GOPATH=${workpath}/go CC=${configure.cc}
 
 # I still hate go
 post-extract {

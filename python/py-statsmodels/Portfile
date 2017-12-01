@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-statsmodels
-version             0.6.1
+version             0.8.0
 revision            0
 categories-append   science math
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -27,8 +26,8 @@ master_sites        pypi:s/statsmodels/
 
 distname            statsmodels-${version}
 
-checksums           rmd160  a4efe903ae6fa6b2a6f9938d58c785621ffe6572 \
-                    sha256  be4e44374aec9e848b73e5a230dee190ac0c4519e1d40f69a5813190b13ec676
+checksums           rmd160  9e4226caca648f5398a74776822701c42b09da05 \
+                    sha256  26431ab706fbae896db7870a0892743bfbb9f5c83231644692166a31d2d86048
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -40,8 +39,4 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-patsy
 
     livecheck.type      none
-} else {
-    livecheck.type      regex
-    livecheck.url       https://pypi.python.org/pypi/statsmodels/json
-    livecheck.regex     {statsmodels-(\d+(?:\.\d+)*)\.[tz]}
 }

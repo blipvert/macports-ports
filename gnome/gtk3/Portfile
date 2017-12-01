@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           muniversal 1.0
@@ -10,11 +9,11 @@ PortGroup           compiler_blacklist_versions 1.0
 name                gtk3
 set real_name       gtk+
 epoch               1
-version             3.22.2
+version             3.22.26
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          gnome x11
 license             LGPL-2.1+
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 platforms           darwin
 
 description         GTK+ widget toolkit
@@ -30,8 +29,8 @@ use_xz              yes
 
 master_sites        gnome:sources/gtk+/${branch}/
 
-checksums           rmd160  6af531fce1653ceb22310e69d11e31b2d6cd9715 \
-                    sha256  2343dcaed2fc237ef718136ff4110fef7eb1ebfe178a9b064aa21cd74ecb6946
+checksums           rmd160  42c684ce7f7fdd10accc86c8e7042509e5125d64 \
+                    sha256  61eef0d320e541976e2dfe445729f12b5ade53050ee9de6184235cb60cd4b967
 
 minimum_xcodeversions {9 3.1}
 
@@ -229,6 +228,10 @@ variant quartz conflicts x11 {
     require_active_variants path:lib/pkgconfig/pango.pc:pango quartz
     require_active_variants port:gdk-pixbuf2 "" x11
 
+    # This patch is part of #53911 and is backported from upstream's repository.
+    # Can probably be removed the next time around.
+    patchfiles-append       patch-gdk-launch-support-newer-glib.diff
+
     configure.args-append   --enable-quartz-backend
 }
 
@@ -266,3 +269,6 @@ post-activate {
 
 livecheck.type      gnome
 livecheck.name      gtk+
+# versions 3.89.1+ are snapshots of unstable development leading to GTK+ 4
+# and are not compatible with gtk3
+livecheck.regex     "LATEST-IS-(\\d+\\.\[0-7\]\[02468\](?:\\.\\d+)*)"

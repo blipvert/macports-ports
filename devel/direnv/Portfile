@@ -1,0 +1,70 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+name                direnv
+categories          devel sysutils
+platforms           darwin
+license             MIT
+
+maintainers         {michaelld @michaelld} openmaintainer
+
+description         ${name} is an environment switcher for the shell.
+
+long_description    \
+    ${description} It knows how to hook into bash, zsh, tcsh and fish shell to load or unload environment variables depending on the current directory. This allows project-specific environment variables without cluttering the \"~/.profile\" file.
+
+if {${name} eq ${subport}} {
+    github.setup        direnv direnv 2.13.3 v
+    checksums           rmd160 d6863e47e729cf15ed03eea877cfc8da309f7ae7 \
+                        sha256 0cbc1384cb850d8cd6fce3cf202fce2161342412a6312e9231fba7414e25039a
+
+    conflicts           direnv-devel
+
+    # fix importing of dotenv
+    patchfiles-append   patch-cmd_dotenv.go.release.diff
+
+    post-patch {
+        # move 'dotenv' into 'src/dotenv' to make GOPATH happy
+        file mkdir ${worksrcpath}/src
+        move ${worksrcpath}/vendor/github.com/direnv/go-dotenv ${worksrcpath}/src/dotenv
+    }
+}
+
+subport direnv-devel {
+    github.setup        direnv direnv f73ba7bfd916730835ca5ff507679d085e7acfb5
+    version             20171130
+    checksums           rmd160 d6863e47e729cf15ed03eea877cfc8da309f7ae7 \
+                        sha256 0cbc1384cb850d8cd6fce3cf202fce2161342412a6312e9231fba7414e25039a
+
+    conflicts           direnv
+    long_description ${long_description}: \
+        This port follows the GIT master version of ${name}, which is typically updated every few days to weeks.
+
+    # fix importing of dotenv
+    patchfiles-append   patch-cmd_dotenv.go.devel.diff
+
+    post-patch {
+        # move 'dotenv' into 'src/dotenv' to make GOPATH happy
+        file mkdir ${worksrcpath}/src
+        move ${worksrcpath}/vendor/github.com/direnv/go-dotenv ${worksrcpath}/src/dotenv
+    }
+}
+
+# override github information
+
+homepage                http://direnv.net/
+
+# builds with 'go' internally
+
+depends_lib-append      port:go
+
+# fix PREFIX and DESTDIR variables to match what 'port' needs
+patchfiles-append       patch-Makefile.diff
+
+use_configure           no
+
+build.env-append        GOPATH=${worksrcpath}
+
+destroot.env-append     PREFIX=${prefix}

@@ -1,17 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
+PortGroup           compiler_blacklist_versions 1.0
 
 name                babl-devel
 conflicts           babl
 set git_name        babl
-set git_commit      654aa198e898c78c3e8344c2fd4c25a7650ff03d
-set git_date        20160615
-version             0.1.19-${git_date}
+set git_commit      924d127dfe26b7e15450104b14f5c64d491f09a7
+set git_date        20171115
+version             0.1.39-${git_date}
 license             LGPL-3+
 categories          graphics
-maintainers         devans
+maintainers         {devans @dbevans}
 platforms           darwin
 
 description         Babl is a library for dynamically handling pixel formats and managing \
@@ -25,8 +25,8 @@ master_sites        https://git.gnome.org/browse/${git_name}/snapshot/
 
 distname            ${git_name}-${git_commit}
 
-checksums           rmd160  7b87eb7fc17470a2ff4c30d5836997b0df820b89 \
-                    sha256  41927bef2e44c736281939b79a546ef2ec01c5c9037e7104ce919e214e2eb5d4
+checksums           rmd160  6cc68320176755b5eed8ce339d8cf367815f7f3e \
+                    sha256  8cd774dbc980c63c194fbd63621b9c3258708d8ee38353463bf82378c29e4537
 
 depends_build       port:automake \
                     port:autoconf \
@@ -36,8 +36,22 @@ depends_build       port:automake \
 #    babl-cpuaccel.c:169: error: ‘asm’ operand has impossible constraints
 compiler.blacklist-append *gcc*
 
+# additionally blacklist compilers that don't support C11 (typedef redefinition in C)
+# babl-icc.c:1031:25: error: redefinition of typedef 'UTF8' is invalid in C
+compiler.blacklist-append {clang < 300}
+
 configure.cmd       ./autogen.sh
                 
-configure.args      --disable-silent-rules
+configure.args      --disable-silent-rules \
+                    ac_cv_prog_AWK=/usr/bin/awk
+ 
+# CC_FOR_BUILD is used by config.guess to determine processor type
+if {![variant_isset universal]} {
+    configure.env-append CC_FOR_BUILD="${configure.cc} ${configure.cc_archflags}"
+} else {
+    foreach arch ${configure.universal_archs} {
+        lappend merger_configure_env(${arch})  CC_FOR_BUILD='${configure.cc} -arch ${arch}'
+    }
+}
 
 livecheck.type      none

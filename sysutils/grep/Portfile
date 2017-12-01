@@ -1,15 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
 name            grep
-version         2.26
+version         3.1
 platforms       darwin
 categories      sysutils
 license         GPL-3+
 installs_libs   no
-maintainers     mps openmaintainer
+maintainers     {mps @Schamschula} openmaintainer
 description     grep prints lines that contain a match for a pattern
 long_description \
     Grep searches one or more input files for lines containing a match  \
@@ -19,8 +18,8 @@ platforms       darwin
 master_sites    gnu
 use_xz          yes
 
-checksums       rmd160  927e617d69010ed4ee5f941e61a407efe71bf4a2 \
-                sha256  246a8fb37e82aa33d495b07c22fdab994c039ab0f818538eac81b01e78636870
+checksums       rmd160  6eaaac1245c653628fd57f07df25b3a60e842891 \
+                sha256  db625c7ab3bb3ee757b3926a5cfa8d9e1c3991ad24707a83dde8a5ef2bf7a07e
 
 # Ensure system version of grep is used instead of a possibly broken MacPorts version.
 configure.env   PATH=/usr/bin:$env(PATH)

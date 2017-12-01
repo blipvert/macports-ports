@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem              1.0
 PortGroup               github 1.0
+PortGroup               cxx11 1.1
 
-github.setup            fish-shell fish-shell 2.3.1
-revision                1
+github.setup            fish-shell fish-shell 2.7.0
 name                    fish
 license                 GPL-2
 categories              shells
@@ -19,8 +18,8 @@ homepage                http://fishshell.com/
 github.tarball_from     releases
 distname                ${name}-${version}
 
-checksums               rmd160  2809d9fd03ebf38961eedcdf37eee658549688aa \
-                        sha256  328acad35d131c94118c1e187ff3689300ba757c4469c8cc1eaa994789b98664
+checksums               rmd160  e45942b53f06415783272f51bb780d2ab3cb4b18 \
+                        sha256  3a76b7cae92f9f88863c35c832d2427fb66082f98e92a02203dc900b8fa87bcb
 
 depends_lib             port:libiconv \
                         port:ncurses \
@@ -28,13 +27,20 @@ depends_lib             port:libiconv \
 
 patchfiles              patch-share_config_fish.diff
 
+# fix build on Tiger
+if { ${os.platform} eq "darwin" && ${os.major} == 8 } {
+    configure.cxxflags-append -D__DARWIN_UNIX03=1
+}
+
 post-patch {
     reinplace "s|@@PREFIX@@|${prefix}/bin|g"     "${worksrcpath}/share/config.fish"
-    reinplace "s|DEF_VER=2.0.GIT|DEF_VER=${version}|"     ${worksrcpath}/build_tools/git_version_gen.sh
 }
 
 # doxygen appears to only regenerate html files and not install man pages
 configure.args-append   --without-doxygen
+
+# disable silent rules
+build.args              V=1
 
 notes "
 To set MacPorts' ${name} as default login shell, run:

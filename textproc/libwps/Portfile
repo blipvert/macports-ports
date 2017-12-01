@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                libwps
-version             0.4.4
+version             0.4.8
 categories          textproc
 platforms           darwin
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 license             LGPL-2
 
 description         C++ library for reading and parsing the Microsoft Works \
@@ -20,8 +19,8 @@ master_sites        sourceforge:project/libwps/libwps/libwps-${version}
 
 use_xz              yes
 
-checksums           rmd160  237fd4a3410f0972f2b117f541093b0202bb3044 \
-                    sha256  b7c564bba7bc9058c524eaf94cb43448832aa03e3d763b98e11ee12d25082df4
+checksums           rmd160  a224d4ddd5fe52505e14f3a8b8ff12284e213b45 \
+                    sha256  e478e825ef33f6a434a19ff902c5469c9da7acc866ea0d8ab610a8b2aa94177e
 
 depends_build       port:pkgconfig
 

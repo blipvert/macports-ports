@@ -1,28 +1,25 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
 name                xapian-bindings
-version             1.2.21
+version             1.4.5
 categories          devel
-maintainers         gmail.com:dcolish
+platforms           darwin
 license             GPL-2+
-
+maintainers         nomaintainer
 description         Xapian bindings
 long_description    Xapian is a highly adaptable toolkit which allows \
                     developers to easily add advanced indexing and search \
                     facilities to their own applications. It supports the \
                     Probabilistic Information Retrieval model and also \
                     supports a rich set of boolean query operators.
-
-homepage            http://xapian.org/
-platforms           darwin
-master_sites        http://oligarchy.co.uk/xapian/${version}
+homepage            https://xapian.org/
+master_sites        https://oligarchy.co.uk/xapian/${version}/
 use_xz              yes
 
-checksums           rmd160  02621fe2788be8d7a04fcfb23214e73cabfb5d83 \
-                    sha256  28a39247ac875be2dc1386c273167aab5c9949227c1070b65ca8de603c06d546
+checksums           rmd160  b356bbb55ef82031973cbfee77927d3a69709baa \
+                    sha256  647886730a71bcc0e9f666fcd702b7141d4e9a82e1085e44eb4470624e1a9d33
 
 depends_lib         port:xapian-core
 
@@ -47,8 +44,9 @@ variant python27 description {build python 2.7 bindings} {
 }
 
 variant ruby description {build ruby bindings} {
-    depends_lib-append      port:ruby
+    depends_lib-append      port:ruby24
 
+    configure.env           RUBY=ruby2.4
     configure.args-replace  --without-ruby --with-ruby
 
     post-destroot {

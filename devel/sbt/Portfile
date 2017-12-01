@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem      1.0
 
 name            sbt
-version         0.13.11
+version         0.13.15
 categories      devel java
 license         BSD
 maintainers     blair openmaintainer
@@ -23,9 +22,10 @@ master_sites    https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sb
 distname        ${name}-launch
 dist_subdir     ${name}/${version}
 
-checksums       md5    f6242d8097ac039ed3b32a6f7ba46343 \
-                sha1   7435a957b62743d81ae257c60bce11a641aef2a8 \
-                sha256 c63ade35a7a7aa0d8e3bdc7c2353ce79b045083cfabf6bc6fab88584f6100bc1
+checksums       md5    dacda05621aa777a194346273af30a60 \
+                sha1   61bfa3f5791325235f6d7cc37a7e7f6bfeb83531 \
+                sha256 e92f4bb5823491432c59613f263f399bde9573b6f908638c6b10f79191f98559 \
+                rmd160  8cae748d9c2ad25142002cc16fe97409f5999026
 
 depends_build   bin:java:kaffe
 

@@ -1,17 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
-# This comment was inserted on 20160713 to force reindexing of
-# this port after the default homepage definition in the perl5
-# PortGroup was changed to use metacpan.org (r150080).
-# Reindexing is necessary for the new definition to take effect.
-# This comment may be removed in subsequent updates of this port.
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         YAML-LibYAML 0.63
+perl5.branches      5.24 5.26
+perl5.setup         YAML-LibYAML 0.67
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Perl YAML Serialization using XS and libyaml
@@ -19,5 +12,5 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  3f27325bc65ff3ab7de6a7474334dc82acff13b0 \
-                    sha256  3cf0044a8838966f63c850a442e36039b8aec2db291089fffa11b786d1d164c8
+checksums           rmd160  3d8a84a838c4918ca8564a3d01e2b09807f1ea45 \
+                    sha256  e65a22abc912a46a10abddf3b88d806757f44f164ab3167c8f0ff6aa30648187

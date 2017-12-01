@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem      1.0
 PortGroup       github 1.0
@@ -15,7 +14,7 @@ homepage        http://libusb.info/
 
 platforms       darwin
 license         LGPL-2.1+
-maintainers     michaelld toby
+maintainers     {michaelld @michaelld} toby
 
 use_parallel_build no
 
@@ -39,10 +38,10 @@ if {${subport} eq ${name}} {
     long_description ${long_description} \
         This port provides devel version of ${name}, updated weekly to monthly.
 
-    github.setup   libusb libusb 09e75e98b4d9ea7909e8837b7a3f00dda4589dc3
-    version        20161025
-    checksums      rmd160 1a2604859ef0997b1422ec5d412438bd4b5633af \
-                   sha256 acb5ca3379cecf7bf53901b8e98192723909f696af04bd63fca0cfafec5b057c
+    github.setup   libusb libusb b4c9b4272d61cecffeddeb91abd31efe256a6224
+    version        20170824
+    checksums      rmd160 e1aa2d528a33d397b80a487c66406e6b67732b5b \
+                   sha256 32e1c43d37bb4d3ebc0a22004b929b7ac94834e80b66dfa37df2bab493b8680b
 
     conflicts      libusb
     patchfiles     patch-libusb_os_darwin_usb.h.devel.diff

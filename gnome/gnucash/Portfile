@@ -1,18 +1,20 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem        1.0
 PortGroup         perl5 1.0
 
 name              gnucash
-version           2.6.14
-revision          2
-perl5.branches    5.24
-conflicts         gnucash-devel
+conflicts         gnucash gnucash-devel
+conflicts-delete  ${subport}
+version           2.6.18
+revision          1
+perl5.branches    5.26
 categories        gnome x11
 license           GPL-2+
-maintainers       dports openmaintainer
+maintainers       {dports @drkp} openmaintainer
 platforms         darwin
+
+set branch        [join [lrange [split ${version} .] 0 1] .]
 
 description       a personal and small-business financial-accounting software
 long_description  GnuCash is a personal and small-business \
@@ -28,10 +30,14 @@ homepage          http://www.gnucash.org/
 master_sites      sourceforge \
                   http://www.gnucash.org/pub/gnucash/sources/stable/
 
+# specific to 2.6.18
+distname          ${name}-${version}-1
+worksrcdir        ${name}-${version}
+
 use_bzip2         yes
 
-checksums           rmd160  3e7eb1da511efe7b1a91224d1ca2a53b3fd42052 \
-                    sha256  3b144f2ca5025df5eb1977b11e6f93208f3e90d840285ae952fa9b3da8158e75
+checksums         rmd160  79b1ac0150899746fc2a77ed6a3ae201a91a6da9 \
+                  sha256  68730bcfcead7485011eb43d3b2c5df032c714571c81f9a15d33d8494fc4249d
 
 # We'll install gnucash's libraries in a separate subdir of
 # ${prefix}/lib, because gnucash sets DYLD_LIBRARY_PATH at runtime in
@@ -59,8 +65,8 @@ post-patch {
     # if both are installed.)
     fs-traverse f ${worksrcpath} {
         if [regexp {\.[ch]$} ${f}] {
-            reinplace -locale C "s|<libguile\\.h>|<libguile18.h>|g" ${f}
-            reinplace -locale C "s|<libguile/|<libguile18/|g" ${f}
+            reinplace -q -locale C "s|<libguile\\.h>|<libguile18.h>|g" ${f}
+            reinplace -q -locale C "s|<libguile/|<libguile18/|g" ${f}
         }
     }
 }
@@ -72,7 +78,7 @@ depends_build     port:pkgconfig \
                   port:libtool
 
 depends_lib       port:guile18 \
-                  port:libgnomeui \
+                  port:libgnomecanvas \
                   path:lib/pkgconfig/webkit-1.0.pc:webkit-gtk \
                   port:goffice08 \
                   port:p${perl5.major}-datemanip \
@@ -117,7 +123,8 @@ configure.args    --disable-dependency-tracking \
                   --disable-aqbanking \
                   --disable-ofx \
                   --disable-dbi \
-                  --with-html-engine=webkit
+                  --with-html-engine=webkit \
+                  --with-guile=1.8
 
 configure.args-append   --libdir=${gnclibdir}
 
@@ -165,3 +172,12 @@ post-activate {
 }
 
 livecheck.regex "/${name} .*/(\[0-9\]+\\.\[0-9\]*\[02468\]\\.\[0-9\]+)/"
+
+
+
+subport gnucash-devel {
+    master_sites      sourceforge:${name} \
+        http://www.gnucash.org/pub/gnucash/sources/unstable/${branch}.x/
+
+    livecheck.regex "/${name} .*/(\[0-9\]+\\.\[0-9\]*\[0-9\]\\.\[0-9\]+)/"
+}

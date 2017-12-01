@@ -1,18 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-distributed
-version             1.13.3
+version             1.20.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -26,24 +25,22 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  ad8dde4dd6d8a0277d2438bd2f233603ad9a5806 \
-                    sha256  2ccb9a70ccc0292d51a175a884e33306765bf773ae57b7a10bd2a0f431346a5a
+checksums           rmd160  e94fa4ade8c4d6735b6d66de992f702d99b53182 \
+                    sha256  01f850df6ff2bfc0b04585b395799f0b7e5522820ffd0cd00c0723f419765196
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                        port:py${python.version}-setuptools
-
-    depends_lib-append  port:py${python.version}-zict \
+    depends_lib-append  port:py${python.version}-setuptools \
+                        port:py${python.version}-zict \
                         port:py${python.version}-tornado \
                         port:py${python.version}-toolz \
                         port:py${python.version}-tblib \
                         port:py${python.version}-six \
                         port:py${python.version}-psutil \
                         port:py${python.version}-msgpack \
-                        port:py${python.version}-locket \
                         port:py${python.version}-dask \
                         port:py${python.version}-cloudpickle \
-                        port:py${python.version}-click
+                        port:py${python.version}-click \
+                        port:py${python.version}-sortedcontainers
 
     if {${python.version} == 27} {
         depends_lib-append  port:py${python.version}-futures \
@@ -51,6 +48,4 @@ if {${name} ne ${subport}} {
     }
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

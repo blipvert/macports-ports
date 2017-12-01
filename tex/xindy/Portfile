@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
@@ -9,7 +8,7 @@ revision        1
 
 categories      tex textproc
 license         GPL-2+
-maintainers     dports
+maintainers     {dports @drkp}
 description     framework for generating indexes
 long_description \
   xindy is an index processor that can be used to generate book-like \
@@ -55,5 +54,5 @@ default_variants +doc
 
 livecheck.type  regex
 livecheck.url   http://www.ctan.org/tex-archive/indexing/xindy/base/
-livecheck.regex "${name}-(\[0-9.\]+)${extract.suffix}"
+livecheck.regex "sion</td><td>(\\d+(?:\\.\\d+)*) </td>"
 

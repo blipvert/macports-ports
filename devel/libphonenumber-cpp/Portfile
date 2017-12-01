@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           cmake 1.0
@@ -7,21 +6,19 @@ PortGroup           github 1.0
 
 cmake.out_of_source yes
 
-github.setup        googlei18n libphonenumber 7.7.3 libphonenumber-
-
+github.setup        googlei18n libphonenumber 8.8.7 v
 name                libphonenumber-cpp
 license             Apache-2
 description         Google's C++ library for parsing, formatting, storing \
                     and validating international phone numbers.
 long_description    ${description}
-maintainers         devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 categories          devel
 platforms           darwin
 
-checksums           rmd160  c78c3df96bc701c41eda5b3ed161351a86b4bdc6 \
-                    sha256  e5a8aecd93f113e1fa1d6662268197d515cd82662e7a6a430438341d7822a3f2
+checksums           rmd160  75f929c97545addd79702564159c49b0eed76005 \
+                    sha256  a92f2327f65ac954935cc4f24106b7e2462f25b2b2a221f7e4f64178cdea039d
 
-dist_subdir         ${name}/${version}_1
 worksrcdir          ${worksrcdir}/cpp
 
 set gtest_version   1.7.0

@@ -1,9 +1,7 @@
-# $Id$
-
 PortSystem 1.0
 name             libxo
 homepage         https://github.com/Juniper/libxo
-version          0.6.3
+version          0.8.4
 master_sites     ${homepage}/releases/download/${version}
 categories       devel
 license          BSD
@@ -15,7 +13,10 @@ long_description \
     at run time which output style should be produced.
 platforms        darwin
 
-checksums        rmd160 9afa48d851de3b10ef065e3b879ce14d6ea0db5c \
-                 sha256 926824bb9af4351b83bc462929b3ff17a8b50650ff8b2ac67f265d09f1ea8cef
+checksums        rmd160 0d8b62fc9d3313ea8ff68cc657005f620d04c5ad \
+                 sha256 3b3a33b706075fdc478782fdc65db3e7f9167550f7d71b95e704236a797e7fd3
 
 depends_build    port:libtool
+depends_lib      port:gettext
+
+configure.args   --with-gettext=${prefix}

@@ -1,0 +1,44 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           select 1.0
+
+name                py-pynacl
+version             1.2.0
+revision            0
+categories-append   devel
+platforms           darwin
+license             Apache-2
+
+python.versions     27 34 35 36
+
+maintainers         stromnov openmaintainer
+
+description         Python binding to the Networking and Cryptography (NaCl) library
+long_description    ${description}
+
+homepage            https://github.com/pyca/pynacl/
+master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+
+distname            PyNaCl-${version}
+
+checksums           rmd160  f05a874037fc76550734ab7c45a1d659a2965336 \
+                    sha256  45c5bcdf8ddefe2e9381f5d37fe778bbda6991fe7004e0b1ea3570df2fc07207
+
+platform darwin 11 {
+    # default clang version cannot build this port, see https://trac.macports.org/ticket/54407
+    # llvm-gcc does build it, but this is undesirable due to standard library issues
+    # the following leads to a build with clang-3.4, which succeeds
+    compiler.blacklist-append {clang}
+    compiler.blacklist-append *gcc*
+}
+
+if {${name} ne ${subport}} {
+    depends_build-append \
+                        port:py${python.version}-setuptools
+    depends_lib-append  port:py${python.version}-cffi \
+                        port:py${python.version}-six
+
+    livecheck.type      none
+}

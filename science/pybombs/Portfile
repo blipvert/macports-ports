@@ -1,0 +1,100 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem            1.0
+PortGroup             python 1.0
+PortGroup             github 1.0
+
+name                  pybombs
+
+set pythons_suffixes {27 34 35 36}
+
+categories            science python
+license               GPL-3
+platforms             darwin
+supported_archs       noarch
+maintainers           {michaelld @michaelld}
+
+description           Python Build Overlay Managed Bundle System
+
+long_description      PyBOMBS (Python Build Overlay Managed Bundle System) is the GNU Radio install management system for resolving dependencies and pulling in out-of-tree projects from CGRAN (Comprehensive GNU Radio Archive Network).
+
+subport ${name}-devel {}
+
+if {${subport} eq ${name}} {
+
+    github.setup    pybombs pybombs 2.3.2 v
+    checksums       rmd160 a19b3071d02d705872c9b0cbdecd5bf6f16a88a2 \
+                    sha256 88c8ad3550df8990e2f56857c7cb27f15eadcbcfc35a59ffd1f4a6dbf7639af6
+
+    worksrcdir      gnuradio-pybombs-1cbd8cd
+    conflicts       ${name}-devel
+
+    # fix the version to be more explicit
+    post-patch {
+        reinplace "s@${version}@${version} MacPorts@g" ${worksrcpath}/pybombs/__init__.py
+    }
+
+} else {
+
+    github.setup    pybombs pybombs d6da59186b065355cada1ae8b8fc3114951aefab
+    version         20171103
+    checksums       rmd160 122d40024ba1e074a9332db80ca42af03467e82d \
+                    sha256 976f32aad3dcb3950c99ab119e06fc4e3a79f08a5ef0768a6d29dc83578ae42c
+
+    worksrcdir      gnuradio-${github.project}-[string range ${github.version} 0 6]
+    long_description    ${long_description} \
+        This port is kept up with the ${name} GIT 'master' branch, is typically updated weekly to monthly.
+    conflicts       ${name}
+
+    # fix the version to be very explicit
+    post-patch {
+        reinplace "s@2.3.3a@2.3.3a-git-[string range ${github.version} 0 7] MacPorts@g" ${worksrcpath}/pybombs/__init__.py
+    }
+}
+
+# declare +python* variants
+
+foreach this_py_version_no_dot ${pythons_suffixes} {
+    set ndx [lsearch -exact ${pythons_suffixes} ${this_py_version_no_dot}]
+    set this_conflicts [lreplace ${pythons_suffixes} ${ndx} ${ndx}]
+    set this_description "Use python${this_py_version_no_dot}"
+    variant python${this_py_version_no_dot} \
+        conflicts {*}${this_conflicts} \
+        description ${this_description} "
+            python.default_version ${this_py_version_no_dot}
+            depends_lib-append \
+                port:py${this_py_version_no_dot}-future \
+                port:py${this_py_version_no_dot}-requests \
+                port:py${this_py_version_no_dot}-six \
+                port:py${this_py_version_no_dot}-ruamel-yaml
+    "
+}
+
+# set default, if no variants selected
+
+set PY_VER_NO_DOT 0
+foreach this_py_version_no_dot ${pythons_suffixes} {
+    if {[variant_isset python${this_py_version_no_dot}]} {
+        set PY_VER_NO_DOT ${this_py_version_no_dot}
+        break
+    }
+}
+
+if {${PY_VER_NO_DOT} == 0} {
+    default_variants +python[option python.default_version]
+}
+
+# make sure the default variant is not deselected alone
+
+set PY_VER_NO_DOT 0
+foreach this_py_version_no_dot ${pythons_suffixes} {
+    if {[variant_isset python${this_py_version_no_dot}]} {
+        set PY_VER_NO_DOT ${this_py_version_no_dot}
+        break
+    }
+}
+
+if {${PY_VER_NO_DOT} == 0} {
+    ui_error "\n\nYou must select a Python variant; you cannot select -python[option python.default_version] alone.\n"
+    return -code error "Invalid variant selection."
+}

@@ -1,14 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
 epoch               1
-github.setup        ninja-build ninja 1.7.1 v
+github.setup        ninja-build ninja 1.8.2 v
 categories          devel
 platforms           darwin
-maintainers         nomaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 license             Apache-2
 installs_libs       no
 
@@ -29,8 +28,8 @@ long_description    Ninja is yet another build system. It takes as input    \
 
 homepage            https://ninja-build.org
 
-checksums           rmd160  16a67643cf07dd695c3c68b29e058a62e8e06cb5 \
-                    sha256  e8d7aca6141d7fb79efa757b86e8e20f3f40f8f55b7986de4af18a0064e3763e
+checksums           rmd160  4565c35672b5cddfde05fb679c80c9eef41935ef \
+                    sha256  a67900e40f26d1cdb41381bcac56f4c219c3b424cc6d840edf727d6d566b242e
 
 patchfiles          patch-configure.py-use-system-python.diff \
                     patch-configure.py-bootstrap-only.diff \

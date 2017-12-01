@@ -1,15 +1,25 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
+PortGroup           github 1.0
 PortGroup           active_variants 1.1
+PortGroup           app 1.0
+PortGroup           cmake 1.0
+PortGroup           cxx11 1.0
 
-name                darktable
-version             1.1.2
-revision            6
+github.setup        darktable-org darktable 2.2.5 release-
+revision            1
+
+github.tarball_from releases
+use_xz              yes
+
+checksums           rmd160  1a66797ca24dc7ef06fc5bb2fbed98724d50c0f8 \
+                    sha256  e303a42b33f78eb1f48d3b36d1df46f30873df4c5a7b49605314f61c49fbf281
+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          graphics
 platforms           darwin
+supported_archs     x86_64
 maintainers         nomaintainer
 license             GPL-3+
 
@@ -22,105 +32,119 @@ long_description    Darktable is a virtual lighttable and darkroom for \
                     and enhance them.
 
 homepage            http://www.darktable.org/
-master_sites        sourceforge:project/darktable/darktable/${branch}
 
-checksums           rmd160  8c4594334f884866b789fedf87093f232c3fb4b4 \
-                    sha256  225ebf1bd2ca4cf06aa609f2eda55cb0894ae69bdf4db25fd97b2503c28e1765
+depends_build-append  port:pkgconfig port:intltool
 
-depends_build       port:cmake \
-                    port:pkgconfig
-
-depends_lib         path:lib/pkgconfig/cairo.pc:cairo \
+depends_lib-append  port:atk \
+                    path:lib/pkgconfig/cairo.pc:cairo \
                     port:curl \
-                    port:dbus-glib \
                     port:exiv2 \
+                    port:flickcurl \
+                    port:GraphicsMagick \
+                    port:gdk-pixbuf2 \
                     port:gettext \
                     path:lib/pkgconfig/glib-2.0.pc:glib2 \
-                    port:gtk2 \
-                    port:gtk-engines2 \
+                    port:gtk-osx-application-gtk3 \
+                    port:gtk3 \
+                    port:ilmbase \
                     port:jpeg \
                     port:json-glib \
                     port:lcms2 \
                     port:lensfun \
-                    port:libglade2 \
                     port:libgphoto2 \
                     port:libpng \
                     port:librsvg \
+                    port:libsecret \
+                    port:libsoup \
+                    port:libusb \
+                    port:lua52 \
                     port:libxml2 \
                     port:openexr \
+                    port:openjpeg \
+                    port:osm-gps-map \
+                    path:lib/pkgconfig/pango.pc:pango \
+                    port:pugixml \
                     port:sqlite3 \
+                    port:webp \
                     port:tiff \
                     port:zlib
 
-patchfiles          patch-build.sh.diff
+depends_run         port:adwaita-icon-theme \
+                    port:desktop-file-utils
 
-configure.cmd       ./build.sh
-configure.pre_args  --prefix ${prefix}
-configure.args      --jobs ${build.jobs} \
-                    --disable-flickr \
-                    --disable-kwallet \
-                    --disable-gnome-keyring \
-                    --disable-openmp \
-                    --disable-opencl \
-                    --disable-unity \
-                    --disable-tethering \
-                    --disable-experimental \
-                    --disable-geo
+require_active_variants gtk3 quartz
 
-configure.universal_args-delete --disable-dependency-tracking
+cmake.out_of_source yes
 
-if {![variant_isset quartz]} {
-    default_variants    +x11
+configure.args-append \
+                    -DBUILD_CMSTEST=OFF \
+                    -DTESTBUILD_OPENCL_PROGRAMS=OFF \
+                    -DUSE_COLORD=OFF \
+                    -DUSE_KWALLET=OFF \
+                    -DUSE_OPENMP=OFF \
+                    -DUSE_UNITY=OFF
+
+post-build {
+    set wrap [open "${workpath}/darktable-app" w 0755]
+    puts ${wrap} "#!/bin/sh"
+    puts ${wrap} ""
+    puts ${wrap} "export XDG_DATA_DIRS=${prefix}/share:\$XDG_DATA_DIRS"
+    puts ${wrap} "exec ${prefix}/bin/darktable --moduledir ${prefix}/lib/darktable"
+    puts ${wrap} ""
+    close ${wrap}
 }
 
-pre-configure {
-    if {![variant_isset quartz] && ![variant_isset x11]} {
-        return -code error "either +x11 or +quartz is required"
-    }
+post-destroot {
+    # need to determine why lib is not going where expected, until then...
+    move ${destroot}${prefix}/lib/darktable/libdarktable.dylib ${destroot}${prefix}/lib/
 }
 
-build.dir           ${worksrcpath}/build
-
-variant quartz conflicts x11 {
-    require_active_variants gtk2 quartz
+post-activate    {
+    system "${prefix}/bin/update-desktop-database ${prefix}/share/applications"
+    system "${prefix}/bin/glib-compile-schemas ${prefix}/share/glib-2.0/schemas"
+    system "env XDG_DATA_DIRS=${prefix}/share ${prefix}/bin/update-mime-database -V ${prefix}/share/mime"
 }
+
+app.executable      ${workpath}/darktable-app
+app.icon            packaging/macosx/Icons.icns
 
 variant x11_no_quartz conflicts quartz {
     require_active_variants gtk2 x11
 }
 
-platform darwin {
-    if {${os.major} >= 13} {
-        post-patch {
-            reinplace "s:tr1/::" ${worksrcpath}/src/common/imageio_exr.hh
-            reinplace "s/tr1:://" ${worksrcpath}/src/common/imageio_exr.hh
-        }
-    } else {
-        variant quartz conflicts gcc44 gcc45 {}
+universal_variant   no
 
-        variant gcc44 conflicts gcc45 gcc46 gcc47 quartz universal description {Build with GCC 4.4} {
-            configure.compiler  macports-gcc-4.4
-        }
+# With gcc5 or gcc6, tries to build src/osx/osx.mm with gcc which results
+# in a cascade of errors.  Leave disabled until a solution is found
+# variant gcc5 description {Build with gcc5 to enable OpenMP for speed} {
+#     depends_lib-append      port:gcc5
+#     configure.args-replace  -DUSE_OPENMP=OFF -DUSE_OPENMP=ON
+#     configure.compiler      macports-gcc-5
+# }
 
-        variant gcc45 conflicts gcc44 gcc46 gcc47 quartz universal description {Build with GCC 4.5} {
-            configure.compiler  macports-gcc-4.5
-        }
-
-        variant gcc46 conflicts gcc44 gcc45 gcc47 universal description {Build with GCC 4.6} {
-            configure.compiler  macports-gcc-4.6
-        }
-
-        variant gcc47 conflicts gcc44 gcc45 gcc46 universal description {Build with GCC 4.7} {
-            configure.compiler  macports-gcc-4.7
-        }
-    }
+variant clang39 conflicts clang40 description {Build with clang 3.9 to enable OpenMP for speed} {
+    depends_lib-append      port:clang-3.9
+    configure.args-replace  -DUSE_OPENMP=OFF -DUSE_OPENMP=ON
+    configure.compiler      macports-clang-3.9
 }
 
-variant gnome_keyring description {Build with gnome-keyring} {
-    configure.args-delete   --disable-gnome-keyring
-    configure.args-append   --enable-gnome-keyring
-    depends_lib-append      port:libgnome-keyring
+# See https://trac.macports.org/ticket/55380
+# High Sierra build fails with clang-3.9
+variant clang40 conflicts clang39 description {Build with clang 4.0 to enable OpenMP for speed} {
+    depends_lib-append      port:clang-4.0
+    configure.args-replace  -DUSE_OPENMP=OFF -DUSE_OPENMP=ON
+    configure.compiler      macports-clang-4.0
 }
 
-livecheck.url       http://sourceforge.net/api/file/index/project-id/258690/rss
-livecheck.regex     {darktable-([0-9.]+?).tar}
+default_variants    +clang40
+
+
+notes "
+Online documentation for ${name} is at:
+http://www.darktable.org/usermanual/index.html.php
+
+PDF documentation may be downloaded at:
+http://www.darktable.org/resources/
+"
+livecheck.url       https://github.com/darktable-org/darktable/releases
+livecheck.regex     release-(${branch}.\[0-9.\]?).tar

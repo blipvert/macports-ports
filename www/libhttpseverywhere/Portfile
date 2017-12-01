@@ -1,13 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
-PortGroup           github 1.0
 
-github.setup        grindhold libhttpseverywhere 0.2.3
+name                libhttpseverywhere
+version             0.6.4
 license             LGPL-3
+set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          www
-maintainers         devans openmaintainer
+maintainers         nomaintainer
 platforms           darwin
 
 description         This library enables you to leverage the power \
@@ -21,13 +21,17 @@ long_description    ${description}. HTTPSEverywhere is a browser plugin \
                     GLib-based library you can link/bind against \
                     in almost all languages
 
-checksums           rmd160  04d5f814feb434d799e2c43e1a6db8204d8e47f1 \
-                    sha256  2f32e105e2751c0639892a57d1b652571e08c6937c4cc192cfa1f97cd7f49d0c
+homepage            https://git.gnome.org//browse/${name}
+master_sites        gnome:sources/${name}/${branch}/
+
+use_xz              yes
+
+checksums           rmd160  7246d82264d8281ead715f2cec0269b0bf750d1b \
+                    sha256  01511684bb2e416c7045794544c53f07b78a729124662ad95610e000087db3a1
 
 depends_build       port:pkgconfig \
                     port:meson \
-                    port:ninja \
-                    port:valadoc
+                    port:ninja
 
 depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:json-glib \
@@ -38,17 +42,29 @@ depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:libxml2 \
                     port:vala
 
-# meson requires builds be out of source
+configure.cmd       meson
+configure.post_args . build
 
-pre-configure {
-    xinstall -d -m 755 ${worksrcpath}/build
-}
-
-configure.cmd       cd build && meson ..
-
-build.cmd           cd build && ninja
+# meson requires builds be in build subdir
+build.dir           ${worksrcpath}/build
+build.cmd           ninja
 build.target
 
+test.run            yes
+test.dir            ${worksrcpath}/build
+test.cmd            ./httpseverywhere_test
+test.target
+
 # DESTDIR must come before ninja command rather than after
-destroot.cmd        cd build && DESTDIR=${destroot} ninja
+destroot.dir        ${worksrcpath}/build
+destroot.cmd        DESTDIR=${destroot} ninja
 destroot.destdir
+
+# meson ninja backend improperly sets shared library install name
+# based on build_dir rather than install_dir
+post-destroot {
+    set libname ${prefix}/lib/${name}-0.6.0.dylib
+    system "install_name_tool -id ${libname} ${destroot}${libname}"
+}
+
+livecheck.type      gnome

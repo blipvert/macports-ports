@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem  1.0
 PortGroup           muniversal 1.0
 
 name                nspr
-version             4.13
+version             4.17
 categories          devel
 maintainers         nomaintainer
 license             {MPL-1.1 GPL-2+ LGPL-2.1+}
@@ -18,8 +17,8 @@ homepage            http://www.mozilla.org/projects/nspr
 master_sites        http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${version}/src/ \
                     ftp://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${version}/src/
 
-checksums           rmd160  9769164662cb9349bf1c33e39e644767d1c767ae \
-                    sha256  19c33334bb3fa6d24800ffa65d7d806c54ad5f8c3758a5c11352ad43212ab181
+checksums           rmd160  9ab5741d361d8c381a08deb93c945e2bc4e5881c \
+                    sha256  590a0aea29412ae22d7728038c21ef2ab42646e48172a47d2e4bb782846d1095
 
 worksrcdir          ${worksrcdir}/nspr
 

@@ -1,11 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
 name                gsoap
-version             2.8.11
-revision            1
+version             2.8.55
 set branch          [join [lrange [split ${version} .] 0 1] .]
 platforms           darwin
 categories          devel
@@ -22,14 +20,14 @@ long_description    The gSOAP toolkit is a cross-platform development \
                     HTTP Web server, and much more.
 
 homepage            http://www.cs.fsu.edu/~engelen/soap.html
-master_sites        sourceforge:project/gsoap2/gSOAP
+master_sites        sourceforge:project/gsoap2/${name}-${branch}
 
 use_zip             yes
 distname            ${name}_${version}
 worksrcdir          ${name}-${branch}
 
-checksums           rmd160  d96b07165f8e4885f1b2dd08589fd772a97ec8b5 \
-                    sha256  8de57a0ae5957cee01e46e3d166cfedf7f5d0b5dae797fe3d8b01c777567534c
+checksums           rmd160  9d21f1460f70e40682b2de96eacf73e92350e136 \
+                    sha256  fe883f79e730b066ddc6917bc68248f5f785578ffddb7066ab83b09defb2a736
 
 depends_lib         path:lib/libssl.dylib:openssl
 

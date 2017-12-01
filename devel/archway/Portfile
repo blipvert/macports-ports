@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 
@@ -10,7 +9,7 @@ categories          devel
 platforms           darwin
 supported_archs     noarch
 license             GPL-2+
-maintainers         jmr openmaintainer
+maintainers         {jmr @jmroot} openmaintainer
 description         an advanced GUI for GNU Arch
 long_description \
     ArchWay is a GNU Arch GUI. It follows the unix tradition of \

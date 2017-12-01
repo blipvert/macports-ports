@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pymongo
-version             3.3.0
+version             3.5.1
 revision            0
 categories-append   databases
 platforms           darwin
 license             Apache
 
-python.versions     26 27 33 34 35
+python.versions     26 27 33 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -25,8 +24,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  a070bb3553a544c5a8901875e1554286bf059bd7 \
-                    sha256  3d45302fc2622fabf34356ba274c69df41285bac71bbd229f1587283b851b91e
+checksums           rmd160  98918531be0e3944685cb4e3eae27ccaf1e07876 \
+                    sha256  e820d93414f3bec1fa456c84afbd4af1b43ff41366321619db74e6bc065d6924
 
 if {${name} ne ${subport}} {
     conflicts               py${python.version}-bson
@@ -39,6 +38,4 @@ if {${name} ne ${subport}} {
     }
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

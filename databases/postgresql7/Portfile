@@ -1,13 +1,11 @@
-# $Id$
-
 PortSystem 1.0
 
 name			postgresql7
 version			7.4.24
-revision        2
+revision        3
 categories		databases
 platforms		darwin
-maintainers		mww
+maintainers		nomaintainer
 license			Permissive
 description		The most advanced open-source database available anywhere
 long_description PostgreSQL is Object-Relational Database Management System. \

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem      1.0
 PortGroup       python 1.0
@@ -9,11 +8,12 @@ name            ansible
 epoch           1
 categories      sysutils
 
-github.setup    ${name} ${name} 2.1.2.0-1 v
+github.setup    ${name} ${name} 2.3.2.0-1 v
 version         [string map {- .} ${version}]
+revision        1
 fetch.type      git
 
-maintainers     adfernandes blair gmail.com:pedro.salgado
+maintainers     {adfernandes @adfernandes} blair gmail.com:pedro.salgado
 
 homepage        https://github.com/ansible/ansible
 description     SSH-based configuration management and deployment system
@@ -50,9 +50,9 @@ post-fetch {
 
 patch {
     fs-traverse f ${worksrcpath} {
-        if {[file isfile ${f}] && ![regexp {\.(ico|png|eot|ttf|woff|reg|gz)$} ${f} match] && ![regexp {\.git} ${f} match] && ![regexp {v2/test/test.yml} ${f} match]} {
-            reinplace "s#/etc/ansible#${prefix}/etc/ansible#g" ${f}
-            reinplace "s#/usr/share/ansible#${prefix}/share/ansible#g" ${f}
+        if {[file isfile ${f}] && ![regexp {\.(bin|ico|png|eot|ttf|woff|reg|gz|zip)$} ${f} match] && ![regexp {\.git} ${f} match] && ![regexp {v2/test/test.yml} ${f} match]} {
+            reinplace -q "s#/etc/ansible#${prefix}/etc/ansible#g" ${f}
+            reinplace -q "s#/usr/share/ansible#${prefix}/share/ansible#g" ${f}
         }
     }
 }
@@ -73,7 +73,7 @@ post-destroot {
         ${destroot}${prefix}/share/doc/${name}/examples
 
     # Man pages.
-    eval xinstall -m 755 [glob ${worksrcpath}/docs/man/man1/*.1] \
+    xinstall -m 755 {*}[glob ${worksrcpath}/docs/man/man1/*.1] \
         ${destroot}${prefix}/share/man/man1
 
     # Install sample config and hosts file.

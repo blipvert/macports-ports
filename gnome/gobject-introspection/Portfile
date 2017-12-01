@@ -1,17 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           active_variants 1.1
 
 name                gobject-introspection
-version             1.50.0
+version             1.54.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          gnome
 platforms           darwin
 # library under LGPL-2+, tools under GPL-2+
 license             {LGPL GPL-2+}
-maintainers         juanrgar devans openmaintainer
+maintainers         {devans @dbevans} openmaintainer
 description         GObject Introspection
 long_description    Gobject Introspection acts as a bridge between low-level C+GObject code and \
                     a managed runtime (JavaScript, Python, Java, Lua, .NET, Scheme, etc.).
@@ -20,8 +19,8 @@ homepage            https://wiki.gnome.org/Projects/GObjectIntrospection
 master_sites        gnome:sources/${name}/${branch}/
 use_xz              yes
 
-checksums           rmd160  d2f07bcb3bdb73b09fb59b9d4ced7a7f12660c41 \
-                    sha256  1c6597c666f543c70ef3d7c893ab052968afae620efdc080c36657f4226337c5
+checksums           rmd160  6aa0bd6e6f9b95fb4d87832a3833c89fc71ed599 \
+                    sha256  b88ded5e5f064ab58a93aadecd6d58db2ec9d970648534c63807d4f9a7bb877e
 
 depends_build       port:pkgconfig
 

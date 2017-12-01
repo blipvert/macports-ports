@@ -1,8 +1,8 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           cxx11 1.1
 
 name                libcaca
 categories          graphics
@@ -21,7 +21,7 @@ dist_subdir         libcaca
 if {${name} eq ${subport}} {
 
     github.setup    cacalabs libcaca 0.99.beta19 v
-    revision        5
+    revision        6
     checksums       \
         rmd160 8623dbfe2584d6e5c633aa140f30139a13a59128 \
         sha256 128b467c4ed03264c187405172a4e83049342cc8cc2f655f53a2d0ee9d3772f4
@@ -35,11 +35,11 @@ provides the release version.
 
 subport libcaca-devel {
 
-    github.setup    cacalabs libcaca 156781dd67d024dc067010ef8640d0b91c5c3356
-    version         20161007
+    github.setup    cacalabs libcaca da28e9684ef445ac8d42745644336b8a75c01855
+    version         20171001
     checksums       \
-        rmd160 1f26a928ca638d4c4472f3513eb1a044799a272c \
-        sha256 289369f3a24e7735a4f2c82404fa786c6b3e71ae08ed78f737aaaa413a62bb5b
+        rmd160 7792b69abda5a088f37cb06c98b0c46e2132b56e \
+        sha256 9d13896fcb29db7352ecd159e98d52335e91eddd665043ffca2c2ef0efdfc3b0
 
     conflicts       libcaca
     long_description ${long_description} ${subport} \
@@ -55,6 +55,9 @@ depends_lib         port:ncurses port:zlib
 # Teach glibtool about -stdlib=libc++
 use_autoreconf      yes
 autoreconf.args     -fvi
+
+# require C++11 for CppUnit API
+configure.cxxflags-append -std=gnu++11
 
 configure.args      \
     --disable-kernel \
@@ -103,8 +106,6 @@ if {[variant_isset x11]} {
         --disable-gl \
         --disable-imlib2
 }
-
-compiler.blacklist  llvm-gcc-4.2
 
 test.run            yes
 test.target         check

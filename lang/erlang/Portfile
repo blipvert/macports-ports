@@ -1,15 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           wxWidgets 1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                erlang
-version             19.1
+version             20.1
 
 categories          lang erlang
-maintainers         ciserlohn
+maintainers         {ciserlohn @ci42}
 platforms           darwin
 license             Apache-2
 
@@ -42,15 +41,15 @@ distfiles           otp_src_${version}${extract.suffix}                    \
                     otp_doc_man_${version}${extract.suffix}                \
                     otp_doc_html_${version}${extract.suffix}
 
-checksums           otp_src_19.1.tar.gz \
-                    rmd160  7a850068e9b46f8b6f54f83e95d2d5d09ec674e7 \
-                    sha256  fed4cbbc1ee5cc8efc2b8f14c3db97bfde1de967703f5f9a95f8ab6852737e23 \
-                    otp_doc_man_19.1.tar.gz \
-                    rmd160  0e681889adb81c2bb241fc196e709b80719a2226 \
-                    sha256  7200e9e5b3a229a6b3838046e1b3e64afc869265539d49d0e4853212f19c0c79 \
-                    otp_doc_html_19.1.tar.gz \
-                    rmd160  7c3f91b2925e442426c9ea70ec940786f6c51b1d \
-                    sha256  76c89aee1ac69b5107114b0065189101e3f42d53e929d8ef8f08b5c586f15930
+checksums           otp_src_20.1.tar.gz \
+                    rmd160  65ed1ad934dea860f277648663db714881b9cb97 \
+                    sha256  900d35eb563607785a8e27f4b4c03cf6c98b4596028c5d6958569ddde5d4ddbf \
+                    otp_doc_man_20.1.tar.gz \
+                    rmd160  71954a0ecb97545e71646ffb227c4382c49962b9 \
+                    sha256  05ccf82ff85316e2eb1bebf1a1741dfac1ee450ed49cf0be365f9d4fec6d7b46 \
+                    otp_doc_html_20.1.tar.gz \
+                    rmd160  1c6ad3898f2843a42506b1808609a5c1f070d4d8 \
+                    sha256  442c9b75a33be685a1af67414cc8758a4ef40e27cdcab9e432d4d9c6f3254dcf
 
 pre-patch           { file rename ${workpath}/otp_src_${version} ${workpath}/${name}-${version} }
 
@@ -80,14 +79,9 @@ post-destroot   {
     system "tar -C ${destroot}${prefix}/lib/erlang -zxvf ${distpath}/otp_doc_html_${version}${extract.suffix}"
     system "tar -C ${destroot}${prefix}/lib/erlang -zxvf ${distpath}/otp_doc_man_${version}${extract.suffix}"
  
-    set erts_dir            erts-8.1
-    set erl_interface_dir   erl_interface-3.9.1
-    set wx_dir              wx-1.7.1
-
-    reinplace s|${destroot}|| ${destroot}${prefix}/lib/erlang/bin/erl
-    reinplace s|${destroot}|| ${destroot}${prefix}/lib/erlang/bin/start
-    reinplace s|${destroot}|| ${destroot}${prefix}/lib/erlang/${erts_dir}/bin/erl
-    reinplace s|${destroot}|| ${destroot}${prefix}/lib/erlang/${erts_dir}/bin/start
+    set erts_dir            erts-9.1
+    set erl_interface_dir   erl_interface-3.10
+    set wx_dir              wx-1.8.2
 
     foreach x {dialyzer ear ecc elink epmd erl erlc escript run_erl start to_erl typer} { file delete -force ${destroot}${prefix}/bin/${x} }
     foreach x {dialyzer erl erlc escript run_erl start to_erl typer} { system "ln -s ../lib/erlang/bin/${x} ${destroot}${prefix}/bin/${x}" }

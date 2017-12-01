@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem 1.0
 
@@ -7,9 +6,9 @@ PortSystem 1.0
 PortGroup           muniversal 1.0
 
 name                xapian-core
-version             1.2.21
+version             1.4.5
 categories          devel
-maintainers         gmail.com:dcolish
+maintainers         nomaintainer
 license             GPL-2+
 
 description         Xapian search library
@@ -19,13 +18,13 @@ long_description    Xapian is a highly adaptable toolkit which allows \
                     Probabilistic Information Retrieval model and also \
                     supports a rich set of boolean query operators.
 
-homepage            http://xapian.org/
+homepage            https://xapian.org/
 platforms           darwin
-master_sites        http://oligarchy.co.uk/xapian/${version}/
+master_sites        https://oligarchy.co.uk/xapian/${version}/
 use_xz              yes
 
-checksums           rmd160  6b2413007f245d2410e2b22d7656abb7f1bae750 \
-                    sha256  63f48758fbd13fa8456dd4cf9bf3ec35a096e4290f14a51ac7df23f78c162d3f
+checksums           rmd160  ca44355b068fba91c24267d830bbefb54c4358df \
+                    sha256  85b5f952de9df925fd13e00f6e82484162fd506d38745613a50b0a2064c6b02b
 
 # TODO: Fix xapian-config to not require the .la file
 # /opt/local/bin/xapian-config --ltlibs --cxxflags

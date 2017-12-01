@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        mongodb mongo-c-driver 1.4.2
+github.setup        mongodb mongo-c-driver 1.8.2
 categories          devel databases
 platforms           darwin
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 license             Apache-2
 
 description         library for using mongodb from C code
@@ -16,8 +15,9 @@ long_description    ${name} is a ${description}.
 
 github.tarball_from releases
 
-checksums           rmd160  707abf41082d35a182a5e4f72a5baffa2193faf5 \
-                    sha256  9154d8f6b3261f785a19d1f81506fb911c985f26dfdc9b19082e1bc7af479afb
+checksums           rmd160  8d8954a9d35986c5b6508fff90416d8e76cf2f2c \
+                    sha256  2929e415b157c48e867e9d7eda4a11920e8f8763f33af5fbcdb4f4fe316f7c5e \
+                    size    7308675
 
 depends_build       port:pkgconfig
 

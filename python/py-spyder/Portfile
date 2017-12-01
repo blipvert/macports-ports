@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
@@ -13,7 +12,7 @@ revision            0
 epoch               20111202
 
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 PortGroup           qt4 1.0
 categories-append   devel
@@ -78,10 +77,9 @@ if {${name} ne ${subport}} {
             ${worksrcpath}/doc/conf.py
     }
 
-    # Can use either py*-pyqt4 or py*-pyqt4-devel.
     # Bare minimum
     depends_lib-append  \
-        path:share/py${python.version}-sip/PyQt4:py${python.version}-pyqt4 \
+        port:py${python.version}-pyqt4 \
         port:py${python.version}-sphinx \
         port:py${python.version}-zmq
 

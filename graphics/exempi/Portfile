@@ -1,35 +1,31 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
-PortSystem      1.0
+PortSystem          1.0
+PortGroup           cxx11 1.1
 
-name            exempi
-version         2.3.0
-license         BSD
-categories      graphics
-maintainers     devans openmaintainer
-platforms       darwin
-homepage        https://libopenraw.freedesktop.org/wiki/Exempi/
-master_sites    https://libopenraw.freedesktop.org/download/
+# requires libc++ as of 2.4.0
 
-use_bzip2       yes
+name                exempi
+version             2.4.3
+revision            1
+license             BSD
+categories          graphics
+maintainers         {devans @dbevans} openmaintainer
+platforms           darwin
+homepage            https://libopenraw.freedesktop.org/wiki/Exempi/
+master_sites        https://libopenraw.freedesktop.org/download/
 
-checksums       rmd160  eb5956c704ffb333e4d031735e5a29c1fffe5b39 \
-                sha256  d89aed355e6d38b8525ffeaffe592b362fec3a8306a1d8116625908af8d89949
+use_bzip2           yes
 
-description     Exempi is an implementation of XMP.
+checksums           rmd160  dbdd79734e54401e8105cdc28fa805f6a484d602 \
+                    sha256  bfd1d8ebffe07918a5bfc7a5130ff82486d35575827cae8d131b9fa1c0c29c6e
 
-long_description \
-                Exempi is an implementation of XMP. Version 2.x is based on Adobe XMP SDK 4.1.1.
+description         Exempi is an implementation of XMP.
 
-patchfiles      patch-Makefile.am.diff \
-                malloc.patch
+long_description    Exempi is an implementation of XMP. Version 2.x is based on Adobe XMP SDK 4.1.1.
 
-use_autoreconf  yes
-autoreconf.args -fvi
-
-configure.args  --enable-unittest=no \
-                --disable-silent-rules
+configure.args      --enable-unittest=no \
+                    --disable-silent-rules
 
 variant unit_test description {Enable unit test}  {
      depends_lib-append port:boost
@@ -37,6 +33,6 @@ variant unit_test description {Enable unit test}  {
      configure.args-append  --enable-unittest=yes
 }
 
-livecheck.type  regex
-livecheck.url   [lindex ${master_sites} 0]
-livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)\\.tar"
+livecheck.type      regex
+livecheck.url       [lindex ${master_sites} 0]
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)\\.tar"

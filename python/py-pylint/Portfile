@@ -1,19 +1,18 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-pylint
-version             1.6.4
+version             1.7.4
 revision            0
 categories-append   devel
 platforms           darwin
 license             GPL-2+
 supported_archs     noarch
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         blair stromnov openmaintainer
 
@@ -32,12 +31,13 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  629ff9ed14f15db119545c96ea1c31c2a6ee5fc9 \
-                    sha256  ef901a34b62ed7a734370ba5b162d890231ba8822abe88c6dda1268e2575f5f1
+checksums           rmd160  c19fbf81b2ebcec4f35a1c69c98d41b83f31f3d9 \
+                    sha256  1f65b3815c3bf7524b845711d54c4242e4057dd93826586620239ecdfe591fb1
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                        port:py${python.version}-setuptools
+                        port:py${python.version}-setuptools \
+                        port:py${python.version}-pytest-runner
 
     depends_lib-append  port:py${python.version}-astroid \
                         port:py${python.version}-six \
@@ -46,7 +46,9 @@ if {${name} ne ${subport}} {
 
     if {${python.version} eq 27} {
         depends_lib-append  port:py${python.version}-configparser \
-                            port:py${python.version}-backports-functools_lru_cache
+                            port:py${python.version}-backports-functools_lru_cache \
+                            port:py${python.version}-enum34 \
+                            port:py${python.version}-singledispatch
     }
 
     depends_run-append  port:pylint_select
@@ -54,11 +56,11 @@ if {${name} ne ${subport}} {
     post-destroot {
         xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
         if {[file exists ${worksrcpath}/doc]} {
-            eval xinstall -m 644 [glob -types f ${worksrcpath}/doc/*] \
+            xinstall -m 644 {*}[glob -types f ${worksrcpath}/doc/*] \
                 ${destroot}${prefix}/share/doc/${subport}
             if {[file exists ${worksrcpath}/doc/_static]} {
                 xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}/_static
-                eval xinstall -m 644 [glob -types f ${worksrcpath}/doc/_static/*] \
+                xinstall -m 644 {*}[glob -types f ${worksrcpath}/doc/_static/*] \
                     ${destroot}${prefix}/share/doc/${subport}/_static
             }
         }
@@ -78,6 +80,4 @@ port select --set ${select.group} [file tail ${select.file}]
 "
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

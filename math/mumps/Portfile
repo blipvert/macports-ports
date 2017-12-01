@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           mpi 1.0
@@ -7,6 +6,7 @@ PortGroup           linear_algebra 1.0
 
 name                mumps
 version             5.0.1
+revision            1
 categories          math
 license             public-domain
 platforms           darwin
@@ -65,9 +65,9 @@ post-extract {
 }
 
 destroot {
-  eval xinstall -m 644 [glob ${worksrcpath}/include/*.h] ${destroot}${prefix}/include
-  eval xinstall -m 644 [glob ${worksrcpath}/lib/*.a] ${destroot}${prefix}/lib
-  eval xinstall -m 644 [glob ${worksrcpath}/lib/*.dylib] ${destroot}${prefix}/lib
+  xinstall -m 644 {*}[glob ${worksrcpath}/include/*.h] ${destroot}${prefix}/include
+  xinstall -m 644 {*}[glob ${worksrcpath}/lib/*.a] ${destroot}${prefix}/lib
+  xinstall -m 644 {*}[glob ${worksrcpath}/lib/*.dylib] ${destroot}${prefix}/lib
 }
 
 livecheck.type      none

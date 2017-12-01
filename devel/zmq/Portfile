@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
@@ -9,7 +8,7 @@ categories          devel sysutils net
 platforms           darwin
 license             LGPL-3+
 
-maintainers         inconsistent.nl:merijn stromnov michaelld openmaintainer
+maintainers         inconsistent.nl:merijn stromnov {michaelld @michaelld} openmaintainer
 
 description         0MQ (ZeroMQ) lightweight messaging kernel
 
@@ -22,21 +21,12 @@ long_description    \
     protocols and more.
 
 if {${name} eq ${subport}} {
-    github.setup        zeromq zeromq4-1 4.1.5 v
-    revision            1
-    checksums       \
-        rmd160 952683a27697b8ccc9fca3d0766a2b6c76a837ae \
-        sha256 226e7d31d3ef2df6b5da86c3ec6f97a379aac1200a8ebb2ce82d481d40cb64bc
+    github.setup        zeromq libzmq 4.2.2 v
+
+    checksums           rmd160 c9fa036418d8f0c6b7ea5d57714a9682a99fa920 \
+                        sha256 07b359be1f4929bf456708b0509f9de5648b78e78706fc8b128096b8e59b7b53
 
     conflicts           zmq-devel zmq22 zmq3
-
-    # special livecheck, because zmq keeps different repos for new
-    # versions; check the homepage instead
-
-    homepage            http://www.zeromq.org/
-    livecheck.type      regex
-    livecheck.url       ${homepage}intro:get-the-software
-    livecheck.regex     Current Stable Release (\[0-9.\]+)
 }
 
 # Legacy subport (no longer supported)
@@ -61,10 +51,10 @@ subport zmq22 {
 }
 
 subport zmq-devel {
-    github.setup        zeromq zeromq4-1 21e484750e4c13e81597bbb4cf6d178ef05e8631
-    version             20161023
-    checksums           rmd160 875cb70f072f5a1b35354ff15168d68eaf6c958f \
-                        sha256 6f2936aefcfe4a47de8365dd5c4de259f8567d14da0220a82755c3ba174a849c
+    github.setup        zeromq zeromq4-1 a3f98304da9024f2d0ac4e838a646c231ddff5ee
+    version             20170923
+    checksums           rmd160 233d8d199018a663102a3f3f1f7aee84c15f879b \
+                        sha256 7bf520b325de208460ce88dd1e938691134c32bf1d0114a92fad9c7c98746238
 
     depends_lib-append  port:libsodium
 

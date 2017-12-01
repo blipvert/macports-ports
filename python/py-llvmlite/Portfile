@@ -1,18 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-llvmlite
-epoch               0
-version             0.14.0
+version             0.20.0
 revision            0
 categories-append   devel science
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 maintainers         stromnov openmaintainer
 
@@ -24,26 +22,28 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  81e4b92fec7253e4b50bde0c4a9d15745bff750a \
-                    sha256  e8059073f377bee98c7bea6902851fa6decfe24746d8bc5b2811c8aa76d56ff9
+checksums           rmd160  59b7d5fd0bc9fcefc46bc7f6ebe7a2b40561ac38 \
+                    sha256  b2f174848df16bb9195a07fec102110a06d018da736bd9b3570a54d44c797c29
 
 if {${name} ne ${subport}} {
     patchfiles-append   patch-ffi_Makefile.osx.diff
 
+    post-patch {
+        reinplace "s|%%CXX%%|clang++-mp-4.0|" ${worksrcpath}/ffi/Makefile.osx
+    }
+
     depends_build-append \
                         port:py${python.version}-setuptools \
-                        port:clang-3.8
+                        port:clang-4.0
 
-    depends_lib-append  port:llvm-3.8
+    depends_lib-append  port:llvm-4.0
 
     if {${python.version} < 34} {
         depends_lib-append  port:py${python.version}-enum34
     }
 
-    build.env-append    LLVM_CONFIG=llvm-config-mp-3.8
-    destroot.env-append LLVM_CONFIG=llvm-config-mp-3.8
+    build.env-append    LLVM_CONFIG=llvm-config-mp-4.0
+    destroot.env-append LLVM_CONFIG=llvm-config-mp-4.0
 
     livecheck.type      none
-} else {
-    livecheck.type      pypi
 }

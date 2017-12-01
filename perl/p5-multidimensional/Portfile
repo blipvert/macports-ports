@@ -1,17 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
-
-# This comment was inserted on 20160713 to force reindexing of
-# this port after the default homepage definition in the perl5
-# PortGroup was changed to use metacpan.org (r150080).
-# Reindexing is necessary for the new definition to take effect.
-# This comment may be removed in subsequent updates of this port.
 
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24
-perl5.setup         multidimensional 0.012 ../by-authors/id/I/IL/ILMARI
+perl5.branches      5.24 5.26
+perl5.setup         multidimensional 0.013 ../by-authors/id/I/IL/ILMARI
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         multidimensional - disables multidimensional array emulation
@@ -19,8 +12,8 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  97e11aabf7100f8758a6814fcd94f240e878bc70 \
-                    sha256  daa7754dbdf9a1676cf8872cbe8f04a3eb40173e08fa57fdb2196f364ca6f1e3
+checksums           rmd160  5f5fecec733168799b96caa1670d3a309d9dbace \
+                    sha256  3d20ce3e2307c3cfb13f2d53ad99bba6f87ea20b53f7ffebb4308d88ccfee50a
 
 if {${perl5.major} != ""} {
     depends_build-append \

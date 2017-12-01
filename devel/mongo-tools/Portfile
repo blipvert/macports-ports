@@ -1,13 +1,15 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        mongodb mongo-tools 3.2.10 r
+# Keep mongo-tools at the same version as mongodb.
+
+github.setup        mongodb mongo-tools 3.4.10 r
+revision            1
 categories          devel
 platforms           darwin
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 license             Apache-2
 
 description         utilities for working with mongodb databases: bsondump, \
@@ -25,16 +27,21 @@ long_description    mongo-tools is a collection of utilities for working with \
                     \n* mongostat: Monitor live MongoDB servers, replica sets, or sharded clusters \
                     \n* mongofiles: Read, write, delete, or update files in GridFS \
                     \n* mongooplog: Replay oplog entries between MongoDB servers \
-                    \n* mongotop: Monitor read/write activity on a mongo server
+                    \n* mongotop: Monitor read/write activity on a mongo server \
+                    \n* mongoreplay: Inspect and record commands sent to a MongoDB instance, and then replay the commands back onto another host at a later time
 
-checksums           rmd160  90711ec20465052bec3d31518be4582dcf66bd18 \
-                    sha256  13e10db1c108fa447ecae3f9f8d5447c72691114988ba26d0f5876050c8d9507
+checksums           rmd160  095390d6d95b25433656d13bcc910bd0bac9e421 \
+                    sha256  beeb4e352eac857ab2f1c972a0fa6da011d7fe7927f52fc94023170cb2aa4c6f \
+                    size    4718993
 
 depends_build       port:go
+depends_lib         path:lib/libssl.dylib:openssl
 
 use_configure       no
 
 build.cmd           ./build.sh
+build.args          ssl sasl
+build.target
 
 destroot {
     copy {*}[glob ${worksrcpath}/bin/*] ${destroot}${prefix}/bin/

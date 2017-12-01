@@ -1,5 +1,4 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 # TODO: Improve atomics by using libkern/OSAtomics.h
 #       https://bugs.freedesktop.org/show_bug.cgi?id=67795
@@ -9,11 +8,11 @@ PortGroup           active_variants 1.1
 PortGroup           compiler_blacklist_versions 1.0
 
 name                pulseaudio
-version             9.0
+version             11.1
 revision            0
-license             LGPL-2.1
+license             LGPL-2.1+ AGPL-3+ MIT BSD
 categories          audio
-maintainers         ionic openmaintainer
+maintainers         {ionic @ionic} openmaintainer
 platforms           darwin
 description         A sound server for POSIX OSes
 
@@ -29,10 +28,11 @@ master_sites        https://www.freedesktop.org/software/${name}/releases/
 
 use_xz              yes
 
-checksums           rmd160  bab63483ff39e462a0701fcd612fea9f1ebe1173 \
-                    sha256  c3d3d66b827f18fbe903fe3df647013f09fc1e2191c035be1ee2d82a9e404686
+checksums           rmd160  bb625751165be83c3ff4cbb0b22c5a28007e61fe \
+                    sha256  f2521c525a77166189e3cb9169f75c2ee2b82fa3fcf9476024fbc2c3a6c9cd9e \
+                    size    1648924
 
-set perl_branch     5.24
+set perl_branch     5.26
 
 depends_build       port:pkgconfig \
                     port:intltool \
@@ -42,7 +42,6 @@ depends_build       port:pkgconfig \
                     port:p${perl_branch}-xml-parser
 
 depends_lib         port:libiconv \
-                    port:json-c \
                     port:libsndfile \
                     port:libtool \
                     port:gdbm \
@@ -50,7 +49,7 @@ depends_lib         port:libiconv \
                     port:gtk3 \
                     port:dbus \
                     port:fftw-3-single \
-                    path:lib/libspeex.dylib:speex \
+                    path:lib/libspeexdsp.dylib:speexDSP \
                     port:orc \
                     port:soxr
 
@@ -94,6 +93,7 @@ configure.cmd       ./autogen.sh
 configure.args      --with-mac-version-min=$macosx_deployment_target \
                     --with-caps \
                     --with-soxr \
+                    --with-speex \
                     --disable-silent-rules \
                     --disable-tests \
                     --disable-x11 \
@@ -113,10 +113,12 @@ configure.args      --with-mac-version-min=$macosx_deployment_target \
                     --disable-udev \
                     --disable-hal-compat \
                     --disable-openssl \
-                    --disable-xen \
-                    --disable-systemd \
+                    --disable-systemd-daemon \
+                    --disable-systemd-login \
+                    --disable-systemd-journal \
                     --enable-neon-opt=no \
-                    --enable-orc
+                    --enable-orc \
+                    --enable-adrian-aec
 
 if {"${configure.sdkroot}" eq ""} {
     configure.args-append --with-mac-sysroot=/

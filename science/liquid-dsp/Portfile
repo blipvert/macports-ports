@@ -1,15 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        jgaeddert liquid-dsp 82e83276199062f163e4def3bfdef680191d7509
-version             20160916
-checksums           rmd160 2dfc363993c271a2bad2a63a7e3ba32866fca3d2 \
-                    sha256 6c3fcd3ddeeb06c5a4c1a497bd8813b7aeb83092a3ddaaa4ede0d085bdf01da7
+github.setup        jgaeddert liquid-dsp 615a79ab04447e43e0f22b9a1bd27f2fe89ad46d
+version             20171126
+checksums           rmd160 7a2d61dd55f08d2bb8ff82702b6912b08bc33b2f \
+                    sha256 ab01e34a6ae1ac2d827c4b617f092faef3a5e1959c7678aa43271dde0e709e39
 
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 
 description         liquid-dsp is an open-source signal processing library for software-defined radios written in C.
 long_description    ${description} Its purpose is to provide a set of extensible DSP modules that do no rely on external dependencies or cumbersome frameworks.

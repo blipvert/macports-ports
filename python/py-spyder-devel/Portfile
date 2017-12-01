@@ -1,10 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# $Id$
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           active_variants 1.1
 
-github.setup        spyder-ide spyder 3.0.0 v
+github.setup        spyder-ide spyder 3.2.4 v
 name                py-spyder-devel
 revision            0
 # Preference on mailing list is to use small numbers for epoch.
@@ -13,7 +13,7 @@ epoch               20161005
 
 PortGroup           python 1.0
 
-python.versions     27 34 35
+python.versions     27 34 35 36
 
 categories-append   devel
 platforms           darwin
@@ -36,12 +36,12 @@ long_description    ${description}. \
 supported_archs     noarch
 
 #pyNN-scipy doesn't build universal
-universal_variant   no 
+universal_variant   no
 
 if {${name} ne ${subport}} {
     checksums \
-        rmd160  4d068d854ca1c97987e72591c8f523b2adc85bd1 \
-        sha256  779f48bfc227694388f17fdb9931938fb25c1fc1e98c0a0527a03060e555d9ad
+        rmd160  5200f01ae938b53bc3d6b80426e0a282b3b10086 \
+        sha256  fa98fc2bf08ecc48647eb1e56ad5dcc08d8742cfebb4c61b313cc90f4bdbb61f
 
     conflicts           py${python.version}-spyder
 
@@ -51,8 +51,7 @@ if {${name} ne ${subport}} {
     # Set the pylint executable name
     set LINT_BIN_NAME   pylint-${python.branch}
     set WINPDB_BIN_NAME winpdb-${python.branch}
-    patchfiles          patch-widgets-pylintgui.py.diff \
-                        spyderlib_baseconfig.py.diff \
+    patchfiles          spyderlib_baseconfig.py.diff \
                         spyderlib_plugins_editor.py.diff \
                         spyderlib_start_app.py.diff \
                         spyderlib_spyder.py.diff \
@@ -61,8 +60,6 @@ if {${name} ne ${subport}} {
     post-patch {
         reinplace "s|@@WINPDB_BIN_NAME@@|${WINPDB_BIN_NAME}|g" \
             ${worksrcpath}/spyder/plugins/editor.py
-        reinplace "s|@@LINT_BIN_NAME@@|${LINT_BIN_NAME}|g" \
-            ${worksrcpath}/spyder_pylint/widgets/pylintgui.py
         reinplace "s|\"assistant\"|\"Assistant\"|g" \
             ${worksrcpath}/spyder/app/mainwindow.py
         reinplace "s|\"linguist\"|\"Linguist\"|g" \
@@ -77,13 +74,18 @@ if {${name} ne ${subport}} {
 
     # Bare minimum
     depends_lib-append  \
-        port:py${python.version}-sphinx \
-        port:py${python.version}-zmq \
-        port:py${python.version}-qtpy \
-        port:py${python.version}-qtawesome \
-        port:py${python.version}-pickleshare \
+        port:py${python.version}-chardet \
+        port:py${python.version}-codestyle \
         port:py${python.version}-path \
-        port:py${python.version}-pyqt5
+        port:py${python.version}-pickleshare \
+        port:py${python.version}-pyqt5 \
+        port:py${python.version}-qtawesome \
+        port:py${python.version}-qtpy \
+        port:py${python.version}-sphinx \
+        port:py${python.version}-zmq
+
+    require_active_variants py${python.version}-pyqt5 webengine
+    require_active_variants py${python.version}-qtpy qt5
 
     depends_build-append \
         port:GraphicsMagick
